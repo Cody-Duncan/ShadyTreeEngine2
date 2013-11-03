@@ -11,11 +11,37 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BufferResourcer.h" />
+    <ClInclude Include="ConstantBuffer.h" />
+    <ClInclude Include="DDSTextureLoader.h" />
+    <ClInclude Include="Debug_Graphics.h" />
+    <ClInclude Include="DirectX_GraphicsDevice.h" />
+    <ClInclude Include="GraphicsDevice.h" />
+    <ClInclude Include="GraphicsResourceHandles.h" />
+    <ClInclude Include="MathLib.h" />
+    <ClInclude Include="Matrix4.h" />
+    <ClInclude Include="ShaderResourcer.h" />
     <ClInclude Include="Shady_DLLExport.h" />
+    <ClInclude Include="StringUtility.h" />
     <ClInclude Include="TestClass.h" />
+    <ClInclude Include="TextureResourcer.h" />
+    <ClInclude Include="Vectors.h" />
+    <ClInclude Include="Vertex.h" />
+    <ClInclude Include="WICTextureLoader.h" />
+    <ClInclude Include="WindowFactory.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BufferResourcer.cpp" />
+    <ClCompile Include="DDSTextureLoader.cpp" />
+    <ClCompile Include="DirectX_GraphicsDevice.cpp" />
+    <ClCompile Include="GraphicsDevice.cpp" />
+    <ClCompile Include="Matrix4.cpp" />
+    <ClCompile Include="ShaderResourcer.cpp" />
     <ClCompile Include="TestClass.cpp" />
+    <ClCompile Include="TextureResourcer.cpp" />
+    <ClCompile Include="Vectors.cpp" />
+    <ClCompile Include="WICTextureLoader.cpp" />
+    <ClCompile Include="WindowFactory.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D040C4F1-07F7-4450-ACAC-26787DB53554}</ProjectGuid>
