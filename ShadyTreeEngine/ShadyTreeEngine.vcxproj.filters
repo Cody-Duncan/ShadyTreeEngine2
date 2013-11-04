@@ -26,6 +26,7 @@
     <ClCompile Include="GraphicsDevice.cpp">
       <Filter>Graphics\API</Filter>
     </ClCompile>
+    <ClCompile Include="StdAfx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shady_DLLExport.h" />
@@ -75,6 +76,7 @@
     <ClInclude Include="SimpleMath.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="StdAfx.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">

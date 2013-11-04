@@ -1,15 +1,19 @@
 #pragma once
 
 #include <d3dcommon.h>
+#include <winnt.h>
 
 #if defined(_DEBUG) || defined(PROFILE)
 
 template<UINT TNameLength>
-inline void SetDebugObjectName(_In_ ID3D11DeviceChild* resource, _In_z_ const char (&name)[TNameLength])
+inline void SetDebugObjectName(_In_ ID3D11DeviceChild* resource, _In_ const char (&name)[TNameLength])
 {
-  #if defined(_DEBUG) || defined(PROFILE)
-     resource->SetPrivateData(WKPDID_D3DDebugObjectName, TNameLength - 1, name);
-  #endif
+#if defined(_DEBUG) || defined(PROFILE)
+    resource->SetPrivateData(WKPDID_D3DDebugObjectName, TNameLength - 1, name);
+#else
+    UNREFERENCED_PARAMETER(resource);
+    UNREFERENCED_PARAMETER(name);
+#endif
 }
 
 inline void ReportLiveObjects(ID3D11Device* device)

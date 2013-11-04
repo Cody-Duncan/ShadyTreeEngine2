@@ -9,3 +9,4 @@ GraphicsDevice::GraphicsDevice(void)
 GraphicsDevice::~GraphicsDevice(void)
 {
 }
+
