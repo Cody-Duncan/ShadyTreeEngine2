@@ -397,7 +397,7 @@ void DirectX_GraphicsDevice::setPixelShader(PixelShaderHandle& hPixelShader)
 }
 
 
-void DirectX_GraphicsDevice::setWorld(Matrix4& m)
+void DirectX_GraphicsDevice::setWorld(Matrix& m)
 {
     g_World = XMLoadFloat4x4(&m);
 }

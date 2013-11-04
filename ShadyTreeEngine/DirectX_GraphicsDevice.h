@@ -40,7 +40,7 @@ public:
     virtual void setVertexShader(VertexShaderHandle&);
     virtual void setPixelShader(PixelShaderHandle&);
 
-    virtual void setWorld(Matrix4&);
+    virtual void setWorld(Matrix&);
     virtual void setView(Vector4& eye, Vector4& at, Vector4& up);
     virtual void updateView(Vector4& eye, Vector4& at);
     virtual void setProjection(float fovAngleY, float nearClip, float farClip);

@@ -19,13 +19,12 @@
     <ClInclude Include="GraphicsDevice.h" />
     <ClInclude Include="GraphicsResourceHandles.h" />
     <ClInclude Include="MathLib.h" />
-    <ClInclude Include="Matrix4.h" />
     <ClInclude Include="ShaderResourcer.h" />
     <ClInclude Include="Shady_DLLExport.h" />
+    <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="StringUtility.h" />
     <ClInclude Include="TestClass.h" />
     <ClInclude Include="TextureResourcer.h" />
-    <ClInclude Include="Vectors.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="WICTextureLoader.h" />
     <ClInclude Include="WindowFactory.h" />
@@ -35,13 +34,14 @@
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DirectX_GraphicsDevice.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
-    <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="ShaderResourcer.cpp" />
     <ClCompile Include="TestClass.cpp" />
     <ClCompile Include="TextureResourcer.cpp" />
-    <ClCompile Include="Vectors.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
     <ClCompile Include="WindowFactory.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimpleMath.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D040C4F1-07F7-4450-ACAC-26787DB53554}</ProjectGuid>
@@ -90,11 +90,12 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;SHADYTREE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_WIN32_WINNT=0x0600;_DEBUG;_WINDOWS;_USRDLL;SHADYTREE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -111,13 +112,14 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;SHADYTREE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_WIN32_WINNT=0x0600;NDEBUG;_WINDOWS;_USRDLL;SHADYTREE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>

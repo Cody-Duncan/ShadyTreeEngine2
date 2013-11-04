@@ -4,8 +4,9 @@
 #include "GraphicsResourceHandles.h"
 #include <string>
 #include "Vertex.h"
+#include "Shady_DLLExport.h"
 
-class GraphicsDevice
+class ST_API GraphicsDevice
 {
 public:
     GraphicsDevice(void);
@@ -30,7 +31,7 @@ public:
     virtual void setVertexShader(VertexShaderHandle&) = 0;
     virtual void setPixelShader(PixelShaderHandle&) = 0;
 
-    virtual void setWorld(Matrix4&) = 0;
+    virtual void setWorld(Matrix&) = 0;
     virtual void setView(Vector4& eye, Vector4& at, Vector4& up) = 0;
     virtual void updateView(Vector4& eye, Vector4& at) = 0;
     virtual void setProjection(float fovAngleY = 1.570796371f, float nearClip = 0.01f, float farClip = 1000.0f) = 0;

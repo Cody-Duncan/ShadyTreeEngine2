@@ -20,12 +20,6 @@
     <ClCompile Include="WICTextureLoader.cpp">
       <Filter>Graphics\Loaders</Filter>
     </ClCompile>
-    <ClCompile Include="Matrix4.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Vectors.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
     <ClCompile Include="WindowFactory.cpp">
       <Filter>Window</Filter>
     </ClCompile>
@@ -69,12 +63,6 @@
     <ClInclude Include="MathLib.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Matrix4.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Vectors.h">
-      <Filter>Math</Filter>
-    </ClInclude>
     <ClInclude Include="WindowFactory.h">
       <Filter>Window</Filter>
     </ClInclude>
@@ -82,6 +70,9 @@
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMath.h">
       <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
@@ -110,5 +101,10 @@
     <Filter Include="Utility">
       <UniqueIdentifier>{6183b632-df29-47ba-96e1-379678dbe086}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimpleMath.inl">
+      <Filter>Math</Filter>
+    </None>
   </ItemGroup>
 </Project>
