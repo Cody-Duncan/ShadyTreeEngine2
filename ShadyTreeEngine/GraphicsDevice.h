@@ -4,7 +4,6 @@
 #include "GraphicsResourceHandles.h"
 #include <string>
 #include "Vertex.h"
-#include "Shady_DLLExport.h"
 
 class ST_API GraphicsDevice
 {

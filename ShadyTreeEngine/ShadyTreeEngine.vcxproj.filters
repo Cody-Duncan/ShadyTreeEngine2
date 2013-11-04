@@ -26,9 +26,11 @@
       <Filter>Graphics\API</Filter>
     </ClCompile>
     <ClCompile Include="StdAfx.cpp" />
+    <ClCompile Include="GraphicsDeviceFactory.cpp">
+      <Filter>Graphics\API</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Shady_DLLExport.h" />
     <ClInclude Include="DirectX_GraphicsDevice.h">
       <Filter>Graphics</Filter>
     </ClInclude>
@@ -75,6 +77,12 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="ShadyTree_DLLAPI.h">
+      <Filter>Graphics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsDeviceFactory.h">
+      <Filter>Graphics\API</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">

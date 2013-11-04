@@ -1,8 +1,8 @@
 #include "WindowFactory.h"
 #include <tchar.h>
 
-HWND ghMainWnd = 0;
-HINSTANCE ghInstance = 0;
+ST_API HWND ghMainWnd = 0;
+ST_API HINSTANCE ghInstance = 0;
 
 
 bool GenerateWindow(HINSTANCE hInstance, int show, WNDPROC WndProc)

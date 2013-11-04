@@ -1,22 +1,22 @@
 #pragma once
-#include "Shady_DLLExport.h"
+#include "ShadyTree_DLLAPI.h"
 
-struct ST_API TextureHandle
+struct TextureHandle
 {
     int textureIndex;
 };
 
-struct ST_API MeshHandle
+struct MeshHandle
 {
     int meshID;
 };
 
-struct ST_API VertexShaderHandle
+struct VertexShaderHandle
 {
     int vertexShaderID;
 };
 
-struct ST_API PixelShaderHandle
+struct PixelShaderHandle
 {
     int  pixelShadeeID;
 };

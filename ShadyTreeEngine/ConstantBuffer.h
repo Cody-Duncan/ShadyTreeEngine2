@@ -15,7 +15,7 @@ struct CBChangesEveryFrame
     DirectX::XMFLOAT4 vMeshColor;
 };
 
-struct ConstantBuffer
+struct ST_API ConstantBuffer
 {
     CBChangesInfrequently infrequentBuffer;
     CBChangesEveryFrame frameBuffer;

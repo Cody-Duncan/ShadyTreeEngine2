@@ -1,6 +1,5 @@
 
 #include "MathLib.h"
-#include "Shady_DLLExport.h"
 
 #ifndef VERTEX_STRUCT
 #define VERTEX_STRUCT

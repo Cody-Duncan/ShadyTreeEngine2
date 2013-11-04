@@ -17,10 +17,11 @@
     <ClInclude Include="Debug_Graphics.h" />
     <ClInclude Include="DirectX_GraphicsDevice.h" />
     <ClInclude Include="GraphicsDevice.h" />
+    <ClInclude Include="GraphicsDeviceFactory.h" />
     <ClInclude Include="GraphicsResourceHandles.h" />
     <ClInclude Include="MathLib.h" />
     <ClInclude Include="ShaderResourcer.h" />
-    <ClInclude Include="Shady_DLLExport.h" />
+    <ClInclude Include="ShadyTree_DLLAPI.h" />
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="StringUtility.h" />
@@ -34,6 +35,7 @@
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DirectX_GraphicsDevice.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
+    <ClCompile Include="GraphicsDeviceFactory.cpp" />
     <ClCompile Include="ShaderResourcer.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
