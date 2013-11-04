@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="TestClass.cpp" />
+    <ClCompile Include="DirectX_GraphicsDevice.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="BufferResourcer.cpp">
+      <Filter>Graphics\Resourcers</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderResourcer.cpp">
+      <Filter>Graphics\Resourcers</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureResourcer.cpp">
+      <Filter>Graphics\Resourcers</Filter>
+    </ClCompile>
+    <ClCompile Include="DDSTextureLoader.cpp">
+      <Filter>Graphics\Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="WICTextureLoader.cpp">
+      <Filter>Graphics\Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowFactory.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsDevice.cpp">
+      <Filter>Graphics\API</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Shady_DLLExport.h" />
+    <ClInclude Include="TestClass.h" />
+    <ClInclude Include="DirectX_GraphicsDevice.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferResourcer.h">
+      <Filter>Graphics\Resourcers</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>Graphics\Resourcers</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderResourcer.h">
+      <Filter>Graphics\Resourcers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureResourcer.h">
+      <Filter>Graphics\Resourcers</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug_Graphics.h">
+      <Filter>Graphics\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="DDSTextureLoader.h">
+      <Filter>Graphics\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="WICTextureLoader.h">
+      <Filter>Graphics\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsDevice.h">
+      <Filter>Graphics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsResourceHandles.h">
+      <Filter>Graphics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="MathLib.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowFactory.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="StringUtility.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMath.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{fcb1d1de-41be-4535-a9e7-08a3aa0cbff8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Resourcers">
+      <UniqueIdentifier>{2c401166-7512-46c7-b6a8-98c6db5ea3c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\API">
+      <UniqueIdentifier>{444ae2a5-7eda-4c3d-9c9b-904a9854b013}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{3af75988-15e9-4b70-8ef0-9c4058c9c2de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Debug">
+      <UniqueIdentifier>{7d5610d5-5d6b-4cca-9e76-b342fa62054f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Loaders">
+      <UniqueIdentifier>{4b8331b4-d5ae-4a93-9788-e62d10a3e014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window">
+      <UniqueIdentifier>{eabbfba8-f05f-467e-ac27-5f42aef103d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{6183b632-df29-47ba-96e1-379678dbe086}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimpleMath.inl">
+      <Filter>Math</Filter>
+    </None>
+  </ItemGroup>
+</Project>
