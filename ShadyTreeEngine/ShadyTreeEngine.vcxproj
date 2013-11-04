@@ -24,7 +24,6 @@
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="StringUtility.h" />
-    <ClInclude Include="TestClass.h" />
     <ClInclude Include="TextureResourcer.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="WICTextureLoader.h" />
@@ -39,7 +38,6 @@
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TestClass.cpp" />
     <ClCompile Include="TextureResourcer.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
     <ClCompile Include="WindowFactory.cpp" />
