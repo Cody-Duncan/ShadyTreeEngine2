@@ -52,6 +52,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
             update();
             draw();
         }
+
+        Sleep(1);
     }
 
     device->Free();
