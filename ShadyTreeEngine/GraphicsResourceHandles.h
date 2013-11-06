@@ -6,9 +6,9 @@ struct TextureHandle
     int textureIndex;
 };
 
-struct MeshHandle
+struct BufferHandle
 {
-    int meshID;
+    int bufferID;
 };
 
 struct VertexShaderHandle

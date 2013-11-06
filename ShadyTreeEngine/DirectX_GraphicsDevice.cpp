@@ -310,7 +310,7 @@ void DirectX_GraphicsDevice::EndDraw()
 //=============================================================================
 //=============================================================================
 
-int DirectX_GraphicsDevice::createMesh(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int indexCount, MeshHandle* handle)
+int DirectX_GraphicsDevice::createVertexIndexBuffer(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int indexCount, MeshHandle* handle)
 {
     BufferResourcer& resourceVertexBuf = BufferResourcer::Instance();
     int result = resourceVertexBuf.createMesh(name, vertices, vertexCount , indices, indexCount, device, handle);

@@ -25,18 +25,18 @@ BufferResourcer::~BufferResourcer(void)
     vertexBuffers.clear();
 }
 
-MeshHandle BufferResourcer::getMeshByName(std::string name)
+BufferHandle BufferResourcer::getMeshByName(std::string name)
 {
-    MeshHandle h = {meshIdByName[name]};
+    BufferHandle h = {meshIdByName[name]};
     return h;
 }
 
-MeshData BufferResourcer::getMesh(MeshHandle h)
+BufferData BufferResourcer::getMesh(BufferHandle h)
 {
-    return meshes[h.meshID];
+    return meshes[h.bufferID];
 }
 
-int BufferResourcer::createMesh(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int indexCount, ID3D11Device* device, MeshHandle* handle )
+int BufferResourcer::createVertexIndexBuffer(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int indexCount, ID3D11Device* device, BufferHandle* handle )
 {
     D3D11_BUFFER_DESC bd;
     ZeroMemory( &bd, sizeof(bd) );
@@ -74,7 +74,7 @@ int BufferResourcer::createMesh(std::string name, Vertex* vertices, int vertexCo
     SetDebugObjectName(newIndexBuffer,"index buffer");
     indexBuffers.push_back(newIndexBuffer);
 
-    MeshData h = {
+    BufferData h = {
         vertexBuffers.size()-1,                 //vertex buffer index
         indexBuffers.size()-1,                  //index buffer index
         this,                                   //source
@@ -90,7 +90,7 @@ int BufferResourcer::createMesh(std::string name, Vertex* vertices, int vertexCo
     meshes[newID] = h;
     meshIdByName[name] = newID;
 
-    MeshHandle meshH = {newID};
+    BufferHandle meshH = {newID};
 
     *handle = meshH;
 

@@ -10,7 +10,7 @@
 
 class BufferResourcer;
 
-struct MeshData
+struct BufferData
 {
     int vertexBufferIndex;
     int indexBufferIndex;
@@ -33,13 +33,13 @@ public:
     std::vector<ID3D11Buffer*> indexBuffers;
 
     std::unordered_map<std::string, int> meshIdByName;
-    std::unordered_map<int, MeshData>meshes;
+    std::unordered_map<int, BufferData>meshes;
 
-    int createMesh(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int numIndices, ID3D11Device* device, MeshHandle* handle );
+    int createVertexIndexBuffer(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int numIndices, ID3D11Device* device, BufferHandle* handle );
 
-    MeshHandle getMeshByName(std::string name);
+    BufferHandle getMeshByName(std::string name);
 
-    MeshData getMesh(MeshHandle h);
+    BufferData getMesh(BufferHandle h);
 
     void Dispose();
 
