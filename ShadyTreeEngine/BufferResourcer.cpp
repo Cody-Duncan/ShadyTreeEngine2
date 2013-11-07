@@ -1,12 +1,12 @@
 #include "BufferResourcer.h"
 #include "Debug_Graphics.h"
 
-ID3D11Buffer* MeshData::getVertexBuffer() 
+ID3D11Buffer* BufferData::getVertexBuffer() 
 {
     return source->vertexBuffers[vertexBufferIndex];
 }
 
-ID3D11Buffer* MeshData::getIndexBuffer() 
+ID3D11Buffer* BufferData::getIndexBuffer() 
 {
     return source->indexBuffers[indexBufferIndex];
 }

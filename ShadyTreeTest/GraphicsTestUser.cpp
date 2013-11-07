@@ -96,7 +96,7 @@ int GraphicsTestUser::createVertexBuffers()
     };
 
     
-    int result = gd->createMesh("mesh1", vertices, ARRAYSIZE(vertices), indices, ARRAYSIZE(indices), &m);
+    int result = gd->createVertexIndexBuffer("mesh1", vertices, ARRAYSIZE(vertices), indices, ARRAYSIZE(indices), &m);
     
     if(result)
         return result;
@@ -119,7 +119,7 @@ int GraphicsTestUser::setTestTexture()
 {
     // Load the Texture
     
-    gd->createTexture("seafloor.png", &t);
+    gd->createTexture("seafloor2.png", &t);
 
     return 0;
 }
@@ -130,8 +130,8 @@ int count = 0;
 void GraphicsTestUser::testdraw()
 {
     count++;
-    tf += 0.04f;
-    Vector4 eye( 0.0f, 0.0f, 400.0f, 0.0f);
+    tf += 0.0004f;
+    Vector4 eye( 0.0f, 0.0f, 5.0f, 0.0f);
     Vector4 at(0.0f, 0.0f, 0.0f, 0.0f);
     Vector4 up(0.0f, 1.0f, 0.0f, 0.0f );
     gd->setView( eye, at, up );
@@ -147,16 +147,13 @@ void GraphicsTestUser::testdraw()
         Matrix id;
         id.Identity();
         Matrix rotmat = Matrix::CreateRotationY(tf) * Matrix::CreateRotationX(tf/2);
-        Matrix scaleMat = Matrix::CreateScale(20.0f);
+        Matrix scaleMat = Matrix::CreateScale(1.0f);
         Matrix a = scaleMat * rotmat;
 
-        for(int i = -100; i < 100; i++)
-        {
-            id =  a * Matrix::CreateTranslation(200, -200, i*-3);
-            gd->setWorld(id);
+            gd->setWorld(a);
 
             gd->Draw(m, t);
-        }
+        
 
         
 

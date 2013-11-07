@@ -263,7 +263,7 @@ void DirectX_GraphicsDevice::BeginDraw()
     
 }
 
-void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
+void DirectX_GraphicsDevice::Draw(BufferHandle& hBuffer, TextureHandle& hTex)
 {
     //Setup the world/view matrices
     CBChangesEveryFrame cb_Frame;
@@ -272,7 +272,7 @@ void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
     cb_Frame.vMeshColor = s_vMeshColor;
 
     //get mesh data;
-    MeshData mesh = BufferResourcer::Instance().getMesh(hMesh);
+    BufferData mesh = BufferResourcer::Instance().getMesh(hBuffer);
     ID3D11Buffer* vertexBuffer = mesh.getVertexBuffer();
     ID3D11Buffer* indexBuffer = mesh.getIndexBuffer();
     unsigned int stride = mesh.stride;
@@ -310,10 +310,10 @@ void DirectX_GraphicsDevice::EndDraw()
 //=============================================================================
 //=============================================================================
 
-int DirectX_GraphicsDevice::createVertexIndexBuffer(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int indexCount, MeshHandle* handle)
+int DirectX_GraphicsDevice::createVertexIndexBuffer(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int indexCount, BufferHandle* handle)
 {
     BufferResourcer& resourceVertexBuf = BufferResourcer::Instance();
-    int result = resourceVertexBuf.createMesh(name, vertices, vertexCount , indices, indexCount, device, handle);
+    int result = resourceVertexBuf.createVertexIndexBuffer(name, vertices, vertexCount , indices, indexCount, device, handle);
     if(result)
         return result;
 
