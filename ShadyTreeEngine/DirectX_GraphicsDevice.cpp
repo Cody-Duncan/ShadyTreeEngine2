@@ -8,6 +8,7 @@
 #include <sstream>
 #include "Vertex.h"
 #include "Debug_Graphics.h"
+#include "Mesh.h"
 
 
 
@@ -272,15 +273,15 @@ void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
     cb_Frame.vMeshColor = s_vMeshColor;
 
     //get mesh data;
-    MeshData mesh = BufferResourcer::Instance().getMesh(hMesh);
+    Mesh& mesh = (* BufferResourcer::Instance().getMesh(hMesh));
     BufferData buffer = BufferResourcer::Instance().getBuffer(mesh.bufferHandle);
     ID3D11Buffer* vertexBuffer = buffer.getVertexBuffer();
     ID3D11Buffer* indexBuffer = buffer.getIndexBuffer();
     unsigned int stride = buffer.stride;
     unsigned int vertexoffset = mesh.vertexOffset;
     unsigned int indexOffset = mesh.indexOffset;
-    unsigned int vertexCount = buffer.vertexCount;
-    unsigned int indexCount = buffer.indexCount;
+    unsigned int vertexCount = buffer.vertexLength;
+    unsigned int indexCount = buffer.indexLength;
 
     //get texture data
     ID3D11ShaderResourceView* texture = TextureResourcer::Instance().getTextureView(hTex);
@@ -311,10 +312,15 @@ void DirectX_GraphicsDevice::EndDraw()
 //=============================================================================
 //=============================================================================
 
-int DirectX_GraphicsDevice::createVertexIndexBuffer(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int indexCount, BufferHandle* handle, MeshHandle* meshHandle)
+Mesh* DirectX_GraphicsDevice::generateMesh(std::string name)
+{
+    return BufferResourcer::Instance().generateMesh(name);
+}
+
+int DirectX_GraphicsDevice::createVertexIndexBuffer(Mesh* mesh, BufferHandle* handle, MeshHandle* meshHandle)
 {
     BufferResourcer& resourceVertexBuf = BufferResourcer::Instance();
-    int result = resourceVertexBuf.createVertexIndexBuffer(name, vertices, vertexCount , indices, indexCount, device, handle, meshHandle);
+    int result = resourceVertexBuf.createVertexIndexBuffer(*mesh, device, handle, meshHandle);
     if(result)
         return result;
 

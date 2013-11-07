@@ -8,6 +8,7 @@
 #include "GraphicsResourceHandles.h"
 
 
+class Mesh;
 class BufferResourcer;
 
 struct BufferData
@@ -17,21 +18,18 @@ struct BufferData
     BufferResourcer* source;
 
     int stride;
-    int vertexCount;
-    int indexCount;
+    int vertexLength;
+    int indexLength;
     D3D11_PRIMITIVE_TOPOLOGY primitiveTopology;
     bool isDynamic;
+    int startIndex;
+    int startVertex;
 
     ID3D11Buffer* getVertexBuffer();
     ID3D11Buffer* getIndexBuffer();
 };
 
-struct MeshData
-{
-    int vertexOffset;
-    int indexOffset;
-    BufferHandle bufferHandle;
-};
+
 
 class BufferResourcer
 {
@@ -41,16 +39,20 @@ public:
 
     std::unordered_map<std::string, int> meshIdByName;
     std::unordered_map<int, std::vector<int>> bufferToMeshes;
-    std::unordered_map<int, MeshData> meshes;
+    std::unordered_map<int, Mesh*> meshes;
     std::unordered_map<int, BufferData> buffers;
 
-    int createVertexIndexBuffer(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int indexCount, ID3D11Device* device, BufferHandle* bufferHandle, MeshHandle* meshHandle );
-    int createDynamicVertexIndexBuffer(std::string name, int vertexCount, int indexCount, ID3D11Device* device, BufferHandle* handle);
+    int createVertexIndexBuffer(Mesh& mesh, ID3D11Device* device, BufferHandle* bufferHandle, MeshHandle* meshHandle );
+    int createDynamicVertexIndexBuffer(int vertexLength, int indexLength, ID3D11Device* device, BufferHandle* handle);
+    int addMeshToDynamicBuffer(Mesh& mesh, ID3D11DeviceContext* context, BufferHandle* bufferHandle, MeshHandle* meshHandle);
 
     BufferHandle getMeshByName(std::string name);
     void getMeshesByBuffer(BufferHandle h, std::vector<MeshHandle>& fillIDs);
-    MeshData getMesh(MeshHandle h);
+    Mesh* getMesh(MeshHandle h);
     BufferData getBuffer(BufferHandle h);
+
+    MeshHandle generateMeshHandle(Mesh* mesh);
+    Mesh* generateMesh(std::string name);
 
     void Dispose();
 

@@ -20,6 +20,7 @@
     <ClInclude Include="GraphicsDeviceFactory.h" />
     <ClInclude Include="GraphicsResourceHandles.h" />
     <ClInclude Include="MathLib.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="ShaderResourcer.h" />
     <ClInclude Include="ShadyTree_DLLAPI.h" />
     <ClInclude Include="SimpleMath.h" />
@@ -36,6 +37,7 @@
     <ClCompile Include="DirectX_GraphicsDevice.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="GraphicsDeviceFactory.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ShaderResourcer.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

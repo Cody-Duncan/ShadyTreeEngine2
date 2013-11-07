@@ -9,6 +9,8 @@
 #include "ShaderResourcer.h"
 #include "GraphicsResourceHandles.h"
 
+#include "Mesh.h"
+
 __declspec(align(16)) class DirectX_GraphicsDevice : public GraphicsDevice
 {
 private:
@@ -30,10 +32,11 @@ public:
     virtual void PresentFrame();
     virtual void Free();
 
-    virtual int createVertexIndexBuffer(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int indexCount, BufferHandle* handle, MeshHandle* meshHandle);
-    virtual void createTexture(std::string filename, TextureHandle* texHandle);
-    virtual int createVertexShader(std::string FileName, const char *EntryPoint, const char *ShaderModel, VertexShaderHandle* vsHandle);
-    virtual int createPixelShader(std::string FileName, const char *EntryPoint, const char *ShaderModel, PixelShaderHandle* psHandle);
+    virtual Mesh* generateMesh(std::string name);
+    virtual int  createVertexIndexBuffer(Mesh* mesh, BufferHandle* handle, MeshHandle* meshHandle);
+    virtual void createTexture(std::string Filename, TextureHandle* texHandle);
+    virtual int  createVertexShader(std::string FileName, const char *EntryPoint, const char *ShaderModel, VertexShaderHandle* vsHandle);
+    virtual int  createPixelShader(std::string FileName, const char *EntryPoint, const char *ShaderModel, PixelShaderHandle* psHandle);
 
     virtual void setClearColor(Color color);
 

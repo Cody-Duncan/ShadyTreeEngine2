@@ -4,6 +4,7 @@
 #include "GraphicsResourceHandles.h"
 #include <string>
 #include "Vertex.h"
+#include "Mesh.h"
 
 class ST_API GraphicsDevice
 {
@@ -19,7 +20,8 @@ public:
     virtual void PresentFrame() = 0;
     virtual void Free() = 0;
 
-    virtual int createVertexIndexBuffer(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int indexCount, BufferHandle* handle, MeshHandle* meshHandle) = 0;
+    virtual Mesh* generateMesh(std::string name) = 0;
+    virtual int createVertexIndexBuffer(Mesh* mesh, BufferHandle* handle, MeshHandle* meshHandle) = 0;
     virtual void createTexture(std::string filename, TextureHandle* texHandle) = 0;
     virtual int createVertexShader(std::string FileName, const char *EntryPoint, const char *ShaderModel, VertexShaderHandle* vsHandle) = 0;
     virtual int createPixelShader(std::string FileName, const char *EntryPoint, const char *ShaderModel, PixelShaderHandle* psHandle) = 0;

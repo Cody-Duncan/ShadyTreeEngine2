@@ -29,6 +29,7 @@
     <ClCompile Include="GraphicsDeviceFactory.cpp">
       <Filter>Graphics\API</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX_GraphicsDevice.h">
@@ -83,6 +84,7 @@
     <ClInclude Include="GraphicsDeviceFactory.h">
       <Filter>Graphics\API</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">

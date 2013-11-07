@@ -1,5 +1,6 @@
 #include "BufferResourcer.h"
 #include "Debug_Graphics.h"
+#include "Mesh.h"
 
 ID3D11Buffer* BufferData::getVertexBuffer() 
 {
@@ -38,14 +39,14 @@ void BufferResourcer::getMeshesByBuffer(BufferHandle h, std::vector<MeshHandle>&
     std::vector<int>& idList = bufferToMeshes[h.bufferID];
     fillIDs.resize(idList.size());
     
-    for(int i = 0; i < idList.size(); i++)
+    for(unsigned int i = 0; i < idList.size(); i++)
     {
         MeshHandle h = { idList[i] };
         fillIDs.push_back(h);
     }
 }
 
-MeshData BufferResourcer::getMesh(MeshHandle h)
+Mesh* BufferResourcer::getMesh(MeshHandle h)
 {
     return meshes[h.meshID];
 }
@@ -55,18 +56,18 @@ BufferData BufferResourcer::getBuffer(BufferHandle h)
     return buffers[h.bufferID];
 }
 
-int BufferResourcer::createVertexIndexBuffer(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int indexCount, ID3D11Device* device, BufferHandle* bufferHandle, MeshHandle* meshHandle  )
+int BufferResourcer::createVertexIndexBuffer(Mesh& mesh, ID3D11Device* device, BufferHandle* bufferHandle, MeshHandle* meshHandle )
 {
     D3D11_BUFFER_DESC bd;
     ZeroMemory( &bd, sizeof(bd) );
     bd.Usage = D3D11_USAGE_DEFAULT;
-    bd.ByteWidth = sizeof( Vertex ) * vertexCount;
+    bd.ByteWidth = sizeof( Vertex ) * mesh.vertexCount;
     bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     bd.CPUAccessFlags = 0;
 
     D3D11_SUBRESOURCE_DATA InitData;
     ZeroMemory( &InitData, sizeof(InitData) );
-    InitData.pSysMem = vertices;
+    InitData.pSysMem = mesh.vertices;
 
     ID3D11Buffer* newVertexBuffer;
     HRESULT hr = device->CreateBuffer( &bd, &InitData, &newVertexBuffer );
@@ -82,10 +83,10 @@ int BufferResourcer::createVertexIndexBuffer(std::string name, Vertex* vertices,
     ID3D11Buffer* newIndexBuffer;
     ZeroMemory( &bd, sizeof(bd) );
     bd.Usage = D3D11_USAGE_DEFAULT;
-    bd.ByteWidth = sizeof( unsigned int ) * indexCount;        // 36 vertices needed for 12 triangles in a triangle list
+    bd.ByteWidth = sizeof( unsigned int ) * mesh.indexCount;        // 36 vertices needed for 12 triangles in a triangle list
     bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
     bd.CPUAccessFlags = 0;
-    InitData.pSysMem = indices;
+    InitData.pSysMem = mesh.indices;
     hr = device->CreateBuffer( &bd, &InitData, &newIndexBuffer );
     if( FAILED( hr ) )
         return hr;
@@ -98,47 +99,42 @@ int BufferResourcer::createVertexIndexBuffer(std::string name, Vertex* vertices,
         indexBuffers.size()-1,                  //index buffer index
         this,                                   //source
         sizeof( Vertex ),                       //stride
-        vertexCount,
-        indexCount,                             //indexCount
+        mesh.vertexCount,
+        mesh.indexCount,                             //indexCount
         D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST,  //primitiveTopology
-        true                                    //isDynamic
+        true,                                   //isDynamic
+        0,
+        0
     };
 
-    int newMeshID = generateMeshID();
+    
+
     int newBufferID = generateBufferID();
 
-    BufferHandle bufH = {newBufferID};
-    MeshHandle meshH = {newMeshID};
-
-    MeshData meshD = 
-    {
-        0,
-        0,
-        bufH
-    };
-
-    meshes[newMeshID] = meshD;              //store mesh data
     buffers[newBufferID] = bufferD;         //store buffer data
-    meshIdByName[name] = newMeshID;         //reference mesh by name
-    bufferToMeshes[newBufferID].push_back(newMeshID);  //reference mesh by buffer
-    
-    
+    bufferToMeshes[newBufferID].push_back(mesh.ID);  //reference mesh by buffer
 
+    BufferHandle bufH = {newBufferID};
+    MeshHandle meshH = {mesh.ID};
     *bufferHandle = bufH;
     *meshHandle = meshH;
+
+    mesh.vertexOffset = 0;
+    mesh.indexOffset = 0;
+    mesh.bufferHandle = bufH;
 
     return 0;
 }
 
-int BufferResourcer::createDynamicVertexIndexBuffer(std::string name, int vertexCount, int indexCount, ID3D11Device* device, BufferHandle* handle)
+int BufferResourcer::createDynamicVertexIndexBuffer(int vertexLength, int indexLength, ID3D11Device* device, BufferHandle* handle)
 {
     //vertex buffer
     D3D11_BUFFER_DESC bd;
     ZeroMemory( &bd, sizeof(bd) );
-    bd.Usage = D3D11_USAGE_DYNAMIC;
-    bd.ByteWidth = sizeof( Vertex ) * vertexCount;
+    bd.Usage = D3D11_USAGE_DYNAMIC;                 //must be dynamic
+    bd.ByteWidth = sizeof( Vertex ) * vertexLength;
     bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+    bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;     //dynamic requires write access
 
     ID3D11Buffer* newVertexBuffer;
     HRESULT hr = device->CreateBuffer( &bd, nullptr, &newVertexBuffer );
@@ -153,10 +149,10 @@ int BufferResourcer::createDynamicVertexIndexBuffer(std::string name, int vertex
     //index buffer
     ID3D11Buffer* newIndexBuffer;
     ZeroMemory( &bd, sizeof(bd) );
-    bd.Usage = D3D11_USAGE_DYNAMIC;
-    bd.ByteWidth = sizeof( unsigned int ) * indexCount;        // 36 vertices needed for 12 triangles in a triangle list
+    bd.Usage = D3D11_USAGE_DYNAMIC;                 //must be dynamic
+    bd.ByteWidth = sizeof( unsigned int ) * indexLength;       
     bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-    bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+    bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;     //dynamic requires write access
 
     hr = device->CreateBuffer( &bd, nullptr, &newIndexBuffer );
     if( FAILED( hr ) )
@@ -170,10 +166,12 @@ int BufferResourcer::createDynamicVertexIndexBuffer(std::string name, int vertex
         indexBuffers.size()-1,                  //index buffer index
         this,                                   //source
         sizeof( Vertex ),                       //stride
-        vertexCount,
-        indexCount,                             //indexCount
+        vertexLength,                               
+        indexLength,                            
         D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST,  //primitiveTopology
-        true                                    //isDynamic
+        true,                                   //isDynamic
+        0,
+        0
     };              
 
     int newBufferID = generateBufferID();
@@ -182,6 +180,41 @@ int BufferResourcer::createDynamicVertexIndexBuffer(std::string name, int vertex
     BufferHandle bufferH = {newBufferID};
 
     *handle = bufferH;
+
+    return 0;
+}
+
+int BufferResourcer::addMeshToDynamicBuffer(Mesh& mesh, ID3D11DeviceContext* context, BufferHandle* bufferHandle, MeshHandle* meshHandle)
+{
+    
+    BufferData* bufferData = &buffers[bufferHandle->bufferID];
+    ID3D11Buffer* vertexBuffer = bufferData->getVertexBuffer();
+    ID3D11Buffer* indexBuffer = bufferData->getIndexBuffer();
+
+    int startV = bufferData->startVertex;
+    int startI = bufferData->startIndex;
+
+    //update vertex buffer
+    D3D11_MAPPED_SUBRESOURCE resource;
+    context->Map(vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);                           //map the buffer to lock resource
+        Vertex* pV = (Vertex*) resource.pData;                                                      //convert data to Vertex* so we can set
+        memcpy(&pV[bufferData->startVertex], mesh.vertices, sizeof( Vertex ) * mesh.vertexCount);   //memcopy the vertices in
+    context->Unmap(vertexBuffer, 0);                                                                //unmap to unlock resource
+    bufferData->startVertex += mesh.vertexCount;                                                    //increment startIndex(vertices)
+
+
+    //update index buffer
+    context->Map(indexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);                                //lock resource
+        unsigned int* pI = (unsigned int *)resource.pData;                                              //convert to unsigned int*
+        memcpy(&pI[bufferData->startIndex], mesh.indices, sizeof( unsigned int ) * mesh.indexCount);    //copy indices in
+    context->Unmap(indexBuffer, 0);                                                                     //unlock resource
+    bufferData->startIndex += mesh.indexCount;                                                          //increment startIndex(indices)
+
+
+    bufferToMeshes[mesh.bufferHandle.bufferID].push_back(mesh.ID);  //tie mesh to buffer
+    
+    MeshHandle meshH = {mesh.ID};
+    *meshHandle = meshH;
 
     return 0;
 }
@@ -196,6 +229,26 @@ int BufferResourcer::generateBufferID()
     return IDGen_buffer++;
 }
 
+MeshHandle BufferResourcer::generateMeshHandle(Mesh* mesh)
+{
+    MeshHandle m = {mesh->ID};
+    return m;
+}
+
+Mesh* BufferResourcer::generateMesh(std::string name)
+{
+    int newMeshID = generateMeshID();
+
+    Mesh* m = new Mesh();
+    m->name = name;
+    m->ID = newMeshID;
+
+    meshes[newMeshID] = m;
+    meshIdByName[name] = newMeshID;
+
+    return m;
+}
+
 void BufferResourcer::Dispose()
 {
     for( auto iter = vertexBuffers.begin(); iter != vertexBuffers.end(); iter++)
@@ -208,11 +261,19 @@ void BufferResourcer::Dispose()
         (*iter)->Release();
     }
 
+    for( auto iter = meshes.begin(); iter != meshes.end(); iter++)
+    {
+        delete iter->second;
+    }
+
     meshIdByName.clear();
     meshes.clear();
+    bufferToMeshes.clear();
+    buffers.clear();
 
     vertexBuffers.clear();
     indexBuffers.clear();
 
     IDGen_mesh = 0;
+    IDGen_buffer = 0;
 }
