@@ -29,7 +29,7 @@ public:
     virtual void BeginDraw();
     virtual void Draw(MeshHandle& hMesh, TextureHandle& hTex);
     virtual void EndDraw();
-    virtual void PresentFrame();
+    virtual void SwapBuffer();
     virtual void Free();
 
     virtual Mesh* generateMesh(std::string name);

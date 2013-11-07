@@ -17,7 +17,7 @@ public:
     virtual void BeginDraw() = 0;
     virtual void Draw(MeshHandle& hMesh, TextureHandle& hTex) = 0;
     virtual void EndDraw() = 0;
-    virtual void PresentFrame() = 0;
+    virtual void SwapBuffer() = 0;
     virtual void Free() = 0;
 
     virtual Mesh* generateMesh(std::string name) = 0;

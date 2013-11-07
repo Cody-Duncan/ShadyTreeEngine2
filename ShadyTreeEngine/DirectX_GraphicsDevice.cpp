@@ -440,7 +440,7 @@ void DirectX_GraphicsDevice::setOrthographicProjection(float nearClip, float far
     g_Projection = DirectX::XMMatrixOrthographicLH((float)Width, (float)Height, nearClip, farClip);
 }
 
-void DirectX_GraphicsDevice::PresentFrame()
+void DirectX_GraphicsDevice::SwapBuffer()
 {
     if(swapChain->Present(0, 0) < 0)
     {

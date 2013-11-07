@@ -113,8 +113,6 @@ int GraphicsTestUser::createVertexBuffers()
 
 int GraphicsTestUser::setWorldViewProj()
 {
-    using namespace DirectX;
-    
     gd->setProjection();
     //gd->setOrthographicProjection();
     
@@ -160,10 +158,7 @@ void GraphicsTestUser::testdraw()
 
             gd->Draw(m, t);
         
-
-        
-
     gd->EndDraw();
 
-    gd->PresentFrame();
+    gd->SwapBuffer();
 }
