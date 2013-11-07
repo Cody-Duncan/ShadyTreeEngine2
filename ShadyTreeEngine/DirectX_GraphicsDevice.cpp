@@ -140,7 +140,7 @@ int DirectX_GraphicsDevice::Init()
         IDXGIAdapter* dxgiAdapter = 0;
         hr = dxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&dxgiAdapter);
         CHECKHR(hr, "FAILED: Could not retrieve dxgiAdapter.\n") 
-            //
+        
         IDXGIFactory* dxgiFactory = 0;
         hr = dxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&dxgiFactory);
         CHECKHR(hr, "FAILED: Could not retrieve dxgiFactory.\n") 
