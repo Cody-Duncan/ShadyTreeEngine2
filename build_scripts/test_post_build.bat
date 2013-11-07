@@ -6,8 +6,6 @@ set Debug=%3
 
 echo.
 echo.
-echo.
-echo.
 echo PostBuild Test
 
 xcopy "%SolutionDir%resources\*" "%TargetDir%resources\" /F /Y /S
