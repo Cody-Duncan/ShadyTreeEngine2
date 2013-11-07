@@ -33,7 +33,7 @@ public:
     virtual void Free();
 
     virtual Mesh* generateMesh(std::string name);
-    virtual int  createVertexIndexBuffer(Mesh* mesh, BufferHandle* handle, MeshHandle* meshHandle);
+    virtual int  createVertexIndexBuffer(Mesh* mesh, BufferHandle* handle);
     virtual void createTexture(std::string Filename, TextureHandle* texHandle);
     virtual int  createVertexShader(std::string FileName, const char *EntryPoint, const char *ShaderModel, VertexShaderHandle* vsHandle);
     virtual int  createPixelShader(std::string FileName, const char *EntryPoint, const char *ShaderModel, PixelShaderHandle* psHandle);

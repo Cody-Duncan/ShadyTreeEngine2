@@ -37,22 +37,17 @@ public:
     std::vector<ID3D11Buffer*> vertexBuffers;
     std::vector<ID3D11Buffer*> indexBuffers;
 
-    std::unordered_map<std::string, int> meshIdByName;
-    std::unordered_map<int, std::vector<int>> bufferToMeshes;
-    std::unordered_map<int, Mesh*> meshes;
     std::unordered_map<int, BufferData> buffers;
+    std::unordered_map<int, std::vector<int>> bufferToMeshes;
 
-    int createVertexIndexBuffer(Mesh& mesh, ID3D11Device* device, BufferHandle* bufferHandle, MeshHandle* meshHandle );
+    int createVertexIndexBuffer(Mesh& mesh, ID3D11Device* device, BufferHandle* bufferHandle);
+
     int createDynamicVertexIndexBuffer(int vertexLength, int indexLength, ID3D11Device* device, BufferHandle* handle);
-    int addMeshToDynamicBuffer(Mesh& mesh, ID3D11DeviceContext* context, BufferHandle* bufferHandle, MeshHandle* meshHandle);
+    int addMeshToDynamicBuffer(Mesh& mesh, ID3D11DeviceContext* context, BufferHandle* bufferHandle);
 
-    BufferHandle getMeshByName(std::string name);
     void getMeshesByBuffer(BufferHandle h, std::vector<MeshHandle>& fillIDs);
-    Mesh* getMesh(MeshHandle h);
-    BufferData getBuffer(BufferHandle h);
 
-    MeshHandle generateMeshHandle(Mesh* mesh);
-    Mesh* generateMesh(std::string name);
+    BufferData getBuffer(BufferHandle h);
 
     void Dispose();
 
@@ -64,9 +59,7 @@ public:
 
 private:
 
-    static int IDGen_mesh;
     static int IDGen_buffer;
-    int generateMeshID();
     int generateBufferID();
 
     //Singleton

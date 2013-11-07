@@ -22,6 +22,6 @@ public:
 
     BufferHandle bufferHandle;
 
-    MeshHandle handle();
+    ST_API MeshHandle handle();
 };
 

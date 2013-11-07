@@ -101,7 +101,8 @@ int GraphicsTestUser::createVertexBuffers()
     newMesh->indices = indices;
     newMesh->indexCount = ARRAYSIZE(indices);
 
-    int result = gd->createVertexIndexBuffer(newMesh, &bufH, &m);
+    int result = gd->createVertexIndexBuffer(newMesh, &bufH);
+    m = newMesh->handle();
     
     if(result)
         return result;

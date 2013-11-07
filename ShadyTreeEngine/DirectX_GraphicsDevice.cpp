@@ -8,6 +8,7 @@
 #include <sstream>
 #include "Vertex.h"
 #include "Debug_Graphics.h"
+#include "MeshResourcer.h"
 #include "Mesh.h"
 
 
@@ -273,7 +274,7 @@ void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
     cb_Frame.vMeshColor = s_vMeshColor;
 
     //get mesh data;
-    Mesh& mesh = (* BufferResourcer::Instance().getMesh(hMesh));
+    Mesh& mesh = (* MeshResourcer::Instance().getMesh(hMesh));
     BufferData buffer = BufferResourcer::Instance().getBuffer(mesh.bufferHandle);
     ID3D11Buffer* vertexBuffer = buffer.getVertexBuffer();
     ID3D11Buffer* indexBuffer = buffer.getIndexBuffer();
@@ -314,13 +315,13 @@ void DirectX_GraphicsDevice::EndDraw()
 
 Mesh* DirectX_GraphicsDevice::generateMesh(std::string name)
 {
-    return BufferResourcer::Instance().generateMesh(name);
+    return MeshResourcer::Instance().generateMesh(name);
 }
 
-int DirectX_GraphicsDevice::createVertexIndexBuffer(Mesh* mesh, BufferHandle* handle, MeshHandle* meshHandle)
+int DirectX_GraphicsDevice::createVertexIndexBuffer(Mesh* mesh, BufferHandle* handle)
 {
     BufferResourcer& resourceVertexBuf = BufferResourcer::Instance();
-    int result = resourceVertexBuf.createVertexIndexBuffer(*mesh, device, handle, meshHandle);
+    int result = resourceVertexBuf.createVertexIndexBuffer(*mesh, device, handle);
     if(result)
         return result;
 

@@ -13,7 +13,6 @@ ID3D11Buffer* BufferData::getIndexBuffer()
 }
 
 
-int BufferResourcer::IDGen_mesh = 0;
 int BufferResourcer::IDGen_buffer = 0;
 
 BufferResourcer::BufferResourcer(void)
@@ -27,11 +26,6 @@ BufferResourcer::~BufferResourcer(void)
     vertexBuffers.clear();
 }
 
-BufferHandle BufferResourcer::getMeshByName(std::string name)
-{
-    BufferHandle h = {meshIdByName[name]};
-    return h;
-}
 
 void BufferResourcer::getMeshesByBuffer(BufferHandle h, std::vector<MeshHandle>& fillIDs)
 {
@@ -46,17 +40,13 @@ void BufferResourcer::getMeshesByBuffer(BufferHandle h, std::vector<MeshHandle>&
     }
 }
 
-Mesh* BufferResourcer::getMesh(MeshHandle h)
-{
-    return meshes[h.meshID];
-}
 
 BufferData BufferResourcer::getBuffer(BufferHandle h)
 {
     return buffers[h.bufferID];
 }
 
-int BufferResourcer::createVertexIndexBuffer(Mesh& mesh, ID3D11Device* device, BufferHandle* bufferHandle, MeshHandle* meshHandle )
+int BufferResourcer::createVertexIndexBuffer(Mesh& mesh, ID3D11Device* device, BufferHandle* bufferHandle)
 {
     D3D11_BUFFER_DESC bd;
     ZeroMemory( &bd, sizeof(bd) );
@@ -115,9 +105,7 @@ int BufferResourcer::createVertexIndexBuffer(Mesh& mesh, ID3D11Device* device, B
     bufferToMeshes[newBufferID].push_back(mesh.ID);  //reference mesh by buffer
 
     BufferHandle bufH = {newBufferID};
-    MeshHandle meshH = {mesh.ID};
     *bufferHandle = bufH;
-    *meshHandle = meshH;
 
     mesh.vertexOffset = 0;
     mesh.indexOffset = 0;
@@ -174,17 +162,18 @@ int BufferResourcer::createDynamicVertexIndexBuffer(int vertexLength, int indexL
         0
     };              
 
+    //store the new buffer data
     int newBufferID = generateBufferID();
     buffers[newBufferID] = bufferD;
 
+    //send back a handle
     BufferHandle bufferH = {newBufferID};
-
     *handle = bufferH;
 
     return 0;
 }
 
-int BufferResourcer::addMeshToDynamicBuffer(Mesh& mesh, ID3D11DeviceContext* context, BufferHandle* bufferHandle, MeshHandle* meshHandle)
+int BufferResourcer::addMeshToDynamicBuffer(Mesh& mesh, ID3D11DeviceContext* context, BufferHandle* bufferHandle)
 {
     
     BufferData* bufferData = &buffers[bufferHandle->bufferID];
@@ -210,18 +199,10 @@ int BufferResourcer::addMeshToDynamicBuffer(Mesh& mesh, ID3D11DeviceContext* con
     context->Unmap(indexBuffer, 0);                                                                     //unlock resource
     bufferData->startIndex += mesh.indexCount;                                                          //increment startIndex(indices)
 
-
-    bufferToMeshes[mesh.bufferHandle.bufferID].push_back(mesh.ID);  //tie mesh to buffer
-    
-    MeshHandle meshH = {mesh.ID};
-    *meshHandle = meshH;
+    //tie mesh to buffer
+    bufferToMeshes[mesh.bufferHandle.bufferID].push_back(mesh.ID);  
 
     return 0;
-}
-
-int BufferResourcer::generateMeshID()
-{
-    return IDGen_mesh++;
 }
 
 int BufferResourcer::generateBufferID()
@@ -229,25 +210,7 @@ int BufferResourcer::generateBufferID()
     return IDGen_buffer++;
 }
 
-MeshHandle BufferResourcer::generateMeshHandle(Mesh* mesh)
-{
-    MeshHandle m = {mesh->ID};
-    return m;
-}
 
-Mesh* BufferResourcer::generateMesh(std::string name)
-{
-    int newMeshID = generateMeshID();
-
-    Mesh* m = new Mesh();
-    m->name = name;
-    m->ID = newMeshID;
-
-    meshes[newMeshID] = m;
-    meshIdByName[name] = newMeshID;
-
-    return m;
-}
 
 void BufferResourcer::Dispose()
 {
@@ -261,19 +224,12 @@ void BufferResourcer::Dispose()
         (*iter)->Release();
     }
 
-    for( auto iter = meshes.begin(); iter != meshes.end(); iter++)
-    {
-        delete iter->second;
-    }
-
-    meshIdByName.clear();
-    meshes.clear();
+    
     bufferToMeshes.clear();
     buffers.clear();
 
     vertexBuffers.clear();
     indexBuffers.clear();
 
-    IDGen_mesh = 0;
     IDGen_buffer = 0;
 }
