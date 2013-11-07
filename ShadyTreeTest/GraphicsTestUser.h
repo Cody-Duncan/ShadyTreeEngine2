@@ -20,7 +20,8 @@ public:
     GraphicsDevice* gd;
 
     TextureHandle t;
-    BufferHandle m;
+    BufferHandle bufH;
+    MeshHandle m;
     VertexShaderHandle v;
     PixelShaderHandle p;
 };

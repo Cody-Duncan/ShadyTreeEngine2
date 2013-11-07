@@ -25,12 +25,12 @@ public:
     virtual int OnResize();
     virtual void clearRenderTarget();
     virtual void BeginDraw();
-    virtual void Draw(BufferHandle& hMesh, TextureHandle& hTex);
+    virtual void Draw(MeshHandle& hMesh, TextureHandle& hTex);
     virtual void EndDraw();
     virtual void PresentFrame();
     virtual void Free();
 
-    virtual int createVertexIndexBuffer(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int numIndices, BufferHandle* handle);
+    virtual int createVertexIndexBuffer(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int indexCount, BufferHandle* handle, MeshHandle* meshHandle);
     virtual void createTexture(std::string filename, TextureHandle* texHandle);
     virtual int createVertexShader(std::string FileName, const char *EntryPoint, const char *ShaderModel, VertexShaderHandle* vsHandle);
     virtual int createPixelShader(std::string FileName, const char *EntryPoint, const char *ShaderModel, PixelShaderHandle* psHandle);

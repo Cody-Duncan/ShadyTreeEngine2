@@ -263,7 +263,7 @@ void DirectX_GraphicsDevice::BeginDraw()
     
 }
 
-void DirectX_GraphicsDevice::Draw(BufferHandle& hBuffer, TextureHandle& hTex)
+void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
 {
     //Setup the world/view matrices
     CBChangesEveryFrame cb_Frame;
@@ -272,14 +272,15 @@ void DirectX_GraphicsDevice::Draw(BufferHandle& hBuffer, TextureHandle& hTex)
     cb_Frame.vMeshColor = s_vMeshColor;
 
     //get mesh data;
-    BufferData mesh = BufferResourcer::Instance().getMesh(hBuffer);
-    ID3D11Buffer* vertexBuffer = mesh.getVertexBuffer();
-    ID3D11Buffer* indexBuffer = mesh.getIndexBuffer();
-    unsigned int stride = mesh.stride;
+    MeshData mesh = BufferResourcer::Instance().getMesh(hMesh);
+    BufferData buffer = BufferResourcer::Instance().getBuffer(mesh.bufferHandle);
+    ID3D11Buffer* vertexBuffer = buffer.getVertexBuffer();
+    ID3D11Buffer* indexBuffer = buffer.getIndexBuffer();
+    unsigned int stride = buffer.stride;
     unsigned int vertexoffset = mesh.vertexOffset;
     unsigned int indexOffset = mesh.indexOffset;
-    unsigned int vertexCount = mesh.vertexCount;
-    unsigned int indexCount = mesh.indexCount;
+    unsigned int vertexCount = buffer.vertexCount;
+    unsigned int indexCount = buffer.indexCount;
 
     //get texture data
     ID3D11ShaderResourceView* texture = TextureResourcer::Instance().getTextureView(hTex);
@@ -287,7 +288,7 @@ void DirectX_GraphicsDevice::Draw(BufferHandle& hBuffer, TextureHandle& hTex)
     //input assembler for mesh data
     deviceContext->IASetVertexBuffers( 0, 1, &vertexBuffer, &stride, &vertexoffset );
     deviceContext->IASetIndexBuffer( indexBuffer, DXGI_FORMAT_R32_UINT, 0 );
-    deviceContext->IASetPrimitiveTopology( mesh.primitiveTopology );
+    deviceContext->IASetPrimitiveTopology( buffer.primitiveTopology );
 
     //set constant buffer for world/view matrix
     deviceContext->UpdateSubresource( constantBuffer.frameBuffer, 0, nullptr, &cb_Frame, 0, 0 );
@@ -310,10 +311,10 @@ void DirectX_GraphicsDevice::EndDraw()
 //=============================================================================
 //=============================================================================
 
-int DirectX_GraphicsDevice::createVertexIndexBuffer(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int indexCount, BufferHandle* handle)
+int DirectX_GraphicsDevice::createVertexIndexBuffer(std::string name, Vertex* vertices, int vertexCount, unsigned int* indices, int indexCount, BufferHandle* handle, MeshHandle* meshHandle)
 {
     BufferResourcer& resourceVertexBuf = BufferResourcer::Instance();
-    int result = resourceVertexBuf.createVertexIndexBuffer(name, vertices, vertexCount , indices, indexCount, device, handle);
+    int result = resourceVertexBuf.createVertexIndexBuffer(name, vertices, vertexCount , indices, indexCount, device, handle, meshHandle);
     if(result)
         return result;
 

@@ -6,6 +6,11 @@ struct TextureHandle
     int textureIndex;
 };
 
+struct MeshHandle
+{
+    int meshID;
+};
+
 struct BufferHandle
 {
     int bufferID;

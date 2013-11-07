@@ -96,7 +96,7 @@ int GraphicsTestUser::createVertexBuffers()
     };
 
     
-    int result = gd->createVertexIndexBuffer("mesh1", vertices, ARRAYSIZE(vertices), indices, ARRAYSIZE(indices), &m);
+    int result = gd->createVertexIndexBuffer("mesh1", vertices, ARRAYSIZE(vertices), indices, ARRAYSIZE(indices), &bufH, &m);
     
     if(result)
         return result;
