@@ -88,6 +88,8 @@ int DirectX_GraphicsDevice::Init()
         &featureLevel,
         &deviceContext);
 
+    DebugPrintf("GRAPHICS: Creating Graphics Device\n");
+
     if (errorBox(hr, L"D3D11CreateDevice Failed.")) return false;
     
     if( featureLevel != D3D_FEATURE_LEVEL_11_0 )

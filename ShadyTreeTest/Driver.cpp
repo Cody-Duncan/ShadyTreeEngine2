@@ -10,6 +10,7 @@
 #include "GraphicsTestUser.h"
 #include "WindowFactory.h"
 #include "ShadyTree_DLLAPI.h"
+#include "DebugOutput.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -25,6 +26,8 @@ void draw();
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd )
 {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+    DebugLogOpen();
+    
     //_CrtSetBreakAlloc(172);
 
     if(!GenerateWindow(hInstance, nShowCmd, WndProc))
@@ -60,6 +63,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     delete device;
 
     return ( int )msg.wParam;
+
+    DebugLogClose();
 
     return 0;
 }

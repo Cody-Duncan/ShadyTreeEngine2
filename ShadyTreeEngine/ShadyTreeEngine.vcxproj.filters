@@ -30,7 +30,12 @@
       <Filter>Graphics\API</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="MeshResourcer.cpp" />
+    <ClCompile Include="DebugOutput.cpp">
+      <Filter>Diagnostic</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshResourcer.cpp">
+      <Filter>Graphics\Resourcers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX_GraphicsDevice.h">
@@ -47,9 +52,6 @@
     </ClInclude>
     <ClInclude Include="TextureResourcer.h">
       <Filter>Graphics\Resourcers</Filter>
-    </ClInclude>
-    <ClInclude Include="Debug_Graphics.h">
-      <Filter>Graphics\Debug</Filter>
     </ClInclude>
     <ClInclude Include="DDSTextureLoader.h">
       <Filter>Graphics\Loaders</Filter>
@@ -86,7 +88,15 @@
       <Filter>Graphics\API</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h" />
-    <ClInclude Include="MeshResourcer.h" />
+    <ClInclude Include="DebugOutput.h">
+      <Filter>Diagnostic</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug_Graphics.h">
+      <Filter>Diagnostic</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshResourcer.h">
+      <Filter>Graphics\Resourcers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -101,9 +111,6 @@
     <Filter Include="Math">
       <UniqueIdentifier>{3af75988-15e9-4b70-8ef0-9c4058c9c2de}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics\Debug">
-      <UniqueIdentifier>{7d5610d5-5d6b-4cca-9e76-b342fa62054f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Graphics\Loaders">
       <UniqueIdentifier>{4b8331b4-d5ae-4a93-9788-e62d10a3e014}</UniqueIdentifier>
     </Filter>
@@ -112,6 +119,9 @@
     </Filter>
     <Filter Include="Utility">
       <UniqueIdentifier>{6183b632-df29-47ba-96e1-379678dbe086}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Diagnostic">
+      <UniqueIdentifier>{8f2eb0b6-d968-4483-94b9-528f6942e512}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -14,6 +14,7 @@
     <ClInclude Include="BufferResourcer.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="DDSTextureLoader.h" />
+    <ClInclude Include="DebugOutput.h" />
     <ClInclude Include="Debug_Graphics.h" />
     <ClInclude Include="DirectX_GraphicsDevice.h" />
     <ClInclude Include="GraphicsDevice.h" />
@@ -35,6 +36,7 @@
   <ItemGroup>
     <ClCompile Include="BufferResourcer.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
+    <ClCompile Include="DebugOutput.cpp" />
     <ClCompile Include="DirectX_GraphicsDevice.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="GraphicsDeviceFactory.cpp" />

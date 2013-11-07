@@ -15,5 +15,6 @@
 #include "SimpleMath.h"
 #include "Vertex.h"
 #include "Debug_Graphics.h"
+#include "DebugOutput.h"
 
 #include "ShadyTree_DLLAPI.h"
