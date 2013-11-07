@@ -31,6 +31,11 @@ DirectX_GraphicsDevice::DirectX_GraphicsDevice(void) :
     
 }
 
+#define CHECKHR(hr, message) \
+if(FAILED(hr)){             \
+    DebugPrintf(message);   \
+    return hr;     }        \
+    
 
 DirectX_GraphicsDevice::~DirectX_GraphicsDevice(void)
 {
@@ -89,17 +94,17 @@ int DirectX_GraphicsDevice::Init()
         &deviceContext);
 
     DebugPrintf("GRAPHICS: Creating Graphics Device\n");
-
-    if (errorBox(hr, L"D3D11CreateDevice Failed.")) return false;
+    CHECKHR(hr, "FAILED: D3D11CreateDevice not created .\n")
     
     if( featureLevel != D3D_FEATURE_LEVEL_11_0 )
     {
+        DebugPrintf("ERROR: Direct3D Feature Level 11 unsupported.\n");
         MessageBox(0, L"Direct3D Feature Level 11 unsupported.", 0, 0);
-        return false;
+        return 1;
     }
 
     hr = device->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, 4, &m4xMsaaQuality);
-    if (errorBox(hr, L"Error Checking Multi Sample Quality Levels")) return false;
+    CHECKHR(hr, "FAILED: Error Checking Multi Sample Quality Levels. \n") 
 
     assert( m4xMsaaQuality > 0 );
 
@@ -130,19 +135,19 @@ int DirectX_GraphicsDevice::Init()
     {
         IDXGIDevice* dxgiDevice = 0;
         hr = device->QueryInterface(__uuidof(IDXGIDevice), (void**)&dxgiDevice);
-        if ( errorBox(hr, L"Could not retrieve dxgiInterface.") ) return hr;
+        CHECKHR(hr, "FAILED: Could not retrieve dxgiInterface.\n") 
 
         IDXGIAdapter* dxgiAdapter = 0;
         hr = dxgiDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&dxgiAdapter);
-        if (errorBox(hr, L"Could not retrieve dxgiAdapter")) return hr;
-
+        CHECKHR(hr, "FAILED: Could not retrieve dxgiAdapter.\n") 
+            //
         IDXGIFactory* dxgiFactory = 0;
         hr = dxgiAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&dxgiFactory);
-        if (errorBox(hr, L"Could not retrieve dxgiFactory")) return hr;
+        CHECKHR(hr, "FAILED: Could not retrieve dxgiFactory.\n") 
     
         // Now, create the swap chain.
         hr = dxgiFactory->CreateSwapChain(device, &sd, &swapChain);
-        if (errorBox(hr, L"Could not create SwapChain.")) return hr;
+        CHECKHR(hr, "FAILED: Could not create SwapChain.\n") 
     
         // Release our acquired COM interfaces (because we are done with them).
         dxgiDevice->Release();
@@ -175,7 +180,7 @@ int DirectX_GraphicsDevice::OnResize()
     //create RenderTargetView
     ID3D11Texture2D* backBuffer;
     hr = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer));
-    errorBox(hr, L"Failed to get backbuffer from swap chain");
+    CHECKHR(hr, "FAILED: Failed to get backbuffer from swap chain.\n") 
     device->CreateRenderTargetView(backBuffer, 0, &renderTargetView);
     backBuffer->Release();
 
@@ -195,17 +200,19 @@ int DirectX_GraphicsDevice::OnResize()
     depthStencilDesc.SampleDesc.Quality = enable4xMsaa ? m4xMsaaQuality-1 : 0;
     
 
-    HRESULT result = device->CreateTexture2D(
+    hr = device->CreateTexture2D(
         &depthStencilDesc,		// Description of texture to create.
         0,
         &depthStencilBuffer		// Return pointer to depth/stencil buffer.
     );
+    CHECKHR(hr, "FAILED: Failed to create depth stencil buffer.") 
     
-    result = device->CreateDepthStencilView(
+    hr = device->CreateDepthStencilView(
         depthStencilBuffer,		// Resource we want to create a view to.
         0,
         &depthStencilView		// Return depth/stencil view
     ); 
+    CHECKHR(hr, "FAILED: Failed to create depth stencil view.") 
 
     // Bind Render Target and Depth stencil to output merger
     deviceContext->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
@@ -234,7 +241,10 @@ int DirectX_GraphicsDevice::setTextureSampler()
     sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
     sampDesc.MinLOD = 0;
     sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-    return device->CreateSamplerState( &sampDesc, &samplerLinear );
+    
+    HRESULT hr = device->CreateSamplerState( &sampDesc, &samplerLinear );
+    CHECKHR(hr, "FAILED: Failed to create texture sampler.") 
+    return hr;
 }
 
 void DirectX_GraphicsDevice::clearRenderTarget()
@@ -269,6 +279,9 @@ void DirectX_GraphicsDevice::BeginDraw()
 
 void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
 {
+    assert(hMesh.meshID >= 0);
+    assert(hTex.textureIndex >= 0);
+
     //Setup the world/view matrices
     CBChangesEveryFrame cb_Frame;
     cb_Frame.mWorld = g_World;
