@@ -1,6 +1,6 @@
 #pragma once
 
-enum DeviceAPI
+ST_API enum DeviceAPI
 {
     DirectX11,
     OpenGL

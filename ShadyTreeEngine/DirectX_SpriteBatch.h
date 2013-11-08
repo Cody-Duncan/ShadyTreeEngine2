@@ -14,7 +14,7 @@ public:
 
     void Begin();
     void Draw(TextureHandle texH, Matrix transform);
-    void Draw(TextureHandle texH, Matrix transform);
+    void Draw(TextureHandle texH, Matrix transform, Rectangle2 rect);
     void End();
 
 };

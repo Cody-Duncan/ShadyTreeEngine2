@@ -13,7 +13,7 @@
 #include <directxmath.h>
 #include <directxcolors.h>
 
-#include "SimpleMath.h"
+#include "MathLib.h"
 #include "Vertex.h"
 #include "Debug_Graphics.h"
 #include "DebugOutput.h"

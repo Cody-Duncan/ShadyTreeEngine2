@@ -35,7 +35,11 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
     device = generateGraphicsDevice(DeviceAPI::DirectX11);
     if( device->Init() )
+    {
+        device->Free();
+        delete device;
         return 1;
+    }
 
     GraphicsTestUser user(device);
     user.init();
