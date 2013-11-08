@@ -42,7 +42,7 @@
     <ClCompile Include="DirectX_SpriteBatch.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Geometry.cpp">
+    <ClCompile Include="Geometry.inl">
       <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>

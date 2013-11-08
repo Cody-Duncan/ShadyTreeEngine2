@@ -118,9 +118,11 @@
   <ItemGroup>
     <ClCompile Include="Driver.cpp" />
     <ClCompile Include="GraphicsTestUser.cpp" />
+    <ClCompile Include="SpriteBatchTestUser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsTestUser.h" />
+    <ClInclude Include="SpriteBatchTestUser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

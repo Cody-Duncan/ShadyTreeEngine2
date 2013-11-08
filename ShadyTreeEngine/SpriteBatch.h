@@ -2,14 +2,24 @@
 #pragma once
 
 #include "DeviceAPI.h"
+#include "GraphicsResourceHandles.h"
 
-class SpriteBatch
+class ST_API SpriteBatch
 {
 public:
     SpriteBatch();
     SpriteBatch(DeviceAPI api) : API(api) {}
-    ~SpriteBatch(void);
+    virtual ~SpriteBatch(void) = 0;
 
     DeviceAPI API;
+
+    virtual void Init() = 0;
+    virtual void createTexture(std::string Filename, TextureHandle* texHandle) = 0;
+
+    virtual void Begin() = 0;
+    virtual void Draw(TextureHandle texH, Matrix transform, Rectangle2 rect) = 0;
+    virtual void End() = 0;
+
+    virtual void DrawBatch(TextureHandle t) = 0;
 };
 

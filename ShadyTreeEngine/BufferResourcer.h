@@ -47,7 +47,7 @@ public:
 
     void getMeshesByBuffer(BufferHandle h, std::vector<MeshHandle>& fillIDs);
 
-    BufferData getBuffer(BufferHandle h);
+    BufferData& getBuffer(BufferHandle h);
 
     void Dispose();
 

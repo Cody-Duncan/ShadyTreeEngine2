@@ -1,5 +1,7 @@
 #include "GraphicsFactory.h"
 
+#include "DirectX_SpriteBatch.h"
+
 GraphicsDevice* generateGraphicsDevice(DeviceAPI type)
 {
     switch(type)
@@ -13,6 +15,8 @@ GraphicsDevice* generateGraphicsDevice(DeviceAPI type)
 
 SpriteBatch* generateSpriteBatch(GraphicsDevice* graphicsDevice)
 {
-    assert(false && "NOT IMPLEMENTED YET");
+    if( dynamic_cast<DirectX_GraphicsDevice*>(graphicsDevice) )
+        return new DirectX_SpriteBatch(graphicsDevice);
+    
     return nullptr;
 }

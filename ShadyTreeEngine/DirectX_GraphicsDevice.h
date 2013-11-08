@@ -48,7 +48,13 @@ public:
     virtual void updateView(Vector4& eye, Vector4& at);
     virtual void setProjection(float fovAngleY, float nearClip, float farClip);
     virtual void setOrthographicProjection(float nearClip = 0.01f, float farClip = 1000.0f);
-    
+
+
+    ID3D11Device* getDevice();
+    ID3D11DeviceContext* getContext();
+    void Draw(BufferHandle& hBuff, const TextureHandle& hTex);
+    int getWidth();
+    int getHeight();
 
 protected:
     D3D_DRIVER_TYPE			driverType;

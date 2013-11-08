@@ -122,7 +122,6 @@ int GraphicsTestUser::setWorldViewProj()
 int GraphicsTestUser::setTestTexture()
 {
     // Load the Texture
-    
     gd->createTexture("seafloor2.png", &t);
 
     return 0;

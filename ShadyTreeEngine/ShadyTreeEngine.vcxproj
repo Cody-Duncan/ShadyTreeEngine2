@@ -43,7 +43,7 @@
     <ClCompile Include="DebugOutput.cpp" />
     <ClCompile Include="DirectX_GraphicsDevice.cpp" />
     <ClCompile Include="DirectX_SpriteBatch.cpp" />
-    <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="Geometry.inl" />
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="GraphicsFactory.cpp" />
     <ClCompile Include="Mesh.cpp" />

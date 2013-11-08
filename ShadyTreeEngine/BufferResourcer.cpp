@@ -41,7 +41,7 @@ void BufferResourcer::getMeshesByBuffer(BufferHandle h, std::vector<MeshHandle>&
 }
 
 
-BufferData BufferResourcer::getBuffer(BufferHandle h)
+BufferData& BufferResourcer::getBuffer(BufferHandle h)
 {
     return buffers[h.bufferID];
 }

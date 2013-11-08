@@ -3,8 +3,10 @@
   <ItemGroup>
     <ClCompile Include="Driver.cpp" />
     <ClCompile Include="GraphicsTestUser.cpp" />
+    <ClCompile Include="SpriteBatchTestUser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsTestUser.h" />
+    <ClInclude Include="SpriteBatchTestUser.h" />
   </ItemGroup>
 </Project>

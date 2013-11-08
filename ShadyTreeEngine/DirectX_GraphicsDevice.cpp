@@ -11,8 +11,6 @@
 #include "MeshResourcer.h"
 #include "Mesh.h"
 
-
-
 DirectX_GraphicsDevice::DirectX_GraphicsDevice(void) : 
     GraphicsDevice(DeviceAPI::DirectX11),
     driverType(D3D_DRIVER_TYPE_HARDWARE), 
@@ -167,6 +165,8 @@ int DirectX_GraphicsDevice::Init()
         return hr;
     }
 
+    g_Projection = g_View = g_World = DirectX::XMMatrixIdentity();
+
     return 0;
 }
 
@@ -320,6 +320,49 @@ void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
     //draw
     deviceContext->DrawIndexed( indexCount, indexOffset, vertexoffset ); 
 }
+
+void DirectX_GraphicsDevice::Draw(BufferHandle& hBuff, const TextureHandle& hTex)
+{
+    assert(hBuff.bufferID >= 0);
+    assert(hTex.textureIndex >= 0);
+
+    //Setup the world/view matrices
+    CBChangesEveryFrame cb_Frame;
+    cb_Frame.mWorld = g_World;
+    cb_Frame.mView = g_View;
+    cb_Frame.vMeshColor = s_vMeshColor;
+
+    //get mesh data;
+    BufferData buffer = BufferResourcer::Instance().getBuffer(hBuff);
+    ID3D11Buffer* vertexBuffer = buffer.getVertexBuffer();
+    ID3D11Buffer* indexBuffer = buffer.getIndexBuffer();
+    unsigned int stride = buffer.stride;
+    unsigned int vertexoffset = 0;
+    unsigned int indexOffset = 0;
+    unsigned int vertexCount = buffer.startVertex; //startVertex is the first free vertex
+    unsigned int indexCount = buffer.startIndex;   //startIndex is the first free index
+
+    //get texture data
+    ID3D11ShaderResourceView* texture = TextureResourcer::Instance().getTextureData(hTex).textureView;
+
+    //input assembler for mesh data
+    deviceContext->IASetVertexBuffers( 0, 1, &vertexBuffer, &stride, &vertexoffset );
+    deviceContext->IASetIndexBuffer( indexBuffer, DXGI_FORMAT_R32_UINT, 0 );
+    deviceContext->IASetPrimitiveTopology( buffer.primitiveTopology );
+
+    //set constant buffer for world/view matrix
+    deviceContext->UpdateSubresource( constantBuffer.frameBuffer, 0, nullptr, &cb_Frame, 0, 0 );
+    deviceContext->VSSetConstantBuffers( 1, 1, &constantBuffer.frameBuffer );
+
+    //set texture resources on pixel shader
+    deviceContext->PSSetShaderResources( 0, 1, &texture );
+    deviceContext->PSSetSamplers( 0, 1, &samplerLinear );
+    deviceContext->PSSetConstantBuffers( 1, 1, &constantBuffer.frameBuffer );
+
+    //draw
+    deviceContext->DrawIndexed( indexCount, indexOffset, vertexoffset ); 
+}
+
 void DirectX_GraphicsDevice::EndDraw()
 {
 
@@ -464,3 +507,21 @@ void DirectX_GraphicsDevice::SwapBuffer()
     }
 }
 
+ID3D11Device* DirectX_GraphicsDevice::getDevice()
+{
+    return device;
+}
+
+ID3D11DeviceContext* DirectX_GraphicsDevice::getContext()
+{
+    return deviceContext;
+}
+
+int DirectX_GraphicsDevice::getWidth()
+{
+    return Width;
+}
+int DirectX_GraphicsDevice::getHeight()
+{
+    return Height;
+}

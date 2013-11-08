@@ -11,6 +11,7 @@
 #include "WindowFactory.h"
 #include "ShadyTree_DLLAPI.h"
 #include "DebugOutput.h"
+#include "SpriteBatchTestUser.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -18,7 +19,8 @@ ST_API HWND ghMainWnd;
 ST_API HINSTANCE ghInstance;
 
 GraphicsDevice* device;
-GraphicsTestUser* puser;
+//GraphicsTestUser* puser;
+SpriteBatchTestUser* sbUser;
 
 void update();
 void draw();
@@ -41,9 +43,13 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
         return 1;
     }
 
-    GraphicsTestUser user(device);
-    user.init();
-    puser = &user;
+    //GraphicsTestUser user(device);
+    //user.init();
+    //puser = &user;
+
+    SpriteBatchTestUser sbUserNew(device);
+    sbUserNew.init();
+    sbUser = &sbUserNew;
 
     // Main message loop
     MSG msg = {0};
@@ -79,7 +85,7 @@ void update()
 }
 void draw()
 {
-    puser->testdraw();
+    sbUser->testdraw();
 }
 
 
