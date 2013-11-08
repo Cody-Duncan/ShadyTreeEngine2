@@ -171,6 +171,7 @@ void DirectX_SpriteBatch::sentBatchToBuffers(TextureHandle t)
     context->Map(vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);                           //map the buffer to lock resource
         Vertex* pV = (Vertex*) resource.pData;                                                      //convert data to Vertex* so we can set
         assert(pV != 0);
+        memcpy(pV, 
         pV[quadBufferData.startVertex] = vertices[0];
         pV[quadBufferData.startVertex+1] = vertices[1];
         pV[quadBufferData.startVertex+2] = vertices[2];
