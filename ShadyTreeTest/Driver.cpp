@@ -5,7 +5,7 @@
 #include "MathLib.h"
 
 #include "GraphicsDevice.h"
-#include "GraphicsDeviceFactory.h"
+#include "GraphicsFactory.h"
 
 #include "GraphicsTestUser.h"
 #include "WindowFactory.h"

@@ -16,9 +16,12 @@
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DebugOutput.h" />
     <ClInclude Include="Debug_Graphics.h" />
+    <ClInclude Include="DeviceAPI.h" />
     <ClInclude Include="DirectX_GraphicsDevice.h" />
+    <ClInclude Include="DirectX_SpriteBatch.h" />
+    <ClInclude Include="Geometry.h" />
     <ClInclude Include="GraphicsDevice.h" />
-    <ClInclude Include="GraphicsDeviceFactory.h" />
+    <ClInclude Include="GraphicsFactory.h" />
     <ClInclude Include="GraphicsResourceHandles.h" />
     <ClInclude Include="MathLib.h" />
     <ClInclude Include="Mesh.h" />
@@ -26,6 +29,7 @@
     <ClInclude Include="ShaderResourcer.h" />
     <ClInclude Include="ShadyTree_DLLAPI.h" />
     <ClInclude Include="SimpleMath.h" />
+    <ClInclude Include="SpriteBatch.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="StringUtility.h" />
     <ClInclude Include="TextureResourcer.h" />
@@ -38,11 +42,14 @@
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DebugOutput.cpp" />
     <ClCompile Include="DirectX_GraphicsDevice.cpp" />
+    <ClCompile Include="DirectX_SpriteBatch.cpp" />
+    <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
-    <ClCompile Include="GraphicsDeviceFactory.cpp" />
+    <ClCompile Include="GraphicsFactory.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshResourcer.cpp" />
     <ClCompile Include="ShaderResourcer.cpp" />
+    <ClCompile Include="SpriteBatch.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>

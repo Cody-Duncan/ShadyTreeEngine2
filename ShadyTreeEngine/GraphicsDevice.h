@@ -5,12 +5,17 @@
 #include <string>
 #include "Vertex.h"
 #include "Mesh.h"
+#include "DeviceAPI.h"
+
 
 class ST_API GraphicsDevice
 {
 public:
     GraphicsDevice(void);
+    GraphicsDevice(DeviceAPI api) : api(api) { }
     ~GraphicsDevice(void);
+
+    DeviceAPI api;
 
     virtual int Init() = 0;
     virtual int OnResize() = 0;

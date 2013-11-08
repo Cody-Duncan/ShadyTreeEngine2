@@ -8,19 +8,28 @@
 #include <string>
 #include "GraphicsResourceHandles.h"
 
-
+struct TextureData
+{
+    int ID;
+    std::string name;
+    int width;
+    int height;
+    ID3D11Resource* textureResource;
+    ID3D11ShaderResourceView* textureView;
+};
 
 class TextureResourcer
 {
 public:
-    std::vector<ID3D11Resource*> textureResources;
-    std::vector<ID3D11ShaderResourceView*> textureViews;
+    std::vector<TextureData> textures;
     std::unordered_map<std::string, int> textureNameToId;
 
     int createTextureFromWIC(ID3D11Device* device, ID3D11DeviceContext* deviceContext, const char* filename, TextureHandle* texHandle);
-    ID3D11ShaderResourceView* getTextureView(TextureHandle tex);
+    TextureData& getTextureData(TextureHandle tex);
 
     void Dispose();
+
+    void GetTextureSize(TextureHandle tex, unsigned int* width, unsigned int* height);
 
     static TextureResourcer& Instance()
     {

@@ -26,15 +26,24 @@
       <Filter>Graphics\API</Filter>
     </ClCompile>
     <ClCompile Include="StdAfx.cpp" />
-    <ClCompile Include="GraphicsDeviceFactory.cpp">
-      <Filter>Graphics\API</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="DebugOutput.cpp">
       <Filter>Diagnostic</Filter>
     </ClCompile>
     <ClCompile Include="MeshResourcer.cpp">
       <Filter>Graphics\Resourcers</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteBatch.cpp">
+      <Filter>Graphics\API</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsFactory.cpp">
+      <Filter>Graphics\API</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX_SpriteBatch.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -84,9 +93,6 @@
     <ClInclude Include="ShadyTree_DLLAPI.h">
       <Filter>Graphics\API</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicsDeviceFactory.h">
-      <Filter>Graphics\API</Filter>
-    </ClInclude>
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="DebugOutput.h">
       <Filter>Diagnostic</Filter>
@@ -96,6 +102,21 @@
     </ClInclude>
     <ClInclude Include="MeshResourcer.h">
       <Filter>Graphics\Resourcers</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteBatch.h">
+      <Filter>Graphics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsFactory.h">
+      <Filter>Graphics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX_SpriteBatch.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceAPI.h">
+      <Filter>Graphics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +143,9 @@
     </Filter>
     <Filter Include="Diagnostic">
       <UniqueIdentifier>{8f2eb0b6-d968-4483-94b9-528f6942e512}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\2D Adapter">
+      <UniqueIdentifier>{3e3988b8-b221-42d1-80cf-db6a5634496e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

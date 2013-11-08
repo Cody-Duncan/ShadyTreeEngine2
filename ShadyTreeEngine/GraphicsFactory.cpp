@@ -1,4 +1,4 @@
-#include "GraphicsDeviceFactory.h"
+#include "GraphicsFactory.h"
 
 GraphicsDevice* generateGraphicsDevice(DeviceAPI type)
 {
@@ -9,4 +9,10 @@ GraphicsDevice* generateGraphicsDevice(DeviceAPI type)
     default:
         return nullptr;
     }
+}
+
+SpriteBatch* generateSpriteBatch(GraphicsDevice* graphicsDevice)
+{
+    assert(false && "NOT IMPLEMENTED YET");
+    return nullptr;
 }

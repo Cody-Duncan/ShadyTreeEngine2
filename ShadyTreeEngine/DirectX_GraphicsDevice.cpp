@@ -14,6 +14,7 @@
 
 
 DirectX_GraphicsDevice::DirectX_GraphicsDevice(void) : 
+    GraphicsDevice(DeviceAPI::DirectX11),
     driverType(D3D_DRIVER_TYPE_HARDWARE), 
     featureLevel(D3D_FEATURE_LEVEL_11_0),
     device(NULL),
@@ -300,7 +301,7 @@ void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
     unsigned int indexCount = buffer.indexLength;
 
     //get texture data
-    ID3D11ShaderResourceView* texture = TextureResourcer::Instance().getTextureView(hTex);
+    ID3D11ShaderResourceView* texture = TextureResourcer::Instance().getTextureData(hTex).textureView;
 
     //input assembler for mesh data
     deviceContext->IASetVertexBuffers( 0, 1, &vertexBuffer, &stride, &vertexoffset );
