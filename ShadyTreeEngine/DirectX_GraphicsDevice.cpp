@@ -554,7 +554,7 @@ void DirectX_GraphicsDevice::setProjection(float fovAngleY, float nearClip, floa
 
 void DirectX_GraphicsDevice::setOrthographicProjection(float nearClip, float farClip)
 {
-    g_Projection = DirectX::XMMatrixOrthographicRH((float)Width,(float)Height, nearClip, farClip);
+    g_Projection = DirectX::XMMatrixOrthographicOffCenterRH(0, (float)Width, 0, (float)Height, nearClip, farClip);
 }
 
 void DirectX_GraphicsDevice::SwapBuffer()
