@@ -75,14 +75,15 @@ void DirectX_SpriteBatch::resetBatchBuffer(TextureHandle t)
 {
     VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(batchVBuffers[t]);
     quadBufferData.startVertex = 0;
+
+    batch[t].clear();
 }
 
 void DirectX_SpriteBatch::resetAllBatchBuffers()
 {
     for(auto iter = batchVBuffers.begin(); iter != batchVBuffers.end(); iter++)
     {
-         VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(iter->second);
-         quadBufferData.startVertex = 0;
+        resetBatchBuffer(iter->first);
     }
 }
 
@@ -110,6 +111,8 @@ void DirectX_SpriteBatch::Begin()
 
     device->setVertexShader(vertexShaderH);
     device->setPixelShader(pixelShaderH);
+
+    device->setTextureSampler(false);
 
     device->BeginDraw();
 }
@@ -160,7 +163,12 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
 #endif
 
     //copy to end of batch
-    copy(&vertices[0], &vertices[4], back_inserter(batch[texH]));
+    std::vector<Vertex>& batchRef = batch[texH];
+    batchRef.push_back(vertices[0]);
+    batchRef.push_back(vertices[1]);
+    batchRef.push_back(vertices[2]);
+    batchRef.push_back(vertices[3]);
+
     quadBufferData.startVertex += 4;
 }
 
@@ -183,6 +191,7 @@ void DirectX_SpriteBatch::DrawBatch(TextureHandle t)
     if(quadBufferData.startVertex > 0) //don't draw empty buffers
     {
         assert(batchIBuffer.IbufferID >= 0);
+        DebugPrintf("MarkDraw\n");
         device->Draw(batchVBuffers[t], batchIBuffer, t);
     }
 }
@@ -191,6 +200,7 @@ void DirectX_SpriteBatch::sentBatchToBuffers(TextureHandle t)
 {
     VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(batchVBuffers[t]);
     std::vector<Vertex>& currBatch = batch[t];
+    
 
     //NOTE: try batching the vertices and indices, 
     //then putting them in the vertex/index buffer all at once
@@ -205,6 +215,7 @@ void DirectX_SpriteBatch::sentBatchToBuffers(TextureHandle t)
     context->Map(vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);                           //map the buffer to lock resource
         Vertex* pV = (Vertex*) resource.pData;                                                      //convert data to Vertex* so we can set
         assert(pV != 0);
+        assert(currBatch.size() <= BatchSize*4 && "Too many vertices for buffer size. Crash now before we crash the graphics card.");
         memcpy(pV, currBatch.data(), sizeof( Vertex ) * quadBufferData.startVertex);   //memcopy the vertices in
     context->Unmap(vertexBuffer, 0);                                                                //unmap to unlock resource
 

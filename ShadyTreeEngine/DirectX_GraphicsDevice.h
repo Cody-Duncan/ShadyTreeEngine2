@@ -57,6 +57,7 @@ public:
     int getHeight();
 
     void ToggleDepthBuffer(bool turnItOn);
+    void setTextureSampler(bool isLinear = true);
 
 protected:
     D3D_DRIVER_TYPE			driverType;
@@ -69,11 +70,13 @@ protected:
     ID3D11Texture2D*		depthStencilBuffer;
     D3D11_VIEWPORT			screenViewport;
     ID3D11SamplerState*     samplerLinear;
+    ID3D11SamplerState*     samplerPoint;
+    ID3D11SamplerState*     currentSampler;
 
     ID3D11DepthStencilState* m_depthDisabledStencilState;
     ID3D11DepthStencilState* m_depthStencilState;
 
-    int setTextureSampler();
+    int createTextureSampler();
 
 
     unsigned int m4xMsaaQuality;

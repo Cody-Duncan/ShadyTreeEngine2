@@ -25,6 +25,7 @@ DirectX_GraphicsDevice::DirectX_GraphicsDevice(void) :
     Height(600), 
     enable4xMsaa(false),
     samplerLinear(nullptr),
+    samplerPoint(nullptr),
     s_vMeshColor(Vector4(0.9f, 0.0f, 0.9f,1.0f)) //bright purple
 {
     
@@ -47,6 +48,7 @@ void DirectX_GraphicsDevice::Free()
     TextureResourcer::Instance().Dispose();
 
     if(samplerLinear) samplerLinear->Release();
+    if(samplerPoint) samplerPoint->Release();
 
     //release resources
     if( depthStencilBuffer ) depthStencilBuffer->Release();
@@ -157,7 +159,7 @@ int DirectX_GraphicsDevice::Init()
         return hr;
     }
 
-    if( hr =  setTextureSampler() )
+    if( hr =  createTextureSampler() )
     {
         return hr;
     }
@@ -280,10 +282,25 @@ int DirectX_GraphicsDevice::OnResize()
 
     return 0;
 }
-int DirectX_GraphicsDevice::setTextureSampler()
+int DirectX_GraphicsDevice::createTextureSampler()
 {
-    // Create the sample state
+    // Create the linear sample state
     D3D11_SAMPLER_DESC sampDesc;
+    ZeroMemory( &sampDesc, sizeof(sampDesc) );
+    sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+    sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+    sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+    sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+    sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+    sampDesc.MinLOD = 0;
+    sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+    
+    HRESULT hr = device->CreateSamplerState( &sampDesc, &samplerLinear );
+    CHECKHR(hr, "FAILED: Failed to create linear texture sampler.") 
+
+    currentSampler = samplerLinear;
+
+    // Create the point sample state
     ZeroMemory( &sampDesc, sizeof(sampDesc) );
     sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
     sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
@@ -293,8 +310,8 @@ int DirectX_GraphicsDevice::setTextureSampler()
     sampDesc.MinLOD = 0;
     sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
     
-    HRESULT hr = device->CreateSamplerState( &sampDesc, &samplerLinear );
-    CHECKHR(hr, "FAILED: Failed to create texture sampler.") 
+    hr = device->CreateSamplerState( &sampDesc, &samplerPoint );
+    CHECKHR(hr, "FAILED: Failed to create point texture sampler.") 
     return hr;
 }
 
@@ -367,7 +384,7 @@ void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
 
     //set texture resources on pixel shader
     deviceContext->PSSetShaderResources( 0, 1, &texture );
-    deviceContext->PSSetSamplers( 0, 1, &samplerLinear );
+    deviceContext->PSSetSamplers( 0, 1, &currentSampler );
     deviceContext->PSSetConstantBuffers( 1, 1, &constantBuffer.frameBuffer );
 
     //draw
@@ -376,6 +393,8 @@ void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
 
 void DirectX_GraphicsDevice::Draw(VertexBufferHandle& hVBuf, IndexBufferHandle& hIBuf, const TextureHandle& hTex)
 {
+
+    
     assert(hVBuf.VbufferID >= 0);
     assert(hIBuf.IbufferID >= 0);
     assert(hTex.textureIndex >= 0);
@@ -414,7 +433,7 @@ void DirectX_GraphicsDevice::Draw(VertexBufferHandle& hVBuf, IndexBufferHandle& 
 
     //set texture resources on pixel shader
     deviceContext->PSSetShaderResources( 0, 1, &texture );
-    deviceContext->PSSetSamplers( 0, 1, &samplerLinear );
+    deviceContext->PSSetSamplers( 0, 1, &currentSampler );
     deviceContext->PSSetConstantBuffers( 1, 1, &constantBuffer.frameBuffer );
 
     //draw
@@ -554,7 +573,7 @@ void DirectX_GraphicsDevice::setProjection(float fovAngleY, float nearClip, floa
 
 void DirectX_GraphicsDevice::setOrthographicProjection(float nearClip, float farClip)
 {
-    g_Projection = DirectX::XMMatrixOrthographicOffCenterRH(0, (float)Width, (float)Height, 0, -10.0f, farClip);
+    g_Projection = DirectX::XMMatrixOrthographicOffCenterRH(0, (float)Width, (float)Height, 0, nearClip, farClip);
 }
 
 void DirectX_GraphicsDevice::SwapBuffer()
@@ -593,5 +612,17 @@ void DirectX_GraphicsDevice::ToggleDepthBuffer(bool turnItOn)
     else
     {
         deviceContext->OMSetDepthStencilState(m_depthDisabledStencilState, 1);
+    }
+}
+
+void DirectX_GraphicsDevice::setTextureSampler(bool isLinear)
+{
+    if(isLinear)
+    {
+        currentSampler = samplerLinear;
+    }
+    else
+    {
+        currentSampler = samplerPoint;
     }
 }

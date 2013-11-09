@@ -1,7 +1,6 @@
 #include "SpriteBatchTestUser.h"
 
 
-
 SpriteBatchTestUser::~SpriteBatchTestUser(void)
 {
 }
@@ -22,23 +21,31 @@ int SpriteBatchTestUser::setTestTexture()
     return 0;
 }
 
-
+int counter = 0;
 void SpriteBatchTestUser::testdraw()
 {
-    Matrix m1 = Matrix::CreateScale(10) * Matrix::CreateTranslation(10, 10, 0);
+    
     Matrix m2 = Matrix::CreateScale(10) * Matrix::CreateTranslation(20, 20, 0);
     Matrix m3 = Matrix::CreateScale(10) * Matrix::CreateTranslation(30, 30, 0);
     Matrix m4 = Matrix::CreateScale(10) * Matrix::CreateTranslation(40, 40, 0);
 
-    Rectangle2 r1(0, 0, 5, 5); //white
-    Rectangle2 r2(5, 0, 5, 5); //green
-    Rectangle2 r3(0, 5, 5, 5); //blue
-    Rectangle2 r4(5, 5, 5, 5); //red
+    static Rectangle2 textures[] = {
+        Rectangle2(0, 0, 5, 5), //white
+        Rectangle2(5, 0, 5, 5), //green
+        Rectangle2(0, 5, 5, 5), //blue
+        Rectangle2(5, 5, 5, 5) //red
+    };
 
     sb->Begin();
-        sb->Draw(t,m1, r1);
-        sb->Draw(t,m2, r2);
-        sb->Draw(t,m3, r3);
-        sb->Draw(t,m4, r4);
+    for(int i = 0; i < 249; i++)
+    {
+        Matrix m = Matrix::CreateTranslation(i*2, i*2, 0);
+        Rectangle2& r = textures[i%4];
+        sb->Draw(t,m, r);
+    }
+
+    counter++;
+    OutputDebugStringA("Mark\n");
+
     sb->End();
 }
