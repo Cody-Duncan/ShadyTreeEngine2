@@ -24,5 +24,8 @@ public:
     MeshHandle m;
     VertexShaderHandle v;
     PixelShaderHandle p;
+
+    Matrix* matrixArray;
+    int matrixArrayLen;
 };
 

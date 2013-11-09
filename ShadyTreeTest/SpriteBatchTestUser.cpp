@@ -1,5 +1,6 @@
 #include "SpriteBatchTestUser.h"
-
+#include "DebugOutput.h"
+#include "DebugTimer.h"
 
 SpriteBatchTestUser::~SpriteBatchTestUser(void)
 {
@@ -10,6 +11,13 @@ int SpriteBatchTestUser::init()
     sb = generateSpriteBatch(gd);
     sb->Init();
     setTestTexture();
+
+    matrixArrayLen = 249;
+    matrixArray = new Matrix[matrixArrayLen];
+    for(int i = 0; i < matrixArrayLen; i++)
+    {
+        matrixArray[i] = Matrix::CreateTranslation(i*2, i*2, 0);
+    }
 
     return 0;
 }
@@ -37,15 +45,21 @@ void SpriteBatchTestUser::testdraw()
     };
 
     sb->Begin();
-    for(int i = 0; i < 249; i++)
+    for(int i = 0; i < matrixArrayLen; i++)
     {
-        Matrix m = Matrix::CreateTranslation(i*2, i*2, 0);
         Rectangle2& r = textures[i%4];
-        sb->Draw(t,m, r);
+        
+        sb->Draw(t, matrixArray[i], r);
+        
     }
 
     counter++;
-    OutputDebugStringA("Mark\n");
 
+    //DTimerStart();
     sb->End();
+    //DTimerEnd();
+    //DebugPrintf("Draw Time in seconds: %f\n", DTimeSecs());
+
+    
+    
 }

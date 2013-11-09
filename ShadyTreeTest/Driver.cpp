@@ -12,6 +12,7 @@
 #include "ShadyTree_DLLAPI.h"
 #include "DebugOutput.h"
 #include "SpriteBatchTestUser.h"
+#include "DebugTimer.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -29,8 +30,11 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
     DebugLogOpen();
+    InitDebugTimer();
     
     //_CrtSetBreakAlloc(172);
+
+    DTimerStart();
 
     if(!GenerateWindow(hInstance, nShowCmd, WndProc))
         return 0;
@@ -50,6 +54,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     SpriteBatchTestUser sbUserNew(device);
     sbUserNew.init();
     sbUser = &sbUserNew;
+
+    DTimerEnd();
+    DebugPrintf("Timer for init: %f", DTimeSecs());
 
     // Main message loop
     MSG msg = {0};

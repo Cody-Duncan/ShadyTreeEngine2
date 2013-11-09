@@ -191,7 +191,6 @@ void DirectX_SpriteBatch::DrawBatch(TextureHandle t)
     if(quadBufferData.startVertex > 0) //don't draw empty buffers
     {
         assert(batchIBuffer.IbufferID >= 0);
-        DebugPrintf("MarkDraw\n");
         device->Draw(batchVBuffers[t], batchIBuffer, t);
     }
 }
