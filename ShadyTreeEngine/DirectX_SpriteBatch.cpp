@@ -135,6 +135,21 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
     
     //generate vertices and indices for quads
     //vertices need normalized UV coordinates based on the rect in texture Coordinates.
+
+//#define CLOCKWISE_VERTS_SPRITEBATCH//
+#define COUNTERCLOCKWISE_VERTS_SPRITEBATCH
+#ifdef  COUNTERCLOCKWISE_VERTS_SPRITEBATCH
+    //counter-clockwise
+    Vertex vertices[] = 
+    {
+        { Vector4(position.x, corner.y, 0, 1), textureArea.botLeft() },    //0 topLeft
+        { Vector4(position.x, position.y, 0, 1), textureArea.topLeft() },  //3 botLeft
+        { Vector4(corner.x, position.y, 0, 1), textureArea.topRight() },   //2 botRight
+        { Vector4(corner.x, corner.y, 0, 1), textureArea.botRight() },     //1 topRight
+    };
+#endif
+#ifdef CLOCKWISE_VERTS_SPRITEBATCH
+    //clockwise
     Vertex vertices[] = 
     {
         { Vector4(position.x, corner.y, 0, 1), textureArea.botLeft() },    //0 topLeft
@@ -142,6 +157,7 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
         { Vector4(corner.x, position.y, 0, 1), textureArea.topRight() },   //2 botRight
         { Vector4(position.x, position.y, 0, 1), textureArea.topLeft() },  //3 botLeft
     };
+#endif
 
     //copy to end of batch
     copy(&vertices[0], &vertices[4], back_inserter(batch[texH]));

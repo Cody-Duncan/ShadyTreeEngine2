@@ -285,10 +285,10 @@ int DirectX_GraphicsDevice::setTextureSampler()
     // Create the sample state
     D3D11_SAMPLER_DESC sampDesc;
     ZeroMemory( &sampDesc, sizeof(sampDesc) );
-    sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-    sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-    sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-    sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+    sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+    sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+    sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
     sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
     sampDesc.MinLOD = 0;
     sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
@@ -554,7 +554,7 @@ void DirectX_GraphicsDevice::setProjection(float fovAngleY, float nearClip, floa
 
 void DirectX_GraphicsDevice::setOrthographicProjection(float nearClip, float farClip)
 {
-    g_Projection = DirectX::XMMatrixOrthographicOffCenterRH(0, (float)Width, 0, (float)Height, nearClip, farClip);
+    g_Projection = DirectX::XMMatrixOrthographicOffCenterRH(0, (float)Width, (float)Height, 0, -10.0f, farClip);
 }
 
 void DirectX_GraphicsDevice::SwapBuffer()
