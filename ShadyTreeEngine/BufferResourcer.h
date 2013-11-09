@@ -11,21 +11,27 @@
 class Mesh;
 class BufferResourcer;
 
-struct BufferData
+struct VertexBufferData
 {
-    int vertexBufferIndex;
+     int vertexBufferIndex;
+     BufferResourcer* source;
+     int stride;
+     int vertexLength;
+     D3D11_PRIMITIVE_TOPOLOGY primitiveTopology;
+     int startVertex;
+
+     bool isDynamic;
+     ID3D11Buffer* getVertexBuffer();
+};
+
+struct IndexBufferData
+{
     int indexBufferIndex;
     BufferResourcer* source;
-
-    int stride;
-    int vertexLength;
     int indexLength;
-    D3D11_PRIMITIVE_TOPOLOGY primitiveTopology;
-    bool isDynamic;
     int startIndex;
-    int startVertex;
 
-    ID3D11Buffer* getVertexBuffer();
+    bool isDynamic;
     ID3D11Buffer* getIndexBuffer();
 };
 
@@ -37,17 +43,18 @@ public:
     std::vector<ID3D11Buffer*> vertexBuffers;
     std::vector<ID3D11Buffer*> indexBuffers;
 
-    std::unordered_map<int, BufferData> buffers;
-    std::unordered_map<int, std::vector<int>> bufferToMeshes;
+    std::unordered_map<int, VertexBufferData> VbufferData;
+    std::unordered_map<int, IndexBufferData> IbufferData;
 
-    int createVertexIndexBuffer(Mesh& mesh, ID3D11Device* device, BufferHandle* bufferHandle);
+    int createStaticBuffers(Mesh& mesh, ID3D11Device* device, VertexBufferHandle* hVBuf, IndexBufferHandle* hIBuf);
 
-    int createDynamicVertexIndexBuffer(int vertexLength, int indexLength, ID3D11Device* device, BufferHandle* handle);
-    int addMeshToDynamicBuffer(Mesh& mesh, ID3D11DeviceContext* context, BufferHandle* bufferHandle);
+    int createDynamicVertexBuffer(int vertexLength, ID3D11Device* device, VertexBufferHandle* handle);
+    int createDynamicIndexBuffer(int indexLength, ID3D11Device* device, IndexBufferHandle* handle);
+    int addMeshToDynamicBuffer(Mesh& mesh, ID3D11DeviceContext* context, VertexBufferHandle* hVBuf, IndexBufferHandle* hIBuf);
 
-    void getMeshesByBuffer(BufferHandle h, std::vector<MeshHandle>& fillIDs);
 
-    BufferData& getBuffer(BufferHandle h);
+    VertexBufferData& getVBuffer(VertexBufferHandle h);
+    IndexBufferData&  getIBuffer(IndexBufferHandle h);
 
     void Dispose();
 
@@ -59,8 +66,10 @@ public:
 
 private:
 
-    static int IDGen_buffer;
-    int generateBufferID();
+    static int IDGen_Vbuffer;
+    int generateVBufferID();
+    static int IDGen_Ibuffer;
+    int generateIBufferID();
 
     //Singleton
     BufferResourcer(void);

@@ -30,10 +30,7 @@ DirectX_GraphicsDevice::DirectX_GraphicsDevice(void) :
     
 }
 
-#define CHECKHR(hr, message) \
-if(FAILED(hr)){             \
-    DebugPrintf(message);   \
-    return hr;     }        \
+
     
 
 DirectX_GraphicsDevice::~DirectX_GraphicsDevice(void)
@@ -185,24 +182,25 @@ int DirectX_GraphicsDevice::OnResize()
     device->CreateRenderTargetView(backBuffer, 0, &renderTargetView);
     backBuffer->Release();
 
+
+
     //Create DepthStencilView
-    D3D11_TEXTURE2D_DESC depthStencilDesc;
-    depthStencilDesc.Width = Width;
-    depthStencilDesc.Height = Height;
-    depthStencilDesc.MipLevels = 1;
-    depthStencilDesc.ArraySize = 1;
-    depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-    depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
-    depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-    depthStencilDesc.CPUAccessFlags = 0;
-    depthStencilDesc.MiscFlags = 0;
+    D3D11_TEXTURE2D_DESC depthStencilTextureDesc;
+    depthStencilTextureDesc.Width = Width;
+    depthStencilTextureDesc.Height = Height;
+    depthStencilTextureDesc.MipLevels = 1;
+    depthStencilTextureDesc.ArraySize = 1;
+    depthStencilTextureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    depthStencilTextureDesc.Usage = D3D11_USAGE_DEFAULT;
+    depthStencilTextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+    depthStencilTextureDesc.CPUAccessFlags = 0;
+    depthStencilTextureDesc.MiscFlags = 0;
     // Use 4X MSAA? --must match swap chain MSAA values.
-    depthStencilDesc.SampleDesc.Count = enable4xMsaa ? 4 : 1;
-    depthStencilDesc.SampleDesc.Quality = enable4xMsaa ? m4xMsaaQuality-1 : 0;
-    
+    depthStencilTextureDesc.SampleDesc.Count = enable4xMsaa ? 4 : 1;
+    depthStencilTextureDesc.SampleDesc.Quality = enable4xMsaa ? m4xMsaaQuality-1 : 0;
 
     hr = device->CreateTexture2D(
-        &depthStencilDesc,		// Description of texture to create.
+        &depthStencilTextureDesc,		// Description of texture to create.
         0,
         &depthStencilBuffer		// Return pointer to depth/stencil buffer.
     );
@@ -215,8 +213,60 @@ int DirectX_GraphicsDevice::OnResize()
     ); 
     CHECKHR(hr, "FAILED: Failed to create depth stencil view.") 
 
+    //Create Enabled depth stencil state.
+    D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+    ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
+    depthStencilDesc.DepthEnable = true;
+    depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+    depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+    depthStencilDesc.StencilEnable = true;
+    depthStencilDesc.StencilReadMask = 0xFF;
+    depthStencilDesc.StencilWriteMask = 0xFF;
+    // Stencil operations if pixel is front-facing.
+    depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+    depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+    // Stencil operations if pixel is back-facing.
+    depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+    depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+    // Create the depth stencil state.
+    hr = device->CreateDepthStencilState(&depthStencilDesc, &m_depthStencilState);
+    CHECKHR(hr, "FAILED: Failed to create depth stencil enabled state");
+
+    //create disabled depth stencil state
+    D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
+    ZeroMemory(&depthDisabledStencilDesc, sizeof(depthDisabledStencilDesc));
+    depthDisabledStencilDesc.DepthEnable = false; //SET THIS TO FALSE
+    depthDisabledStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+    depthDisabledStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+    depthDisabledStencilDesc.StencilEnable = true;
+    depthDisabledStencilDesc.StencilReadMask = 0xFF;
+    depthDisabledStencilDesc.StencilWriteMask = 0xFF;
+    depthDisabledStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    depthDisabledStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+    depthDisabledStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    depthDisabledStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+    depthDisabledStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    depthDisabledStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+    depthDisabledStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    depthDisabledStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+    
+    hr = device->CreateDepthStencilState(&depthDisabledStencilDesc, &m_depthDisabledStencilState);
+    CHECKHR(hr, "FAILED: Failed to create depth stencil disabled state");
+
+    // Set the depth stencil state.
+    //deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
+
     // Bind Render Target and Depth stencil to output merger
     deviceContext->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
+
+    
+
+
 
     //Create Viewport
     screenViewport.TopLeftX = 0.0f;
@@ -291,14 +341,17 @@ void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
 
     //get mesh data;
     Mesh& mesh = (* MeshResourcer::Instance().getMesh(hMesh));
-    BufferData buffer = BufferResourcer::Instance().getBuffer(mesh.bufferHandle);
-    ID3D11Buffer* vertexBuffer = buffer.getVertexBuffer();
-    ID3D11Buffer* indexBuffer = buffer.getIndexBuffer();
-    unsigned int stride = buffer.stride;
+
+    IndexBufferData& IndexData = BufferResourcer::Instance().getIBuffer(mesh.hIBuffer);
+    VertexBufferData& VertexData = BufferResourcer::Instance().getVBuffer(mesh.hVBuffer);
+
+    ID3D11Buffer* vertexBuffer = VertexData.getVertexBuffer();
+    ID3D11Buffer* indexBuffer = IndexData.getIndexBuffer();
+    unsigned int stride = VertexData.stride;
     unsigned int vertexoffset = mesh.vertexOffset;
     unsigned int indexOffset = mesh.indexOffset;
-    unsigned int vertexCount = buffer.vertexLength;
-    unsigned int indexCount = buffer.indexLength;
+    unsigned int vertexCount = VertexData.vertexLength;
+    unsigned int indexCount = IndexData.indexLength;
 
     //get texture data
     ID3D11ShaderResourceView* texture = TextureResourcer::Instance().getTextureData(hTex).textureView;
@@ -306,7 +359,7 @@ void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
     //input assembler for mesh data
     deviceContext->IASetVertexBuffers( 0, 1, &vertexBuffer, &stride, &vertexoffset );
     deviceContext->IASetIndexBuffer( indexBuffer, DXGI_FORMAT_R32_UINT, 0 );
-    deviceContext->IASetPrimitiveTopology( buffer.primitiveTopology );
+    deviceContext->IASetPrimitiveTopology( VertexData.primitiveTopology );
 
     //set constant buffer for world/view matrix
     deviceContext->UpdateSubresource( constantBuffer.frameBuffer, 0, nullptr, &cb_Frame, 0, 0 );
@@ -321,9 +374,10 @@ void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
     deviceContext->DrawIndexed( indexCount, indexOffset, vertexoffset ); 
 }
 
-void DirectX_GraphicsDevice::Draw(BufferHandle& hBuff, const TextureHandle& hTex)
+void DirectX_GraphicsDevice::Draw(VertexBufferHandle& hVBuf, IndexBufferHandle& hIBuf, const TextureHandle& hTex)
 {
-    assert(hBuff.bufferID >= 0);
+    assert(hVBuf.VbufferID >= 0);
+    assert(hIBuf.IbufferID >= 0);
     assert(hTex.textureIndex >= 0);
 
     //Setup the world/view matrices
@@ -333,14 +387,18 @@ void DirectX_GraphicsDevice::Draw(BufferHandle& hBuff, const TextureHandle& hTex
     cb_Frame.vMeshColor = s_vMeshColor;
 
     //get mesh data;
-    BufferData buffer = BufferResourcer::Instance().getBuffer(hBuff);
-    ID3D11Buffer* vertexBuffer = buffer.getVertexBuffer();
-    ID3D11Buffer* indexBuffer = buffer.getIndexBuffer();
-    unsigned int stride = buffer.stride;
+    IndexBufferData& IndexData = BufferResourcer::Instance().getIBuffer(hIBuf);
+    VertexBufferData& VertexData = BufferResourcer::Instance().getVBuffer(hVBuf);
+    ID3D11Buffer* vertexBuffer = VertexData.getVertexBuffer();
+    ID3D11Buffer* indexBuffer = IndexData.getIndexBuffer();
+    unsigned int stride = VertexData.stride;
     unsigned int vertexoffset = 0;
     unsigned int indexOffset = 0;
-    unsigned int vertexCount = buffer.startVertex; //startVertex is the first free vertex
-    unsigned int indexCount = buffer.startIndex;   //startIndex is the first free index
+    unsigned int vertexCount = VertexData.startVertex; //startVertex is the first free vertex
+    unsigned int indexCount = IndexData.startIndex;   //startIndex is the first free index
+
+    assert(vertexCount >0 && "Trying to draw 0 vertices?");
+    assert(indexCount >0 && "Trying to draw 0 indices?");
 
     //get texture data
     ID3D11ShaderResourceView* texture = TextureResourcer::Instance().getTextureData(hTex).textureView;
@@ -348,7 +406,7 @@ void DirectX_GraphicsDevice::Draw(BufferHandle& hBuff, const TextureHandle& hTex
     //input assembler for mesh data
     deviceContext->IASetVertexBuffers( 0, 1, &vertexBuffer, &stride, &vertexoffset );
     deviceContext->IASetIndexBuffer( indexBuffer, DXGI_FORMAT_R32_UINT, 0 );
-    deviceContext->IASetPrimitiveTopology( buffer.primitiveTopology );
+    deviceContext->IASetPrimitiveTopology( VertexData.primitiveTopology );
 
     //set constant buffer for world/view matrix
     deviceContext->UpdateSubresource( constantBuffer.frameBuffer, 0, nullptr, &cb_Frame, 0, 0 );
@@ -377,10 +435,10 @@ Mesh* DirectX_GraphicsDevice::generateMesh(std::string name)
     return MeshResourcer::Instance().generateMesh(name);
 }
 
-int DirectX_GraphicsDevice::createVertexIndexBuffer(Mesh* mesh, BufferHandle* handle)
+int DirectX_GraphicsDevice::createVertexIndexBuffer(Mesh* mesh, VertexBufferHandle* hVBuf, IndexBufferHandle* hIBuf)
 {
     BufferResourcer& resourceVertexBuf = BufferResourcer::Instance();
-    int result = resourceVertexBuf.createVertexIndexBuffer(*mesh, device, handle);
+    int result = resourceVertexBuf.createStaticBuffers(*mesh, device, hVBuf, hIBuf);
     if(result)
         return result;
 
@@ -478,25 +536,25 @@ void DirectX_GraphicsDevice::setView(Vector4& eye, Vector4& at, Vector4& up)
     updateView(eye, at);
 }
 
-void DirectX_GraphicsDevice::updateView(Vector4& eye, Vector4& at)
+void DirectX_GraphicsDevice::updateView(Vector4& eyePosition, Vector4& focusPosition)
 {
     using namespace DirectX;
 
     // Initialize the view matrix
-    XMVECTOR Eye = XMLoadFloat4( &eye );
-    XMVECTOR At = XMLoadFloat4( &at );
-    g_View = XMMatrixLookAtLH( Eye, At, g_Up );
+    XMVECTOR EyePosition = XMLoadFloat4( &eyePosition );
+    XMVECTOR FocusPosition = XMLoadFloat4( &focusPosition );
+    g_View = XMMatrixLookAtRH( EyePosition, FocusPosition, g_Up );
 }
 
 
 void DirectX_GraphicsDevice::setProjection(float fovAngleY, float nearClip, float farClip)
 {
-    g_Projection = DirectX::XMMatrixPerspectiveFovLH( fovAngleY, Width / (FLOAT)Height, nearClip, farClip);
+    g_Projection = DirectX::XMMatrixPerspectiveFovRH( fovAngleY, Width / (float)Height, nearClip, farClip);
 }
 
 void DirectX_GraphicsDevice::setOrthographicProjection(float nearClip, float farClip)
 {
-    g_Projection = DirectX::XMMatrixOrthographicLH((float)Width, (float)Height, nearClip, farClip);
+    g_Projection = DirectX::XMMatrixOrthographicRH((float)Width,(float)Height, nearClip, farClip);
 }
 
 void DirectX_GraphicsDevice::SwapBuffer()
@@ -524,4 +582,16 @@ int DirectX_GraphicsDevice::getWidth()
 int DirectX_GraphicsDevice::getHeight()
 {
     return Height;
+}
+
+void DirectX_GraphicsDevice::ToggleDepthBuffer(bool turnItOn)
+{
+    if(turnItOn)
+    {
+        deviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
+    }
+    else
+    {
+        deviceContext->OMSetDepthStencilState(m_depthDisabledStencilState, 1);
+    }
 }

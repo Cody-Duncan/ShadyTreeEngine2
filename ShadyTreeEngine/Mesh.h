@@ -20,7 +20,8 @@ public:
     unsigned int* indices; 
     int indexCount;
 
-    BufferHandle bufferHandle;
+    VertexBufferHandle hVBuffer;
+    IndexBufferHandle hIBuffer;
 
     ST_API MeshHandle handle();
 };

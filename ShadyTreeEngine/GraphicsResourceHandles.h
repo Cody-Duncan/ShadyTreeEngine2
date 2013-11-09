@@ -16,9 +16,14 @@ struct MeshHandle
     int meshID;
 };
 
-struct BufferHandle
+struct IndexBufferHandle
 {
-    int bufferID;
+    int IbufferID;
+};
+
+struct VertexBufferHandle
+{
+    int VbufferID;
 };
 
 struct VertexShaderHandle

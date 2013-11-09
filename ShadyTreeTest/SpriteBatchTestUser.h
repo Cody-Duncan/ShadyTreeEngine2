@@ -21,7 +21,6 @@ public:
     SpriteBatch* sb;
 
     TextureHandle t;
-    BufferHandle bufH;
     MeshHandle m;
     VertexShaderHandle v;
     PixelShaderHandle p;

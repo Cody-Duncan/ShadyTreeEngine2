@@ -22,3 +22,8 @@ ST_API int OutputDebugLog(const char* message);
 #else
 #define DebugPrintf(format, ...) 
 #endif
+
+#define CHECKHR(hr, message) \
+if(FAILED(hr)){             \
+    DebugPrintf(message);   \
+    return hr;     }        

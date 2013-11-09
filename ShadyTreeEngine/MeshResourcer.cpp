@@ -46,10 +46,9 @@ Mesh* MeshResourcer::getMesh(MeshHandle h)
     return meshes[h.meshID];
 }
 
-BufferHandle MeshResourcer::getMeshByName(std::string name)
+Mesh* MeshResourcer::getMeshByName(std::string name)
 {
-    BufferHandle h = {meshIdByName[name]};
-    return h;
+    return meshes[meshIdByName[name]];
 }
 
 void MeshResourcer::Dispose()

@@ -27,8 +27,6 @@ private:
     int vertexLength;
     int indexLength;
 
-
-    TextureHandle texH;
     VertexShaderHandle vertexShaderH;
     PixelShaderHandle pixelShaderH;
 
@@ -36,11 +34,12 @@ private:
     void resetBatchBuffer(TextureHandle t);
     void resetAllBatchBuffers();
 
-    void sentBatchToBuffers();
+    void sentBatchToBuffers(TextureHandle t);
 
     //textureID -> (transform, textureArea)
     //std::unordered_map<TextureHandle, std::vector< std::pair<Matrix, Rectangle2 > > > batchBuffer;
-    std::unordered_map<TextureHandle, BufferHandle> batchBuffer;
-    std::unordered_map<TextureHandle, std::pair< std::vector<Vertex>, std::vector<unsigned int> > > batch;
+    std::unordered_map<TextureHandle, VertexBufferHandle> batchVBuffers;
+    IndexBufferHandle batchIBuffer;
+    std::unordered_map<TextureHandle, std::vector<Vertex> > batch;
 };
 

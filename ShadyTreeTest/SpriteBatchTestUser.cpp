@@ -25,10 +25,10 @@ int SpriteBatchTestUser::setTestTexture()
 
 void SpriteBatchTestUser::testdraw()
 {
-    Matrix m1 = Matrix::CreateTranslation(10, 10, 0);
-    Matrix m2 = Matrix::CreateTranslation(20, 20, 0);
-    Matrix m3 = Matrix::CreateTranslation(30, 30, 0);
-    Matrix m4 = Matrix::CreateTranslation(50, 50, 0);
+    Matrix m1 = Matrix::CreateScale(10) * Matrix::CreateTranslation(10, 10, 0);
+    Matrix m2 = Matrix::CreateScale(10) * Matrix::CreateTranslation(20, 20, 0);
+    Matrix m3 = Matrix::CreateScale(10) * Matrix::CreateTranslation(30, 30, 0);
+    Matrix m4 = Matrix::CreateScale(10) * Matrix::CreateTranslation(40, 40, 0);
 
     Rectangle2 r1(0, 0, 5, 5); //white
     Rectangle2 r2(5, 0, 5, 5); //green

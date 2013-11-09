@@ -30,35 +30,59 @@ void DirectX_SpriteBatch::Init()
     device->createVertexShader("Tutorial07.fx","VS", "vs_4_0", &vertexShaderH);
     device->createPixelShader("Tutorial07.fx","PS", "ps_4_0", &pixelShaderH);
 
+    BufferResourcer::Instance().createDynamicIndexBuffer(BatchSize*6, device->getDevice(), &batchIBuffer);
+
+    unsigned int* indices = new unsigned int[BatchSize *6];
+    int v = 0;
+    for(int i = 0; i < BatchSize*6; (i+=6, v+=4))
+    {
+        indices[i] = v;
+        indices[i+1] = v+1;
+        indices[i+2] = v+2;
+
+        indices[i+3] = v;
+        indices[i+4] = v+2;
+        indices[i+5] = v+3;
+    }
+
+    ID3D11DeviceContext* context = device->getContext();
+    IndexBufferData& IndexBufferData = BufferResourcer::Instance().getIBuffer(batchIBuffer);
+    ID3D11Buffer* indexBuffer = IndexBufferData.getIndexBuffer();
+
+     //update vertex buffer
+    D3D11_MAPPED_SUBRESOURCE resource;
+    context->Map(indexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);    //map the buffer to lock resource
+        unsigned int* pI = (unsigned int*) resource.pData;                  //convert data to Vertex* so we can set
+        assert(pI != 0);
+        memcpy(pI, indices, sizeof( unsigned int ) * BatchSize*6);          //memcopy the vertices in
+    context->Unmap(indexBuffer, 0);                                         //unmap to unlock resource
 }
 
 void DirectX_SpriteBatch::addBatchBuffer(TextureHandle t)
 {
-    if(batchBuffer.find(t) == batchBuffer.end()) //if key nonexistent
+    if(batchVBuffers.find(t) == batchVBuffers.end()) //if key nonexistent
     {
         assert(device && "Spritebatch does not have a valid graphicsDevice");
     
-        BufferHandle quadBuffer;
-        BufferResourcer::Instance().createDynamicVertexIndexBuffer(BatchSize*4, BatchSize*6, device->getDevice(), &quadBuffer);
+        VertexBufferHandle quadBuffer;
+        BufferResourcer::Instance().createDynamicVertexBuffer(BatchSize*4, device->getDevice(), &quadBuffer);
 
-        batchBuffer[t] = quadBuffer;
+        batchVBuffers[t] = quadBuffer;
     }
 }
 
 void DirectX_SpriteBatch::resetBatchBuffer(TextureHandle t)
 {
-    BufferData& quadBufferData = BufferResourcer::Instance().getBuffer(batchBuffer[t]);
+    VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(batchVBuffers[t]);
     quadBufferData.startVertex = 0;
-    quadBufferData.startIndex = 0;
 }
 
 void DirectX_SpriteBatch::resetAllBatchBuffers()
 {
-    for(auto iter = batchBuffer.begin(); iter != batchBuffer.end(); iter++)
+    for(auto iter = batchVBuffers.begin(); iter != batchVBuffers.end(); iter++)
     {
-         BufferData& quadBufferData = BufferResourcer::Instance().getBuffer(iter->second);
+         VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(iter->second);
          quadBufferData.startVertex = 0;
-         quadBufferData.startIndex = 0;
     }
 }
 
@@ -72,15 +96,17 @@ void DirectX_SpriteBatch::Begin()
     static Matrix m = Matrix::Identity();
     device->setWorld(m);
 
-    Vector4 eye( 0.0f, 0.0f, 100.0f, 0.0f);
-    Vector4 at(0.0f, 0.0f, 0.0f, 0.0f);
-    Vector4 up(0.0f, 1.0f, 0.0f, 0.0f );
+    Vector4 eye(0.0f, 0.0f, 10.0f, 1.0f);
+    Vector4 at(0.0f, 0.0f, 0.0f, 1.0f);
+    Vector4 up(0.0f, 1.0f, 0.0f, 1.0f );
     device->setView( eye, at, up );
 
     device->setOrthographicProjection();
 
     device->setClearColor(Color(0.4f,0.6f,0.9f,1.0f));
     device->clearRenderTarget();
+    
+    //device->ToggleDepthBuffer(false);
 
     device->setVertexShader(vertexShaderH);
     device->setPixelShader(pixelShaderH);
@@ -105,38 +131,28 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
     position = Vector2::Transform(position, transform);
     corner = Vector2::Transform(corner, transform);
 
-    BufferData& quadBufferData = BufferResourcer::Instance().getBuffer(batchBuffer[texH]);
+    VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(batchVBuffers[texH]);
     
     //generate vertices and indices for quads
     //vertices need normalized UV coordinates based on the rect in texture Coordinates.
     Vertex vertices[] = 
     {
-        { Vector4(position.x, position.y, 0, 1), textureArea.topLeft() },  //0 topLeft
-        { Vector4(corner.x, position.y, 0, 1), textureArea.topRight() },   //1 topRight
-        { Vector4(corner.x, corner.y, 0, 1), textureArea.botRight() },     //2 botRight
-        { Vector4(position.x, corner.y, 0, 1), textureArea.botLeft() },    //3 botLeft
+        { Vector4(position.x, corner.y, 0, 1), textureArea.botLeft() },    //0 topLeft
+        { Vector4(corner.x, corner.y, 0, 1), textureArea.botRight() },     //1 topRight
+        { Vector4(corner.x, position.y, 0, 1), textureArea.topRight() },   //2 botRight
+        { Vector4(position.x, position.y, 0, 1), textureArea.topLeft() },  //3 botLeft
     };
 
-    //generate indices
-    int startIndex = quadBufferData.startIndex;
-    unsigned int indices[] = 
-    {
-        startIndex,
-        startIndex + 1,
-        startIndex + 2,
-        startIndex,
-        startIndex + 2,
-        startIndex + 3
-    };
-
-    
-    
+    //copy to end of batch
+    copy(&vertices[0], &vertices[4], back_inserter(batch[texH]));
+    quadBufferData.startVertex += 4;
 }
 
 void DirectX_SpriteBatch::End()
 {
-    for(auto iter = batchBuffer.begin(); iter != batchBuffer.end(); iter++)
+    for(auto iter = batchVBuffers.begin(); iter != batchVBuffers.end(); iter++)
     {
+        sentBatchToBuffers(iter->first);
         DrawBatch(iter->first);
     }
 
@@ -147,16 +163,18 @@ void DirectX_SpriteBatch::End()
 
 void DirectX_SpriteBatch::DrawBatch(TextureHandle t)
 {
-    BufferData& quadBufferData = BufferResourcer::Instance().getBuffer(batchBuffer[t]);
-    if(quadBufferData.startIndex > 0) //don't draw empty buffers
+    VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(batchVBuffers[t]);
+    if(quadBufferData.startVertex > 0) //don't draw empty buffers
     {
-        device->Draw(batchBuffer[t], t);
+        assert(batchIBuffer.IbufferID >= 0);
+        device->Draw(batchVBuffers[t], batchIBuffer, t);
     }
 }
 
 void DirectX_SpriteBatch::sentBatchToBuffers(TextureHandle t)
 {
-    BufferData& quadBufferData = BufferResourcer::Instance().getBuffer(batchBuffer[texH]);
+    VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(batchVBuffers[t]);
+    std::vector<Vertex>& currBatch = batch[t];
 
     //NOTE: try batching the vertices and indices, 
     //then putting them in the vertex/index buffer all at once
@@ -164,34 +182,17 @@ void DirectX_SpriteBatch::sentBatchToBuffers(TextureHandle t)
     //get context and buffers
     ID3D11DeviceContext* context = device->getContext();
     ID3D11Buffer* vertexBuffer = quadBufferData.getVertexBuffer();
-    ID3D11Buffer* indexBuffer = quadBufferData.getIndexBuffer();
+    
 
     //update vertex buffer
     D3D11_MAPPED_SUBRESOURCE resource;
     context->Map(vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);                           //map the buffer to lock resource
         Vertex* pV = (Vertex*) resource.pData;                                                      //convert data to Vertex* so we can set
         assert(pV != 0);
-        memcpy(pV, 
-        pV[quadBufferData.startVertex] = vertices[0];
-        pV[quadBufferData.startVertex+1] = vertices[1];
-        pV[quadBufferData.startVertex+2] = vertices[2];
-        pV[quadBufferData.startVertex+3] = vertices[3];
-        //memcpy(&pV[quadBufferData.startVertex], vertices, sizeof( Vertex ) * 4);                    //memcopy the vertices in
+        memcpy(pV, currBatch.data(), sizeof( Vertex ) * quadBufferData.startVertex);   //memcopy the vertices in
     context->Unmap(vertexBuffer, 0);                                                                //unmap to unlock resource
-    quadBufferData.startVertex += 4;                                                                //increment startIndex(vertices)
 
-
-    //update index buffer
-    context->Map(indexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);                            //lock resource
-        unsigned int* pI = (unsigned int *)resource.pData;                                          //convert to unsigned int*
-         assert(pI != 0);
-         pI[quadBufferData.startIndex] = indices[0];
-         pI[quadBufferData.startIndex+1] = indices[1];
-         pI[quadBufferData.startIndex+2] = indices[2];
-         pI[quadBufferData.startIndex+3] = indices[3];
-         pI[quadBufferData.startIndex+4] = indices[4];
-         pI[quadBufferData.startIndex+5] = indices[5];
-        memcpy(&pI[quadBufferData.startIndex], indices, sizeof( unsigned int ) * 6);                //copy indices in
-    context->Unmap(indexBuffer, 0);                                                                 //unlock resource
-    quadBufferData.startIndex += 6;                                                                 //increment startIndex(indices)
+    //set index buffer
+    IndexBufferData& indexBufData = BufferResourcer::Instance().getIBuffer(batchIBuffer);
+    indexBufData.startIndex = quadBufferData.startVertex * 3 / 2; //6 indices per 4 vertices
 }

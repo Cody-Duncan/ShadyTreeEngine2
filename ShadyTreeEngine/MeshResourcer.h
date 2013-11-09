@@ -7,14 +7,13 @@ class MeshResourcer
 public:
 
     std::unordered_map<std::string, int> meshIdByName;
-    
     std::unordered_map<int, Mesh*> meshes;
 
     MeshHandle generateMeshHandle(Mesh* mesh);
     Mesh* generateMesh(std::string name);
 
     Mesh* getMesh(MeshHandle h);
-    BufferHandle getMeshByName(std::string name);
+    Mesh* getMeshByName(std::string name);
 
     void Dispose();
 

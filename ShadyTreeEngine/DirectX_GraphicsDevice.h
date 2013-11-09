@@ -33,7 +33,7 @@ public:
     virtual void Free();
 
     virtual Mesh* generateMesh(std::string name);
-    virtual int  createVertexIndexBuffer(Mesh* mesh, BufferHandle* handle);
+    virtual int  createVertexIndexBuffer(Mesh* mesh, VertexBufferHandle* hVBuf, IndexBufferHandle* hIBuf);
     virtual void createTexture(std::string Filename, TextureHandle* texHandle);
     virtual int  createVertexShader(std::string FileName, const char *EntryPoint, const char *ShaderModel, VertexShaderHandle* vsHandle);
     virtual int  createPixelShader(std::string FileName, const char *EntryPoint, const char *ShaderModel, PixelShaderHandle* psHandle);
@@ -46,15 +46,17 @@ public:
     virtual void setWorld(Matrix&);
     virtual void setView(Vector4& eye, Vector4& at, Vector4& up);
     virtual void updateView(Vector4& eye, Vector4& at);
-    virtual void setProjection(float fovAngleY, float nearClip, float farClip);
+    virtual void setProjection(float fovAngleY = 1.570796371f, float nearClip = 0.01f, float farClip = 1000.0f);
     virtual void setOrthographicProjection(float nearClip = 0.01f, float farClip = 1000.0f);
 
 
     ID3D11Device* getDevice();
     ID3D11DeviceContext* getContext();
-    void Draw(BufferHandle& hBuff, const TextureHandle& hTex);
+    void Draw(VertexBufferHandle& hVBuf, IndexBufferHandle& hIBuf, const TextureHandle& hTex);
     int getWidth();
     int getHeight();
+
+    void ToggleDepthBuffer(bool turnItOn);
 
 protected:
     D3D_DRIVER_TYPE			driverType;
@@ -67,6 +69,9 @@ protected:
     ID3D11Texture2D*		depthStencilBuffer;
     D3D11_VIEWPORT			screenViewport;
     ID3D11SamplerState*     samplerLinear;
+
+    ID3D11DepthStencilState* m_depthDisabledStencilState;
+    ID3D11DepthStencilState* m_depthStencilState;
 
     int setTextureSampler();
 
