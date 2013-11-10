@@ -71,7 +71,9 @@ void DirectX_SpriteBatch::Dispose()
     }
 
     batch.clear();
-    std::unordered_map<TextureHandle, std::vector<Vertex> >().swap(batch);
+
+    //@NOTE: This clears the capacity of spritebatch batches. May need to get that memory back later.
+    //std::unordered_map<TextureHandle, std::vector<Vertex> >().swap(batch);
 }
 
 void DirectX_SpriteBatch::addBatchBuffer(TextureHandle t)
@@ -84,6 +86,7 @@ void DirectX_SpriteBatch::addBatchBuffer(TextureHandle t)
         BufferResourcer::Instance().createDynamicVertexBuffer(BatchSize*4, device->getDevice(), &quadBuffer);
 
         batchVBuffers[t] = quadBuffer;
+        batch[t].reserve(BatchSize*4);
     }
 }
 
