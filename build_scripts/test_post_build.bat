@@ -17,8 +17,11 @@ If "%Debug%" == "-d" (
 	set libDir=ShadyTreeEngine
 )
 
+xcopy "%SolutionDir%lib\!libDir!\*.dll" "%TargetDir%" /F /Y
+xcopy "%SolutionDir%lib\!libDir!\*.pdb" "%TargetDir%" /F /Y
 
-xcopy "%SolutionDir%lib\!libDir!\*.dll" "%TargetDir%" /F /Y /S
-xcopy "%SolutionDir%lib\!libDir!\*.pdb" "%TargetDir%" /F /Y /S
-xcopy "%SolutionDir%lib\!libDir!\*.lib" "%TargetDir%" /F /Y /S
+xcopy "%SolutionDir%lib\*.dll" "%TargetDir%" /F /Y
+xcopy "%SolutionDir%lib\*.pdb" "%TargetDir%" /F /Y
+
+
 echo --------- END Copying Resources and Libs -------------
