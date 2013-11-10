@@ -18,7 +18,7 @@ int SpriteBatchTestUser::init()
     matrixArray = new Matrix[matrixArrayLen];
     for(int i = 0; i < matrixArrayLen; i++)
     {
-        matrixArray[i] = Matrix::CreateTranslation(i*2, i*2, 0);
+        matrixArray[i] = Matrix::CreateTranslation(i*2.0f, i*2.0f, 0);
     }
 
     return 0;
