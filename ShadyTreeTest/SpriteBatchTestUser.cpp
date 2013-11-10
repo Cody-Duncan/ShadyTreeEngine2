@@ -4,6 +4,8 @@
 
 SpriteBatchTestUser::~SpriteBatchTestUser(void)
 {
+    sb->Dispose();
+    delete[] matrixArray;
 }
 
 int SpriteBatchTestUser::init()

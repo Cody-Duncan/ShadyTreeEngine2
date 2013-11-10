@@ -20,6 +20,8 @@ public:
     virtual void Draw(TextureHandle texH, Matrix transform, Rectangle2 rect) = 0;
     virtual void End() = 0;
 
+    virtual void Dispose() = 0;
+
     virtual void DrawBatch(TextureHandle t) = 0;
 };
 

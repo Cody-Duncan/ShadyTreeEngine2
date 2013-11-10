@@ -51,9 +51,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     //user.init();
     //puser = &user;
 
-    SpriteBatchTestUser sbUserNew(device);
-    sbUserNew.init();
-    sbUser = &sbUserNew;
+    sbUser = new SpriteBatchTestUser(device);
+    sbUser->init();
+
 
     DTimerEnd();
     DebugPrintf("Timer for init: %f", DTimeSecs());
@@ -75,6 +75,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
         Sleep(1);
     }
+
+
+    delete sbUser;
 
     device->Free();
     delete device;

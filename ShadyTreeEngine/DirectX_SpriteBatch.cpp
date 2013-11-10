@@ -21,6 +21,7 @@ DirectX_SpriteBatch::DirectX_SpriteBatch(GraphicsDevice* deviceIn) : SpriteBatch
 
 DirectX_SpriteBatch::~DirectX_SpriteBatch(void)
 {
+    
 }
 
 
@@ -56,6 +57,21 @@ void DirectX_SpriteBatch::Init()
         assert(pI != 0);
         memcpy(pI, indices, sizeof( unsigned int ) * BatchSize*6);          //memcopy the vertices in
     context->Unmap(indexBuffer, 0);                                         //unmap to unlock resource
+
+    delete[] indices;
+}
+
+void DirectX_SpriteBatch::Dispose()
+{
+    batchVBuffers.clear();
+
+    for(auto iter = batch.begin(); iter != batch.end(); ++iter)
+    {
+        iter->second.clear();
+    }
+
+    batch.clear();
+    std::unordered_map<TextureHandle, std::vector<Vertex> >().swap(batch);
 }
 
 void DirectX_SpriteBatch::addBatchBuffer(TextureHandle t)

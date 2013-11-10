@@ -19,6 +19,8 @@ public:
     void Draw(TextureHandle texH, Matrix transform, Rectangle2 rect);
     void End();
 
+    void Dispose(); 
+
     void DrawBatch(TextureHandle t);
 
 private:
