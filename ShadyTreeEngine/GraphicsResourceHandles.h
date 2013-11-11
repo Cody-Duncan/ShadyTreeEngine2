@@ -43,8 +43,7 @@ namespace std {
     {
         std::size_t operator()(const TextureHandle& k) const
         {
-            using std::hash;
-            return (hash<int>()(k.textureIndex));
+            return k.textureIndex;
         }
     };
 

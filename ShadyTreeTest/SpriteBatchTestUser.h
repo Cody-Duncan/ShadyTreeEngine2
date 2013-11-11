@@ -3,6 +3,7 @@
 #include "GraphicsDevice.h"
 #include "SpriteBatch.h"
 #include "GraphicsFactory.h"
+#include "Stopwatch.h"
 
 class SpriteBatchTestUser
 {
@@ -27,5 +28,7 @@ public:
 
     Matrix* matrixArray;
     int matrixArrayLen;
+
+    Stopwatch watch;
 };
 

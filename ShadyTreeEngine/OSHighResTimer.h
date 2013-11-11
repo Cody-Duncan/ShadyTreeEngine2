@@ -9,7 +9,7 @@
 #ifndef HIGHRESTIMER
 #define HIGHRESTIMER
 
-__int64 readHiResTimerFrequency();
-__int64 readHiResTimer();
+ST_API __int64 readHiResTimerFrequency();
+ST_API __int64 readHiResTimer();
 
 #endif

@@ -45,8 +45,10 @@
     <ClCompile Include="Geometry.inl">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="DebugTimer.cpp" />
     <ClCompile Include="OSHighResTimer.cpp">
+      <Filter>Diagnostic</Filter>
+    </ClCompile>
+    <ClCompile Include="Stopwatch.cpp">
       <Filter>Diagnostic</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,7 +127,9 @@
     <ClInclude Include="OSHighResTimer.h">
       <Filter>Diagnostic</Filter>
     </ClInclude>
-    <ClInclude Include="DebugTimer.h" />
+    <ClInclude Include="Stopwatch.h">
+      <Filter>Diagnostic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -154,9 +158,6 @@
     </Filter>
     <Filter Include="Graphics\2D Adapter">
       <UniqueIdentifier>{3e3988b8-b221-42d1-80cf-db6a5634496e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Serialization">
-      <UniqueIdentifier>{fa344732-38a2-48b2-89f3-9f373165b5e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
