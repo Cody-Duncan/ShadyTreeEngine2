@@ -29,6 +29,7 @@ int SpriteBatchTestUser::setTestTexture()
 }
 
 int counter = 0;
+float time = 0;
 void SpriteBatchTestUser::testdraw()
 {
     
@@ -50,6 +51,16 @@ void SpriteBatchTestUser::testdraw()
         
         sb->Draw(t, matrixArray[i], r);
         
+    }
+
+    if(counter % 1000 == 0)
+    {
+        if(counter == 0)
+            watch.Start();
+        watch.Stop();
+        time += watch.ElapsedTimeMilliSec() / 1000;
+        DebugPrintf("FPS: %f\n" , counter / time);
+        watch.Start();
     }
 
     counter++;
