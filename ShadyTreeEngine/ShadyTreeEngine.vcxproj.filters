@@ -49,6 +49,7 @@
     <ClCompile Include="OSHighResTimer.cpp">
       <Filter>Diagnostic</Filter>
     </ClCompile>
+    <ClCompile Include="Stopwatch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX_GraphicsDevice.h">
@@ -126,6 +127,7 @@
       <Filter>Diagnostic</Filter>
     </ClInclude>
     <ClInclude Include="DebugTimer.h" />
+    <ClInclude Include="Stopwatch.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">

@@ -33,6 +33,7 @@
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="SpriteBatch.h" />
     <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="Stopwatch.h" />
     <ClInclude Include="StringUtility.h" />
     <ClInclude Include="TextureResourcer.h" />
     <ClInclude Include="Vertex.h" />
@@ -57,6 +58,7 @@
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Stopwatch.cpp" />
     <ClCompile Include="TextureResourcer.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
     <ClCompile Include="WindowFactory.cpp" />
