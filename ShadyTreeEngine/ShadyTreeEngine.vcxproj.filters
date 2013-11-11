@@ -45,11 +45,12 @@
     <ClCompile Include="Geometry.inl">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="DebugTimer.cpp" />
     <ClCompile Include="OSHighResTimer.cpp">
       <Filter>Diagnostic</Filter>
     </ClCompile>
-    <ClCompile Include="Stopwatch.cpp" />
+    <ClCompile Include="Stopwatch.cpp">
+      <Filter>Diagnostic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX_GraphicsDevice.h">
@@ -126,8 +127,9 @@
     <ClInclude Include="OSHighResTimer.h">
       <Filter>Diagnostic</Filter>
     </ClInclude>
-    <ClInclude Include="DebugTimer.h" />
-    <ClInclude Include="Stopwatch.h" />
+    <ClInclude Include="Stopwatch.h">
+      <Filter>Diagnostic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">

@@ -1,6 +1,5 @@
 #include "SpriteBatchTestUser.h"
 #include "DebugOutput.h"
-#include "DebugTimer.h"
 
 SpriteBatchTestUser::~SpriteBatchTestUser(void)
 {

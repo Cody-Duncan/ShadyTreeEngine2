@@ -15,7 +15,6 @@
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DebugOutput.h" />
-    <ClInclude Include="DebugTimer.h" />
     <ClInclude Include="Debug_Graphics.h" />
     <ClInclude Include="DeviceAPI.h" />
     <ClInclude Include="DirectX_GraphicsDevice.h" />
@@ -44,7 +43,6 @@
     <ClCompile Include="BufferResourcer.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DebugOutput.cpp" />
-    <ClCompile Include="DebugTimer.cpp" />
     <ClCompile Include="DirectX_GraphicsDevice.cpp" />
     <ClCompile Include="DirectX_SpriteBatch.cpp" />
     <ClCompile Include="Geometry.inl" />
