@@ -6,7 +6,7 @@
 int g_verbosity = 0;
 std::ofstream debugLogFile;
 
-int VDebugPrintF(const char* format, va_list argList)
+int VDebugPrintF(const char* format, va_list& argList)
 {
     const unsigned int MAX_CHARS = 1023;
     static char s_buffer[MAX_CHARS + 1];

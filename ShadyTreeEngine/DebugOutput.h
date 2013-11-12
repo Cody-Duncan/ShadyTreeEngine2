@@ -3,7 +3,7 @@
 #include <stdio.h> // for va_list et al
 
 
-ST_API extern int VDebugPrintF(const char* format, va_list argList);
+ST_API extern int VDebugPrintF(const char* format, va_list& argList);
 
 ST_API extern int DebugPrintF(const char* format, ...);
 
