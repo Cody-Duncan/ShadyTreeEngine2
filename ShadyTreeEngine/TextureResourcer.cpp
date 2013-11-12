@@ -58,6 +58,52 @@ TextureResourcer::~TextureResourcer(void)
     Dispose();
 }
 
+int TextureResourcer::createTextureFromWIC(ID3D11Device* device, ID3D11DeviceContext* deviceContext, const uint8_t * binaryData, int binaryLength, TextureHandle* texHandle)
+{
+    ID3D11Resource* texture = nullptr;
+    ID3D11ShaderResourceView* textureView = nullptr;
+    HRESULT hr = CreateWICTextureFromMemory(device, deviceContext, binaryData ,binaryLength, &texture, &textureView);
+    //HRESULT hr = DirectX::CreateDDSTextureFromFile( device, , nullptr, &textureView );
+
+    
+
+    D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+    textureView->GetDesc(&desc);
+    
+
+    if(hr)
+        return hr;
+
+    //generate id (which is really an array index)
+    int index = generateID();
+    
+    //get size
+    unsigned int width;
+    unsigned int height;
+    GetTextureSizeD3D(texture, &width, &height);
+
+    //ensure sizing in textures storage
+    if(textures.size() <= (unsigned int)index)
+        textures.resize(index+1);
+
+    //add to storage
+    TextureData& data = textures[index];
+    data.ID = index;
+    data.name = "";
+    data.width = width;
+    data.height = height;
+    data.textureResource = texture;
+    data.textureView = textureView;
+
+    //reference by name
+    textureNameToId[filename] = index;
+
+    TextureHandle hTex = {index};
+    *texHandle = hTex;
+
+    return hr;
+}
+
 int TextureResourcer::createTextureFromWIC(ID3D11Device* device, ID3D11DeviceContext* deviceContext, const char* filename, TextureHandle* texHandle)
 {
     ID3D11Resource* texture = nullptr;

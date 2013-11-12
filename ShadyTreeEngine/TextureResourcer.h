@@ -24,6 +24,7 @@ public:
     std::vector<TextureData> textures;
     std::unordered_map<std::string, int> textureNameToId;
 
+    int createTextureFromWIC(ID3D11Device* device, ID3D11DeviceContext* deviceContext, const uint8_t * binaryData, int binaryLength, TextureHandle* texHandle);
     int createTextureFromWIC(ID3D11Device* device, ID3D11DeviceContext* deviceContext, const char* filename, TextureHandle* texHandle);
     TextureData& getTextureData(TextureHandle tex);
 
