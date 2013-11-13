@@ -1,12 +1,14 @@
 #include "GraphicsTestUser.h"
 
 #include "DirectX_GraphicsDevice.h"
+#include "Resources.h"
 #include "MathLib.h"
 #include "Vertex.h"
 #include <d3d11_1.h>
 #include <DirectXMath.h>
 #include <sstream>
 #include <random>
+
 
 GraphicsTestUser::GraphicsTestUser(GraphicsDevice* in) : gd(in)
 {
@@ -29,8 +31,8 @@ int GraphicsTestUser::init()
 
 int GraphicsTestUser::createShaders()
 {
-    gd->createVertexShader("Tutorial07.fx","VS", "vs_4_0", &v);
-    gd->createPixelShader("Tutorial07.fx","PS", "ps_4_0", &p);
+    v = Resources::Instance().LoadVertexShaderFile("Tutorial07.fx","VS", "vs_4_0");
+    p = Resources::Instance().LoadPixelShaderFile("Tutorial07.fx","VS", "vs_4_0");
 
     return 0;
 }
@@ -95,11 +97,14 @@ int GraphicsTestUser::createVertexBuffers()
         23,20,22
     };
 
-    Mesh* newMesh = gd->generateMesh("mesh1");
+    
+    Mesh* newMesh = Resources::Instance().generateMesh("mesh1");
     newMesh->vertices = vertices;
     newMesh->vertexCount = ARRAYSIZE(vertices);
     newMesh->indices = indices;
     newMesh->indexCount = ARRAYSIZE(indices);
+
+    
 
     int result = gd->createVertexIndexBuffer(newMesh, &hVBuf, &hIBuf);
     m = newMesh->handle();
@@ -122,7 +127,7 @@ int GraphicsTestUser::setWorldViewProj()
 int GraphicsTestUser::setTestTexture()
 {
     // Load the Texture
-    gd->createTexture("seafloor2.png", &t);
+    t = Resources::Instance().LoadTextureFile("seafloor2.png");
 
     return 0;
 }

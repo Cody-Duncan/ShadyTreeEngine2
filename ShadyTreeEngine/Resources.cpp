@@ -16,10 +16,10 @@ Resources::~Resources(void)
 
 void Resources::setGraphicsDevice(GraphicsDevice* _gd)
 {
-    gd = dynamic_cast<DirectX_GraphicsDevice*>(gd);
+    gd = dynamic_cast<DirectX_GraphicsDevice*>(_gd);
 }
 
-Mesh* generateMesh(std::string& identifierName)
+Mesh* Resources::generateMesh(std::string identifierName)
 {
     return MeshResourcer::Instance().generateMesh(identifierName);
 }
@@ -48,7 +48,6 @@ TextureHandle Resources::LoadTextureFile(std::string filename)
     TextureHandle texHandle;
     const char* filenameCSTR = filename.c_str();
     int result = TextureResourcer::Instance().createTextureFromWIC(gd->getDevice(), gd->getContext(), filenameCSTR, &texHandle);
-    delete[] filenameCSTR;
     return texHandle;
 }
 
@@ -75,9 +74,29 @@ GameDataHandle Resources::LoadData(uint8_t data)
 
 VertexShaderHandle Resources::LoadVertexShaderFile(std::string FileName, const char * EntryPoint, const char * ShaderModel)
 {
-     VertexShaderHandle h;
-     gd->createVertexShader(FileName, EntryPoint, ShaderModel, &h);
-     return h;
+    ShaderResourcer& SR = ShaderResourcer::Instance(); 
+
+    int result = SR.GenerateVertexShaderFromFile(
+        gd->getDevice(),
+        gd->getContext(),
+        FileName.c_str(),
+        EntryPoint,
+        ShaderModel);
+
+    errorBox(result, L" Could not generate vertex shader ");
+    
+    VertexShaderHandle vsHandle = SR.getVertexShaderHandle(FileName);
+
+    int bl = SR.debug_GetInputLayoutByteLength(vsHandle);
+    if( bl != sizeof(Vertex) )
+    {
+        std::wstringstream ss;
+        ss << L" Vertex Size Differs from inputLayout. InputLayout:  " << bl
+            << L" ; Vertex: " << sizeof(Vertex) << std::endl;
+        errorBox(-1, ss.str().c_str());
+    }
+
+    return vsHandle;
 }
 
 VertexShaderHandle Resources::LoadVertexShader(uint8_t* data)
@@ -89,9 +108,22 @@ VertexShaderHandle Resources::LoadVertexShader(uint8_t* data)
 
 PixelShaderHandle Resources::LoadPixelShaderFile(std::string FileName, const char * EntryPoint, const char * ShaderModel)
 {
-    PixelShaderHandle h;
-    gd->createPixelShader(FileName, EntryPoint, ShaderModel, &h);
-    return h;
+    PixelShaderHandle psHandle;
+
+    ShaderResourcer& SR = ShaderResourcer::Instance(); 
+    int result = SR.GeneratePixelShaderFromFile(
+        gd->getDevice(),
+        gd->getContext(),
+        FileName.c_str(),
+        EntryPoint,
+        ShaderModel
+        );
+
+    errorBox(result, L" Could not generate pixel shader");
+
+    psHandle = SR.getPixelShaderHandle(FileName);
+
+    return psHandle;
 }
 
 PixelShaderHandle Resources::LoadPixelShader(uint8_t* data)

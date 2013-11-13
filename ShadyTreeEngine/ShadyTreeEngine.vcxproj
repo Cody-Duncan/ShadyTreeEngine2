@@ -23,6 +23,7 @@
     <ClInclude Include="GraphicsDevice.h" />
     <ClInclude Include="GraphicsFactory.h" />
     <ClInclude Include="GraphicsResourceHandles.h" />
+    <ClInclude Include="IResources.h" />
     <ClInclude Include="MathLib.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshResourcer.h" />

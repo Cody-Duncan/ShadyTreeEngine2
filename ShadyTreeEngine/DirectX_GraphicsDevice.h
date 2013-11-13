@@ -32,11 +32,7 @@ public:
     virtual void SwapBuffer();
     virtual void Free();
 
-    virtual Mesh* generateMesh(std::string name);
     virtual int  createVertexIndexBuffer(Mesh* mesh, VertexBufferHandle* hVBuf, IndexBufferHandle* hIBuf);
-    virtual void createTexture(std::string Filename, TextureHandle* texHandle);
-    virtual int  createVertexShader(std::string FileName, const char *EntryPoint, const char *ShaderModel, VertexShaderHandle* vsHandle);
-    virtual int  createPixelShader(std::string FileName, const char *EntryPoint, const char *ShaderModel, PixelShaderHandle* psHandle);
 
     virtual void setClearColor(Color color);
 

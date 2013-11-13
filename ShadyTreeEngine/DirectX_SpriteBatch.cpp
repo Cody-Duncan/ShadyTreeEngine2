@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "DirectX_SpriteBatch.h"
-#include "BufferResourcer.h"
+#include "Resources.h"
 
 #define BatchSize 250
 
@@ -28,8 +28,8 @@ DirectX_SpriteBatch::~DirectX_SpriteBatch(void)
 
 void DirectX_SpriteBatch::Init()
 {
-    device->createVertexShader("Tutorial07.fx","VS", "vs_4_0", &vertexShaderH);
-    device->createPixelShader("Tutorial07.fx","PS", "ps_4_0", &pixelShaderH);
+    vertexShaderH = Resources::Instance().LoadVertexShaderFile("resources/Tutorial07.fx","VS", "vs_4_0");
+    pixelShaderH  = Resources::Instance().LoadPixelShaderFile("resources/Tutorial07.fx","PS", "ps_4_0");
 
     BufferResourcer::Instance().createDynamicIndexBuffer(BatchSize*6, device->getDevice(), &batchIBuffer);
 
@@ -106,10 +106,6 @@ void DirectX_SpriteBatch::resetAllBatchBuffers()
     }
 }
 
-void DirectX_SpriteBatch::createTexture(std::string Filename, TextureHandle* texHandle)
-{
-    device->createTexture(Filename, texHandle);
-}
 
 void DirectX_SpriteBatch::Begin()
 {   

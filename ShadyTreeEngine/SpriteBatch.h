@@ -14,7 +14,6 @@ public:
     DeviceAPI API;
 
     virtual void Init() = 0;
-    virtual void createTexture(std::string Filename, TextureHandle* texHandle) = 0;
 
     virtual void Begin() = 0;
     virtual void Draw(TextureHandle texH, Matrix transform, Rectangle2 rect) = 0;

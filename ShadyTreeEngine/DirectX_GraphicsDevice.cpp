@@ -449,72 +449,12 @@ void DirectX_GraphicsDevice::EndDraw()
 //=============================================================================
 //=============================================================================
 
-Mesh* DirectX_GraphicsDevice::generateMesh(std::string name)
-{
-    return MeshResourcer::Instance().generateMesh(name);
-}
-
 int DirectX_GraphicsDevice::createVertexIndexBuffer(Mesh* mesh, VertexBufferHandle* hVBuf, IndexBufferHandle* hIBuf)
 {
     BufferResourcer& resourceVertexBuf = BufferResourcer::Instance();
     int result = resourceVertexBuf.createStaticBuffers(*mesh, device, hVBuf, hIBuf);
     if(result)
         return result;
-
-    return 0;
-}
-
-
-void DirectX_GraphicsDevice::createTexture(std::string filename, TextureHandle* texHandle)
-{
-    TextureResourcer::Instance().createTextureFromWIC( device, deviceContext, filename.c_str(), texHandle);
-}
-
-
-int DirectX_GraphicsDevice::createVertexShader(std::string FileName, const char *EntryPoint, const char *ShaderModel, VertexShaderHandle* vsHandle)
-{
-    ShaderResourcer& SR = ShaderResourcer::Instance(); 
-    HRESULT result = 0;
-    result = SR.GenerateVertexShaderFromFile(
-        device,
-        deviceContext,
-        FileName.c_str(),
-        EntryPoint,
-        ShaderModel);
-
-    if ( errorBox(result, L" Could not generate vertex shader ") )  
-        return result;
-    
-    *vsHandle = SR.getVertexShaderHandle(FileName);
-
-    if( SR.debug_GetInputLayoutByteLength(*vsHandle) != sizeof(Vertex) )
-    {
-        std::wstringstream ss;
-        ss << L" Vertex Size Differs from inputLayout. InputLayout:  " << SR.debug_GetInputLayoutByteLength(*vsHandle)
-           << L" ; Vertex: " << sizeof(Vertex) << std::endl;
-        errorBox(-1, ss.str().c_str());
-        return 1;
-    }
-
-    return 0;
-}
-
-
-int DirectX_GraphicsDevice::createPixelShader(std::string FileName, const char *EntryPoint, const char *ShaderModel, PixelShaderHandle* psHandle)
-{
-    ShaderResourcer& SR = ShaderResourcer::Instance(); 
-    int result = SR.GeneratePixelShaderFromFile(
-        device,
-        deviceContext,
-        FileName.c_str(),
-        EntryPoint,
-        ShaderModel
-        );
-
-    if ( errorBox(result, L" Could not generate pixel shader") )  
-        return result;
-
-    *psHandle = SR.getPixelShaderHandle(FileName);
 
     return 0;
 }

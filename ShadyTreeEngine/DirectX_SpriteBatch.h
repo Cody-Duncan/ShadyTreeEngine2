@@ -13,7 +13,6 @@ public:
     ~DirectX_SpriteBatch(void);
 
     void Init();
-    void createTexture(std::string Filename, TextureHandle* texHandle);
 
     void Begin();
     void Draw(TextureHandle texH, Matrix transform, Rectangle2 rect);

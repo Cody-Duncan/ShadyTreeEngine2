@@ -1,16 +1,19 @@
 #include "GraphicsFactory.h"
 
 #include "DirectX_SpriteBatch.h"
+#include "Resources.h"
 
 GraphicsDevice* generateGraphicsDevice(DeviceAPI type)
 {
+    GraphicsDevice* device = nullptr;
     switch(type)
     {
     case DeviceAPI::DirectX11:
-        return new DirectX_GraphicsDevice();
-    default:
-        return nullptr;
+        device = new DirectX_GraphicsDevice();
     }
+
+    Resources::Instance().setGraphicsDevice(device);
+    return device;
 }
 
 SpriteBatch* generateSpriteBatch(GraphicsDevice* graphicsDevice)

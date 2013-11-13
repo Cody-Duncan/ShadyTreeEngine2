@@ -1,5 +1,6 @@
 #include "SpriteBatchTestUser.h"
 #include "DebugOutput.h"
+#include "Resources.h"
 
 SpriteBatchTestUser::~SpriteBatchTestUser(void)
 {
@@ -26,7 +27,7 @@ int SpriteBatchTestUser::init()
 
 int SpriteBatchTestUser::setTestTexture()
 {
-    sb->createTexture("textMultTexture.png", &t);
+    t = Resources::Instance().LoadTextureFile("resources/textMultTexture.png");
     return 0;
 }
 
@@ -60,7 +61,7 @@ void SpriteBatchTestUser::testdraw()
         if(counter == 0)
             watch.Start();
         watch.Stop();
-        time += watch.ElapsedTimeMilliSec() / 1000;
+        time += (float)watch.ElapsedTimeMilliSec() / 1000;
         DebugPrintf("FPS: %f\n" , counter / time);
         watch.Start();
     }
