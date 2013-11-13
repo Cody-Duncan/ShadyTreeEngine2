@@ -5,19 +5,19 @@
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="BufferResourcer.cpp">
-      <Filter>Graphics\Resourcers</Filter>
+      <Filter>Resources\Resourcers</Filter>
     </ClCompile>
     <ClCompile Include="ShaderResourcer.cpp">
-      <Filter>Graphics\Resourcers</Filter>
+      <Filter>Resources\Resourcers</Filter>
     </ClCompile>
     <ClCompile Include="TextureResourcer.cpp">
-      <Filter>Graphics\Resourcers</Filter>
+      <Filter>Resources\Resourcers</Filter>
     </ClCompile>
     <ClCompile Include="DDSTextureLoader.cpp">
-      <Filter>Graphics\Loaders</Filter>
+      <Filter>Resources\Loaders</Filter>
     </ClCompile>
     <ClCompile Include="WICTextureLoader.cpp">
-      <Filter>Graphics\Loaders</Filter>
+      <Filter>Resources\Loaders</Filter>
     </ClCompile>
     <ClCompile Include="WindowFactory.cpp">
       <Filter>Window</Filter>
@@ -31,7 +31,7 @@
       <Filter>Diagnostic</Filter>
     </ClCompile>
     <ClCompile Include="MeshResourcer.cpp">
-      <Filter>Graphics\Resourcers</Filter>
+      <Filter>Resources\Resourcers</Filter>
     </ClCompile>
     <ClCompile Include="SpriteBatch.cpp">
       <Filter>Graphics\API</Filter>
@@ -51,28 +51,31 @@
     <ClCompile Include="Stopwatch.cpp">
       <Filter>Diagnostic</Filter>
     </ClCompile>
+    <ClCompile Include="Resources.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX_GraphicsDevice.h">
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="BufferResourcer.h">
-      <Filter>Graphics\Resourcers</Filter>
+      <Filter>Resources\Resourcers</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBuffer.h">
-      <Filter>Graphics\Resourcers</Filter>
+      <Filter>Resources\Resourcers</Filter>
     </ClInclude>
     <ClInclude Include="ShaderResourcer.h">
-      <Filter>Graphics\Resourcers</Filter>
+      <Filter>Resources\Resourcers</Filter>
     </ClInclude>
     <ClInclude Include="TextureResourcer.h">
-      <Filter>Graphics\Resourcers</Filter>
+      <Filter>Resources\Resourcers</Filter>
     </ClInclude>
     <ClInclude Include="DDSTextureLoader.h">
-      <Filter>Graphics\Loaders</Filter>
+      <Filter>Resources\Loaders</Filter>
     </ClInclude>
     <ClInclude Include="WICTextureLoader.h">
-      <Filter>Graphics\Loaders</Filter>
+      <Filter>Resources\Loaders</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsDevice.h">
       <Filter>Graphics\API</Filter>
@@ -107,7 +110,7 @@
       <Filter>Diagnostic</Filter>
     </ClInclude>
     <ClInclude Include="MeshResourcer.h">
-      <Filter>Graphics\Resourcers</Filter>
+      <Filter>Resources\Resourcers</Filter>
     </ClInclude>
     <ClInclude Include="SpriteBatch.h">
       <Filter>Graphics\API</Filter>
@@ -130,22 +133,19 @@
     <ClInclude Include="Stopwatch.h">
       <Filter>Diagnostic</Filter>
     </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
       <UniqueIdentifier>{fcb1d1de-41be-4535-a9e7-08a3aa0cbff8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Graphics\Resourcers">
-      <UniqueIdentifier>{2c401166-7512-46c7-b6a8-98c6db5ea3c3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Graphics\API">
       <UniqueIdentifier>{444ae2a5-7eda-4c3d-9c9b-904a9854b013}</UniqueIdentifier>
     </Filter>
     <Filter Include="Math">
       <UniqueIdentifier>{3af75988-15e9-4b70-8ef0-9c4058c9c2de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Graphics\Loaders">
-      <UniqueIdentifier>{4b8331b4-d5ae-4a93-9788-e62d10a3e014}</UniqueIdentifier>
     </Filter>
     <Filter Include="Window">
       <UniqueIdentifier>{eabbfba8-f05f-467e-ac27-5f42aef103d7}</UniqueIdentifier>
@@ -158,6 +158,15 @@
     </Filter>
     <Filter Include="Graphics\2D Adapter">
       <UniqueIdentifier>{3e3988b8-b221-42d1-80cf-db6a5634496e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{99f52ad7-b6f1-41fb-87cc-134c02764fc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Loaders">
+      <UniqueIdentifier>{4b8331b4-d5ae-4a93-9788-e62d10a3e014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Resourcers">
+      <UniqueIdentifier>{2c401166-7512-46c7-b6a8-98c6db5ea3c3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

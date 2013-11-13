@@ -95,9 +95,6 @@ int TextureResourcer::createTextureFromWIC(ID3D11Device* device, ID3D11DeviceCon
     data.textureResource = texture;
     data.textureView = textureView;
 
-    //reference by name
-    textureNameToId[filename] = index;
-
     TextureHandle hTex = {index};
     *texHandle = hTex;
 

@@ -1,7 +1,10 @@
 #pragma once
 #include "ShadyTree_DLLAPI.h"
 
-
+struct GameDataHandle
+{
+    int gameDataID;
+};
 
 struct TextureHandle
 {
