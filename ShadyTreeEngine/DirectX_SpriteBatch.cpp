@@ -106,7 +106,6 @@ void DirectX_SpriteBatch::resetAllBatchBuffers()
     }
 }
 
-
 void DirectX_SpriteBatch::Begin()
 {   
     static Matrix m = Matrix::Identity();
@@ -133,10 +132,19 @@ void DirectX_SpriteBatch::Begin()
 }
 
 
+
 void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 rect)
 {
-    addBatchBuffer(texH);
-    TextureData texData =  TextureResourcer::Instance().getTextureData(texH);
+    //@@optimization: gets another good chunk of fps by avoiding call to getTextureData
+    //Works when draw calls are sorted by texture.
+    static TextureHandle lastTex = {texH.textureIndex-1}; //guarantee initial value is not the same
+    static TextureData& texData = TextureResourcer::Instance().getTextureData(texH); 
+
+    if(lastTex.textureIndex != texH.textureIndex)
+    {
+        addBatchBuffer(texH);
+        texData = TextureResourcer::Instance().getTextureData(texH);
+    }
     
     //calculate normalized UV coordinates
     Rectangle2 textureArea;
