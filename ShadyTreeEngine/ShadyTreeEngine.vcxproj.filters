@@ -26,7 +26,6 @@
       <Filter>Graphics\API</Filter>
     </ClCompile>
     <ClCompile Include="StdAfx.cpp" />
-    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="DebugOutput.cpp">
       <Filter>Diagnostic</Filter>
     </ClCompile>
@@ -53,6 +52,9 @@
     </ClCompile>
     <ClCompile Include="Resources.cpp">
       <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Resources\ResourceClasses</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -102,7 +104,6 @@
     <ClInclude Include="ShadyTree_DLLAPI.h">
       <Filter>Graphics\API</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="DebugOutput.h">
       <Filter>Diagnostic</Filter>
     </ClInclude>
@@ -139,6 +140,9 @@
     <ClInclude Include="IResources.h">
       <Filter>Resources</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Resources\ResourceClasses</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -170,6 +174,9 @@
     </Filter>
     <Filter Include="Resources\Resourcers">
       <UniqueIdentifier>{2c401166-7512-46c7-b6a8-98c6db5ea3c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\ResourceClasses">
+      <UniqueIdentifier>{56227e2f-3eb8-4098-91b7-fe5ff7ab64c9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
