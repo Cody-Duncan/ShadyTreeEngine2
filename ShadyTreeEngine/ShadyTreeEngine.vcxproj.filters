@@ -56,6 +56,18 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Resources\ResourceClasses</Filter>
     </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentFactory.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractComponentCache.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentCache.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX_GraphicsDevice.h">
@@ -143,6 +155,18 @@
     <ClInclude Include="Mesh.h">
       <Filter>Resources\ResourceClasses</Filter>
     </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentFactory.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractComponentCache.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentCache.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -177,6 +201,9 @@
     </Filter>
     <Filter Include="Resources\ResourceClasses">
       <UniqueIdentifier>{56227e2f-3eb8-4098-91b7-fe5ff7ab64c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{c643028c-b0fd-43f8-a4f3-9149e3617f00}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

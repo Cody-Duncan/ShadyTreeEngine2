@@ -11,7 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractComponentCache.h" />
     <ClInclude Include="BufferResourcer.h" />
+    <ClInclude Include="ComponentCache.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DebugOutput.h" />
@@ -42,7 +46,11 @@
     <ClInclude Include="WindowFactory.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractComponentCache.cpp" />
     <ClCompile Include="BufferResourcer.cpp" />
+    <ClCompile Include="ComponentCache.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ComponentFactory.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DebugOutput.cpp" />
     <ClCompile Include="DirectX_GraphicsDevice.cpp" />
