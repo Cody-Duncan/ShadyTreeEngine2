@@ -39,6 +39,11 @@ public:
         }
     }
 
+    T* Retrieve(int id)
+    {
+        return storage[ID_Index[id]];
+    }
+
     void Delete(T& component)
     {
         int index = ID_Index[component.id];

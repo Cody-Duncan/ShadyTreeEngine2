@@ -50,6 +50,9 @@ public:
     template<class T>
     bool hasComponentCache();
 
+    template<class T>
+    ComponentCache<T>* getCache();
+
     std::vector<AbstractComponentCache*> map;
 
 private:
@@ -93,30 +96,37 @@ T* ComponentFactory::createComponent()
 template<class T>
 T* ComponentFactory::getComponent(int id)
 {
-    //@@TODO
-    return nullptr;
+     getCache<T>()->Retrieve(id);
 }
 
 template<class T>
 void ComponentFactory::deleteComponent(int id)
 {
-    //@@TODO
+    getCache<T>()->Delete(id);
 }
 
 template<class T>
 void ComponentFactory::createComponentCache()
 {
-    ComponentCache<T>* ComponentCache = new ComponentCache<T>();
-    ComponentCache->storage.reserve(DEFAULT_CACHE_LENGTH);
-    
     int index = getID<T>();
-    if(index == map.size())
+    if(index == map.size()) //new indices are always by increment
+    {
+        ComponentCache<T>* ComponentCache = new ComponentCache<T>();
+        ComponentCache->Reserve(DEFAULT_CACHE_LENGTH);
         map.push_back(ComponentCache);
+    }
 }
 
 template<class T>
 bool ComponentFactory::hasComponentCache()
 {
-    unsigned int val = getID<T>();
-    return map.size() > val ;
+    int index = getID<T>();
+    return index < map.size() ;
+}
+
+template<class T>
+inline ComponentCache<T>* ComponentFactory::getCache()
+{
+    int index = getID<T>();
+    return static_cast<ComponentCache<T>*>(map[index]);
 }
