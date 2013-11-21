@@ -20,8 +20,8 @@
 #include <vector>
 #include <typeinfo>
 #include "Component.h"
-#include "AbstractComponentCache.h"
 #include "ComponentCache.h"
+#include "ComponentTypeID.h"
 
 #define DEFAULT_CACHE_LENGTH 512
 
@@ -43,6 +43,8 @@ public:
     template<class T>
     void deleteComponent(int id);
 
+    ST_API void deleteComponent(int id, int typeID);
+
 
     template<class T>
     void createComponentCache();
@@ -59,24 +61,12 @@ private:
 
     ST_API static int typeIDGen;
 
-    template<class T>
-    static int getID();
-    
-
     ST_API ComponentFactory(void);
     ST_API ~ComponentFactory(void);
     ComponentFactory(ComponentFactory const& copy);				//not implemented
     ComponentFactory& operator=(ComponentFactory const& copy);	//not implemented
 };
 
-
-
-template<class T>
-int ComponentFactory::getID()
-{
-    static int idKey = typeIDGen++;
-    return idKey;
-}
 
 template<class T>
 T* ComponentFactory::createComponent()
@@ -102,7 +92,7 @@ T* ComponentFactory::getComponent(int id)
 template<class T>
 void ComponentFactory::deleteComponent(int id)
 {
-    getCache<T>()->Delete(id);
+    deleteComponent(id, getID<T>());
 }
 
 template<class T>

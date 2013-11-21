@@ -1,8 +1,15 @@
 #pragma once
-#include "AbstractComponentCache.h"
 #include <vector>
 
 #define INACTIVE_ID -1;
+
+class AbstractComponentCache
+{
+public:
+    virtual void Reserve(unsigned int size) = 0;
+    virtual void Delete(int id) = 0;
+};
+
 
 template<class T>
 class ComponentCache :public AbstractComponentCache
@@ -69,7 +76,6 @@ public:
                 storage.emplace_back();
             }
         }
-        
     }
 
 private:

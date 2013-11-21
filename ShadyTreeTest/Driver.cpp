@@ -15,6 +15,8 @@
 #include "Stopwatch.h"
 #include "ComponentFactory.h"
 #include "Component.h"
+#include "GameObject.h"
+#include "GameObjectCache.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -28,6 +30,14 @@ SpriteBatchTestUser* sbUser;
 void update();
 void draw();
 
+class Banana : public Component 
+{
+public: 
+    Banana() {}
+    Banana(int _id,  bool _active)
+        : Component(_id,_active) {}
+};
+
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd )
 {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
@@ -38,11 +48,21 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     ComponentFactory& cf = ComponentFactory::Instance();
     cf.createComponentCache<Component>();
     Component* comp = cf.createComponent<Component>();
+    Banana* comp3 = cf.createComponent<Banana>();
     Component* comp2 = cf.getComponent<Component>(comp->id);
     cf.deleteComponent<Component>(comp->id);
     bool result = cf.hasComponentCache<Component>();
     
 
+    GameObject ent;
+    ent.attachComponent(comp3);
+    Banana* comp4 = ent.getComponent<Banana>();
+    result = ent.hasComponent<Banana>();
+    ent.removeComponent<Banana>();
+    result = ent.hasComponent<Banana>();
+
+    GameObjectCache& GoC = GameObjectCache::Instance();
+    GameObject* ent = GoC.Create();
     
     //_CrtSetBreakAlloc(172);
 

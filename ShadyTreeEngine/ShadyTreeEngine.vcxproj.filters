@@ -62,10 +62,16 @@
     <ClCompile Include="ComponentFactory.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="AbstractComponentCache.cpp">
+    <ClCompile Include="ComponentCache.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentCache.cpp">
+    <ClCompile Include="ComponentTypeID.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectCache.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
@@ -161,10 +167,16 @@
     <ClInclude Include="ComponentFactory.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="AbstractComponentCache.h">
+    <ClInclude Include="ComponentCache.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentCache.h">
+    <ClInclude Include="ComponentTypeID.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectCache.h">
       <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>
