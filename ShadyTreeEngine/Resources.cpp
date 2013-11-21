@@ -83,6 +83,7 @@ VertexShaderHandle Resources::LoadVertexShaderFile(std::string FileName, const c
         EntryPoint,
         ShaderModel);
 
+    assert(!result);
     errorBox(result, L" Could not generate vertex shader ");
     
     VertexShaderHandle vsHandle = SR.getVertexShaderHandle(FileName);
