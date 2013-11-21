@@ -28,7 +28,7 @@
 class ComponentFactory
 {
 public:
-    static ComponentFactory& instance()
+    static ComponentFactory& Instance()
     {
         static ComponentFactory instance;
         return instance;
@@ -57,14 +57,14 @@ public:
 
 private:
 
-    static int typeIDGen;
+    ST_API static int typeIDGen;
 
     template<class T>
     static int getID();
     
 
-    ComponentFactory(void);
-    ~ComponentFactory(void);
+    ST_API ComponentFactory(void);
+    ST_API ~ComponentFactory(void);
     ComponentFactory(ComponentFactory const& copy);				//not implemented
     ComponentFactory& operator=(ComponentFactory const& copy);	//not implemented
 };
@@ -88,15 +88,15 @@ T* ComponentFactory::createComponent()
     }
 
     int index = getID<T>();
-    ComponentCache<T>* ComponentCache = static_cast<ComponentCache<T>*>(map[index]);
-    T* newComp = ComponentCache->Generate();
+    ComponentCache<T>* cc = static_cast<ComponentCache<T>*>(map[index]);
+    T* newComp = cc->Generate();
     return newComp;
 }
 
 template<class T>
 T* ComponentFactory::getComponent(int id)
 {
-     getCache<T>()->Retrieve(id);
+     return getCache<T>()->Retrieve(id);
 }
 
 template<class T>
@@ -111,16 +111,16 @@ void ComponentFactory::createComponentCache()
     int index = getID<T>();
     if(index == map.size()) //new indices are always by increment
     {
-        ComponentCache<T>* ComponentCache = new ComponentCache<T>();
-        ComponentCache->Reserve(DEFAULT_CACHE_LENGTH);
-        map.push_back(ComponentCache);
+        ComponentCache<T>* cc = new ComponentCache<T>();
+        cc->Reserve(DEFAULT_CACHE_LENGTH);
+        map.push_back(cc);
     }
 }
 
 template<class T>
 bool ComponentFactory::hasComponentCache()
 {
-    int index = getID<T>();
+    unsigned int index = getID<T>();
     return index < map.size() ;
 }
 

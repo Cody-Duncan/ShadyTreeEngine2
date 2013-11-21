@@ -1,5 +1,5 @@
 #pragma once
-class Component
+class ST_API Component
 {
 public:
     Component(void);

@@ -13,6 +13,8 @@
 #include "DebugOutput.h"
 #include "SpriteBatchTestUser.h"
 #include "Stopwatch.h"
+#include "ComponentFactory.h"
+#include "Component.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -33,6 +35,14 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
     Stopwatch watch;
     
+    ComponentFactory& cf = ComponentFactory::Instance();
+    cf.createComponentCache<Component>();
+    Component* comp = cf.createComponent<Component>();
+    Component* comp2 = cf.getComponent<Component>(comp->id);
+    cf.deleteComponent<Component>(comp->id);
+    bool result = cf.hasComponentCache<Component>();
+    
+
     
     //_CrtSetBreakAlloc(172);
 

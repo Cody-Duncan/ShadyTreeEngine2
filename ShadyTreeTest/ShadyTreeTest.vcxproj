@@ -124,6 +124,11 @@
     <ClInclude Include="GraphicsTestUser.h" />
     <ClInclude Include="SpriteBatchTestUser.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ShadyTreeEngine\ShadyTreeEngine.vcxproj">
+      <Project>{d040c4f1-07f7-4450-acac-26787db53554}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

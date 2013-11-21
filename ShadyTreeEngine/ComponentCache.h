@@ -8,8 +8,10 @@ template<class T>
 class ComponentCache :public AbstractComponentCache
 {
 public:
-    ComponentCache(void);
-    ~ComponentCache(void);
+    ComponentCache(void)
+    {}
+    ~ComponentCache(void)
+    {}
 
     T* Generate()
     {
@@ -21,7 +23,7 @@ public:
 
             ID_Index[id] = index;
 
-            return storage.back();
+            return &storage.back();
         }
         else
         {
@@ -41,26 +43,27 @@ public:
 
     T* Retrieve(int id)
     {
-        return storage[ID_Index[id]];
+        return &storage[ID_Index[id]];
     }
 
-    void Delete(T& component)
+    void Delete(int id)
     {
-        int index = ID_Index[component.id];
-        ID_Index[component.id] = INACTIVE_ID;
+        int index = ID_Index[id];
+        T& component = storage[index];
+        ID_Index[id] = INACTIVE_ID;
         freeSlots.push_back(index);
 
         component.active = false;
         component.id = INACTIVE_ID;
     }
 
-    void Reserve(int size)
+    void Reserve(unsigned int size)
     {
         if(size > storage.size())
         {
-            int lastIndex = storage.size();
+            unsigned int lastIndex = storage.size();
             
-            for(int i = lastIndex; i < storage.size(); ++i)
+            for(unsigned int i = lastIndex; i < storage.size(); ++i)
             {
                 freeSlots.push_back(i);
                 storage.emplace_back();
@@ -84,12 +87,3 @@ private:
 template<class T>
 int ComponentCache<T>::genID = 0;
 
-template<class T>
-ComponentCache<T>::ComponentCache(void)
-{
-}
-
-template<class T>
-ComponentCache<T>::~ComponentCache(void)
-{
-}
