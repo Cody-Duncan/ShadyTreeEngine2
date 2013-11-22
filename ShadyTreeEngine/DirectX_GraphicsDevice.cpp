@@ -1,5 +1,5 @@
 #include "DirectX_GraphicsDevice.h"
-#include "WindowFactory.h"          //ghMainWnd
+#include "WindowGlobals.h"          //ghMainWnd
 
 #include <assert.h>
 #include <d3dcompiler.h>

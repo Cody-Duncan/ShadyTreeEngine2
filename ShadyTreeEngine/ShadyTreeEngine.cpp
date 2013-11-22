@@ -1,8 +1,7 @@
 #include "ShadyTreeEngine.h"
 
-#include "WindowFactory.h"
 #include "GraphicsFactory.h"
-#include "WndProc.h"
+#include "OSHighResTimer.h"
 
 ShadyTreeEngine::ShadyTreeEngine()
 {
@@ -14,56 +13,46 @@ ShadyTreeEngine::~ShadyTreeEngine()
 
 }
 
-void ShadyTreeEngine::Initialize(HINSTANCE hInstance, int show)
+void ShadyTreeEngine::Initialize()
 {
     DebugLogOpen();
 
-    //create window
-    if(!GenerateWindow(hInstance, show, ShadyWndProc))
+    for(unsigned int i = 0; i < systems.size(); ++i)
     {
-        DebugPrintF("Failed to create Window");
-        assert(false && "Failed to create Window");
+        systems[i]->Init();
     }
 
-    graphicsSys = new GraphicsSystem(); 
-    graphicsSys->Init();
-    
+    timer.Start();
+    Running = true;
 }
 
 void ShadyTreeEngine::Run()
 {
-    MSG msg = {0};
-    while( WM_QUIT != msg.message )
-    {
-        if( PeekMessage( &msg, nullptr, 0, 0, PM_REMOVE ) )
-        {
-            TranslateMessage( &msg );
-            DispatchMessage( &msg );
-        }
-        else
-        {
-            Update();
-            Draw();
-        }
+    float deltaTime = 0.0f;
 
+    while( Running )
+    {
+        deltaTime = timer.GetDeltaTime();
+
+        Update(deltaTime);
         Sleep(1);
     }
 }
 
 void ShadyTreeEngine::Free()
 {
-    graphicsSys->Unload();
     DebugLogClose();
 }
 
-void ShadyTreeEngine::Update()
+void ShadyTreeEngine::Update(float deltaTime)
 {
-    
-
+    for(unsigned int i = 0; i < systems.size(); ++i)
+    {
+        systems[i]->Update(deltaTime);
+    }
 }
 
-
-void ShadyTreeEngine::Draw()
+void ShadyTreeEngine::AttachSystem(ISystem* system)
 {
-    graphicsSys->Update();
+    systems.push_back(system);
 }

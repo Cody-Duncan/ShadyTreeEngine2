@@ -25,6 +25,7 @@
     <ClInclude Include="DirectX_SpriteBatch.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectCache.h" />
+    <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GraphicsDevice.h" />
     <ClInclude Include="GraphicsFactory.h" />
@@ -48,8 +49,8 @@
     <ClInclude Include="ShadyTreeEngine.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="WICTextureLoader.h" />
-    <ClInclude Include="WindowFactory.h" />
-    <ClInclude Include="WndProc.h" />
+    <ClInclude Include="WindowGlobals.h" />
+    <ClInclude Include="WindowSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BufferResourcer.cpp" />
@@ -63,6 +64,7 @@
     <ClCompile Include="DirectX_SpriteBatch.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectCache.cpp" />
+    <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="Geometry.inl" />
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="GraphicsFactory.cpp" />
@@ -80,8 +82,8 @@
     <ClCompile Include="TextureResourcer.cpp" />
     <ClCompile Include="ShadyTreeEngine.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
-    <ClCompile Include="WindowFactory.cpp" />
-    <ClCompile Include="WndProc.cpp" />
+    <ClCompile Include="WindowGlobals.cpp" />
+    <ClCompile Include="WindowSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl" />

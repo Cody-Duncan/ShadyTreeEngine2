@@ -19,9 +19,6 @@
     <ClCompile Include="WICTextureLoader.cpp">
       <Filter>Resources\Loaders</Filter>
     </ClCompile>
-    <ClCompile Include="WindowFactory.cpp">
-      <Filter>Window</Filter>
-    </ClCompile>
     <ClCompile Include="GraphicsDevice.cpp">
       <Filter>Graphics\API</Filter>
     </ClCompile>
@@ -77,9 +74,17 @@
     <ClCompile Include="ShadyTreeEngine.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="WndProc.cpp" />
     <ClCompile Include="GraphicsSystem.cpp">
       <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowSystem.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowGlobals.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTimer.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -112,9 +117,6 @@
     </ClInclude>
     <ClInclude Include="MathLib.h">
       <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowFactory.h">
-      <Filter>Window</Filter>
     </ClInclude>
     <ClInclude Include="StringUtility.h">
       <Filter>Utility</Filter>
@@ -186,7 +188,6 @@
     <ClInclude Include="ShadyTreeEngine.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="WndProc.h" />
     <ClInclude Include="ISystem.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -195,6 +196,15 @@
     </ClInclude>
     <ClInclude Include="ST_API_Def.h">
       <Filter>Graphics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowSystem.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowGlobals.h">
+      <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTimer.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

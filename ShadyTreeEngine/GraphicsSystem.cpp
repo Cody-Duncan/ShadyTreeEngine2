@@ -23,8 +23,9 @@ void GraphicsSystem::Load()
     
 }
 
-void GraphicsSystem::Update()
+void GraphicsSystem::Update(float deltaTime)
 {
+    assert(spriteBatch && "no spritebatch initialized. Did you forget to call Init()?");
     spriteBatch->Begin();
         //spriteBatch->Draw(t, matrixArray[i], r);
     spriteBatch->End();
