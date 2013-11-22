@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GraphicsResourceHandles.h"
+#include "ST_API_Def.h"
 
 class Mesh
 {

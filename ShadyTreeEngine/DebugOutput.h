@@ -1,7 +1,6 @@
 
-#include "ShadyTree_DLLAPI.h"
 #include <stdio.h> // for va_list et al
-
+#include "ST_API_Def.h"
 
 ST_API extern int VDebugPrintF(const char* format, va_list& argList);
 

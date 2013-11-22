@@ -18,4 +18,4 @@
 #include "Debug_Graphics.h"
 #include "DebugOutput.h"
 
-#include "ShadyTree_DLLAPI.h"
+#include "ST_API_Def.h"

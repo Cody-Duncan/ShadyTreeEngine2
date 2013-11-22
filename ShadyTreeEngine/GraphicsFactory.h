@@ -1,5 +1,4 @@
 #pragma once
-#include "ShadyTree_DLLAPI.h"
 #include "GraphicsDevice.h"
 #include "DirectX_GraphicsDevice.h"
 #include "SpriteBatch.h"

@@ -29,27 +29,23 @@
     <ClInclude Include="GraphicsDevice.h" />
     <ClInclude Include="GraphicsFactory.h" />
     <ClInclude Include="GraphicsResourceHandles.h" />
-    <ClInclude Include="GraphicsSystem.h" />
     <ClInclude Include="IResources.h" />
-    <ClInclude Include="ISystem.h" />
     <ClInclude Include="MathLib.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshResourcer.h" />
     <ClInclude Include="OSHighResTimer.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="ShaderResourcer.h" />
-    <ClInclude Include="ST_API_Def.h" />
+    <ClInclude Include="ShadyTree_DLLAPI.h" />
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="SpriteBatch.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="Stopwatch.h" />
     <ClInclude Include="StringUtility.h" />
     <ClInclude Include="TextureResourcer.h" />
-    <ClInclude Include="ShadyTreeEngine.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="WICTextureLoader.h" />
     <ClInclude Include="WindowFactory.h" />
-    <ClInclude Include="WndProc.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BufferResourcer.cpp" />
@@ -66,7 +62,6 @@
     <ClCompile Include="Geometry.inl" />
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="GraphicsFactory.cpp" />
-    <ClCompile Include="GraphicsSystem.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshResourcer.cpp" />
     <ClCompile Include="OSHighResTimer.cpp" />
@@ -78,10 +73,8 @@
     </ClCompile>
     <ClCompile Include="Stopwatch.cpp" />
     <ClCompile Include="TextureResourcer.cpp" />
-    <ClCompile Include="ShadyTreeEngine.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
     <ClCompile Include="WindowFactory.cpp" />
-    <ClCompile Include="WndProc.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl" />

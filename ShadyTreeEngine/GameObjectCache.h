@@ -5,7 +5,7 @@
 class GameObjectCache
 {
 public:
-    static GameObjectCache& Instance()
+    ST_API static GameObjectCache& Instance()
     {
         static GameObjectCache factory;
         return factory;
@@ -14,17 +14,17 @@ public:
     std::vector<GameObject> entities;
     std::list<int> freeSlots;
 
-    void Reserve(int size);
+    ST_API void Reserve(int size);
 
-    GameObject* Create();
-    GameObject* Get(int id);
+    ST_API GameObject* Create();
+    ST_API GameObject* Get(int id);
 
-    void DestroyNow(int id);
+    ST_API void DestroyNow(int id);
     
-    void DestroyLater(int id);
-    void DestroyCleanup();
+    ST_API void DestroyLater(int id);
+    ST_API void DestroyCleanup();
 
-    void Clear();
+    ST_API void Clear();
 
 private:
     GameObjectCache(void);

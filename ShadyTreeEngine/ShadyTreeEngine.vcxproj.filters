@@ -74,6 +74,13 @@
     <ClCompile Include="GameObjectCache.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="ShadyTreeEngine.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="WndProc.cpp" />
+    <ClCompile Include="GraphicsSystem.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX_GraphicsDevice.h">
@@ -119,9 +126,6 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="StdAfx.h" />
-    <ClInclude Include="ShadyTree_DLLAPI.h">
-      <Filter>Graphics\API</Filter>
-    </ClInclude>
     <ClInclude Include="DebugOutput.h">
       <Filter>Diagnostic</Filter>
     </ClInclude>
@@ -179,6 +183,19 @@
     <ClInclude Include="GameObjectCache.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="ShadyTreeEngine.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="WndProc.h" />
+    <ClInclude Include="ISystem.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsSystem.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ST_API_Def.h">
+      <Filter>Graphics\API</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -216,6 +233,9 @@
     </Filter>
     <Filter Include="Graphics\API">
       <UniqueIdentifier>{444ae2a5-7eda-4c3d-9c9b-904a9854b013}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{0c7672dc-115b-4923-9ee2-45f83f15a8f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
