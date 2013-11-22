@@ -15,7 +15,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
     
     ShadyTreeEngine engine;
-    engine.AttachSystem(new WindowSystem("ShadyTreeTest", 800, 600));
+    engine.AttachSystem(new WindowSystem("ShadyTreeTest", 1280, 720));
     engine.AttachSystem(new GraphicsSystem() );
     engine.Initialize();
     engine.Run();

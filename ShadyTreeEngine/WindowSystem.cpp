@@ -28,9 +28,9 @@ bool WindowSystem::GenerateWindow(WNDPROC WndProc, int width, int height)
 
     HINSTANCE inst = GetModuleHandle(NULL);
 
-    RECT fullWinRect = {0, 0, width, height};
-    AdjustWindowRect(&fullWinRect,			//The rectangle for the full size of the window
-                    WS_OVERLAPPEDWINDOW,	//The style of the window, which must match what is passed in to CreateWindow below
+    RECT winSize = {0, 0, width, height};
+    AdjustWindowRect(&winSize,			
+                    CS_HREDRAW | CS_VREDRAW,	
                     FALSE);	
 
     WNDCLASSEX  wcex;
@@ -62,11 +62,11 @@ bool WindowSystem::GenerateWindow(WNDPROC WndProc, int width, int height)
         WS_OVERLAPPEDWINDOW,    // style flags
         CW_USEDEFAULT,          // x-coordinate
         CW_USEDEFAULT,          // y-coordinate
-        CW_USEDEFAULT,          // width
-        CW_USEDEFAULT,          // height
+        winSize.right - winSize.left,  // width
+        winSize.bottom - winSize.top,   // height
         0,                      // parent window
         0,                      // menu handle
-        inst,              // app instance
+        inst,                   // app instance
         0                       // extra creation parameters
     ); 
 
