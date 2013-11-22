@@ -27,7 +27,7 @@ int SpriteBatchTestUser::init()
 
 int SpriteBatchTestUser::setTestTexture()
 {
-    t = Resources::Instance().LoadTextureFile("resources/textMultTexture.png");
+    t = Resources::Instance().LoadTextureFile("texMultTexture", "resources/textMultTexture.png");
     return 0;
 }
 

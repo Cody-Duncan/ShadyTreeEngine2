@@ -43,31 +43,56 @@ MeshHandle Resources::BindMesh(Mesh* mesh)
 }
 
 
-TextureHandle Resources::LoadTextureFile(std::string filename)
+TextureHandle Resources::LoadTextureFile(std::string token, std::string filename)
 {
     TextureHandle texHandle;
     const char* filenameCSTR = filename.c_str();
     int result = TextureResourcer::Instance().createTextureFromWIC(gd->getDevice(), gd->getContext(), filenameCSTR, &texHandle);
+    if(!result)
+    {
+        tokenToTexH[token] = texHandle;
+        return texHandle;
+    }
     return texHandle;
 }
 
-TextureHandle Resources::LoadTexture(uint8_t* data, int length)
+TextureHandle Resources::LoadTexture(std::string token, uint8_t* data, int length)
 {
     TextureHandle texHandle;
     int result = TextureResourcer::Instance().createTextureFromWIC(gd->getDevice(), gd->getContext(), data, length, &texHandle);
+    if(!result)
+    {
+        tokenToTexH[token] = texHandle;
+        return texHandle;
+    }
     return texHandle;
 }
 
+TextureHandle Resources::GetTexture(std::string token)
+{
+    return tokenToTexH[token];
+}
 
-GameDataHandle Resources::LoadDataFile(std::string filename)
+Vector2 Resources::GetTextureWidthHeight(std::string token)
+{
+    unsigned int width;
+    unsigned int height;
+    TextureResourcer::Instance().GetTextureSize(tokenToTexH[token], &width, &height);
+    return Vector2( (float) width, (float)height);
+}
+
+
+GameDataHandle Resources::LoadDataFile(std::string token, std::string filename)
 {
     GameDataHandle h = {-1};
+    tokenToGamH[token] = h;
     return h;
 }
 
-GameDataHandle Resources::LoadData(uint8_t data)
+GameDataHandle Resources::LoadData(std::string token, uint8_t data)
 {
     GameDataHandle h = {-1};
+    tokenToGamH[token] = h;
     return h;
 }
 

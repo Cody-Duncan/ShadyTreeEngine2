@@ -10,6 +10,7 @@
 #include "Debug_Graphics.h"
 #include "MeshResourcer.h"
 #include "Mesh.h"
+#include "Resources.h"
 
 DirectX_GraphicsDevice::DirectX_GraphicsDevice(void) : 
     GraphicsDevice(DeviceAPI::DirectX11),
@@ -165,6 +166,8 @@ int DirectX_GraphicsDevice::Init()
     }
 
     g_Projection = g_View = g_World = DirectX::XMMatrixIdentity();
+
+    Resources::Instance().setGraphicsDevice(this);
 
     return 0;
 }

@@ -35,6 +35,7 @@ template<class T>
 void GameObject::attachComponent(T* comp)
 {
     components.insert( std::make_pair<int,Component*>(getID<T>(), static_cast<Component*>(comp) ) );
+    comp->parent = this;
 }
 
 

@@ -4,9 +4,26 @@
     <ClCompile Include="Driver.cpp" />
     <ClCompile Include="GraphicsTestUser.cpp" />
     <ClCompile Include="SpriteBatchTestUser.cpp" />
+    <ClCompile Include="GameObjectFactory.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogic.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsTestUser.h" />
     <ClInclude Include="SpriteBatchTestUser.h" />
+    <ClInclude Include="GameObjectFactory.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="GameLogic">
+      <UniqueIdentifier>{27c06357-7bba-4234-af22-c5f5fccecfe3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

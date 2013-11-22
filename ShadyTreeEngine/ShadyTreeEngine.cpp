@@ -2,6 +2,7 @@
 
 #include "GraphicsFactory.h"
 #include "OSHighResTimer.h"
+#include "ComponentFactory.h"
 
 ShadyTreeEngine::ShadyTreeEngine()
 {
@@ -26,8 +27,17 @@ void ShadyTreeEngine::Initialize()
     Running = true;
 }
 
+void ShadyTreeEngine::Load()
+{
+    for(unsigned int i = 0; i < systems.size(); ++i)
+    {
+        systems[i]->Load();
+    }
+}
+
 void ShadyTreeEngine::Run()
 {
+    ComponentFactory& CF = ComponentFactory::Instance();
     float deltaTime = 0.0f;
 
     while( Running )

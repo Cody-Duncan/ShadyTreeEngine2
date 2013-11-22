@@ -12,12 +12,14 @@ public:
     virtual MeshHandle BindMesh(Mesh* mesh) = 0;
 
     //Textures
-    virtual TextureHandle LoadTextureFile(std::string filename) = 0;
-    virtual TextureHandle LoadTexture(uint8_t* data, int length) = 0;
+    virtual TextureHandle LoadTextureFile(std::string token, std::string filename) = 0;
+    virtual TextureHandle LoadTexture(std::string token, uint8_t* data, int length) = 0;
+    virtual TextureHandle GetTexture(std::string token) = 0;
+    virtual Vector2 GetTextureWidthHeight(std::string token) = 0;
 
     //GameData
-    virtual GameDataHandle LoadDataFile(std::string filename) = 0;
-    virtual GameDataHandle LoadData(uint8_t data) = 0;
+    virtual GameDataHandle LoadDataFile(std::string token, std::string filename) = 0;
+    virtual GameDataHandle LoadData(std::string token, uint8_t data) = 0;
 
     //Shaders
     virtual VertexShaderHandle LoadVertexShaderFile(std::string FileName, const char * EntryPoint, const char * ShaderModel) = 0;

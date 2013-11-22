@@ -117,6 +117,8 @@ bool ComponentFactory::hasComponentCache()
 template<class T>
 inline ComponentCache<T>* ComponentFactory::getCache()
 {
+    if(map.size() == 0)
+        return nullptr;
     int index = getID<T>();
     return static_cast<ComponentCache<T>*>(map[index]);
 }

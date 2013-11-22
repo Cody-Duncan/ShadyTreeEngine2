@@ -9,6 +9,7 @@ public:
     ST_API ShadyTreeEngine();
     ST_API ~ShadyTreeEngine();
     ST_API void Initialize();
+    ST_API void Load();
     ST_API void AttachSystem(ISystem* system);
     ST_API void Run();
     ST_API void Free();

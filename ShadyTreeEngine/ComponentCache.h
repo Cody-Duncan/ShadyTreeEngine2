@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <unordered_map>
 
 #define INACTIVE_ID -1;
 
@@ -62,6 +63,7 @@ public:
 
         component.active = false;
         component.id = INACTIVE_ID;
+        component.parent = nullptr;
     }
 
     void Reserve(unsigned int size)
@@ -78,8 +80,9 @@ public:
         }
     }
 
-private:
     std::vector<T> storage;
+
+private:
     std::list<int> freeSlots;
     std::unordered_map<int, int> ID_Index;
 

@@ -127,7 +127,7 @@ int GraphicsTestUser::setWorldViewProj()
 int GraphicsTestUser::setTestTexture()
 {
     // Load the Texture
-    t = Resources::Instance().LoadTextureFile("seafloor2.png");
+    t = Resources::Instance().LoadTextureFile("seafloor", "seafloor2.png");
 
     return 0;
 }

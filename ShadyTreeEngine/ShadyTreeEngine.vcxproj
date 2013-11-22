@@ -27,6 +27,7 @@
     <ClInclude Include="GameObjectCache.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="GraphicsComponent.h" />
     <ClInclude Include="GraphicsDevice.h" />
     <ClInclude Include="GraphicsFactory.h" />
     <ClInclude Include="GraphicsResourceHandles.h" />
@@ -37,6 +38,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshResourcer.h" />
     <ClInclude Include="OSHighResTimer.h" />
+    <ClInclude Include="PositionalComponent.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="ShaderResourcer.h" />
     <ClInclude Include="ST_API_Def.h" />
@@ -66,12 +68,14 @@
     <ClCompile Include="GameObjectCache.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="Geometry.inl" />
+    <ClCompile Include="GraphicsComponent.cpp" />
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="GraphicsFactory.cpp" />
     <ClCompile Include="GraphicsSystem.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshResourcer.cpp" />
     <ClCompile Include="OSHighResTimer.cpp" />
+    <ClCompile Include="PositionalComponent.cpp" />
     <ClCompile Include="Resources.cpp" />
     <ClCompile Include="ShaderResourcer.cpp" />
     <ClCompile Include="SpriteBatch.cpp" />

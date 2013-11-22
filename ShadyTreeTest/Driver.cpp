@@ -4,7 +4,8 @@
 #include "ShadyTreeEngine.h"
 #include "WindowSystem.h"
 #include "GraphicsSystem.h"
-
+#include "GameLogic.h"
+#include "ComponentFactory.h"
 
 ST_API HWND ghMainWnd;
 ST_API HINSTANCE ghInstance;
@@ -17,7 +18,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     ShadyTreeEngine engine;
     engine.AttachSystem(new WindowSystem("ShadyTreeTest", 1280, 720));
     engine.AttachSystem(new GraphicsSystem() );
+    engine.AttachSystem(new GameLogic());
     engine.Initialize();
+    engine.Load();
+    ComponentFactory& CF = ComponentFactory::Instance();
     engine.Run();
 
 

@@ -3,6 +3,7 @@
 #include "GraphicsDevice.h"
 #include "DirectX_GraphicsDevice.h"
 #include "IResources.h"
+#include <unordered_map>
 
 class Resources : public IResources
 {
@@ -16,12 +17,14 @@ public:
     MeshHandle Resources::BindMesh(Mesh* mesh);
 
     //Textures
-    TextureHandle Resources::LoadTextureFile(std::string filename);
-    TextureHandle Resources::LoadTexture(uint8_t* data, int length);
+    TextureHandle Resources::LoadTextureFile( std::string token, std::string filename);
+    TextureHandle Resources::LoadTexture(std::string token, uint8_t* data, int length);
+    TextureHandle Resources::GetTexture(std::string token);
+    Vector2 Resources::GetTextureWidthHeight(std::string token);
 
     //GameData
-    GameDataHandle Resources::LoadDataFile(std::string filename);
-    GameDataHandle Resources::LoadData(uint8_t data);
+    GameDataHandle Resources::LoadDataFile(std::string token, std::string filename);
+    GameDataHandle Resources::LoadData(std::string token, uint8_t data);
 
     //Shaders
     VertexShaderHandle Resources::LoadVertexShaderFile(std::string FileName, const char * EntryPoint, const char * ShaderModel);
@@ -42,6 +45,9 @@ private:
 
     Resources(void);
     ~Resources(void);
+
+    std::unordered_map<std::string, TextureHandle> tokenToTexH;
+    std::unordered_map<std::string, GameDataHandle> tokenToGamH;
 
 };
 

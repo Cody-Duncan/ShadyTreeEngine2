@@ -1,4 +1,9 @@
 #pragma once
+
+#include "ST_API_Def.h"
+
+class GameObject;
+
 class ST_API Component
 {
 public:
@@ -8,5 +13,6 @@ public:
 
     int id;
     bool active;
+    GameObject* parent;
 };
 
