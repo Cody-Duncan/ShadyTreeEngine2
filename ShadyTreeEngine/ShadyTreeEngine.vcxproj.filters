@@ -62,9 +62,6 @@
     <ClCompile Include="ComponentCache.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentTypeID.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
@@ -180,9 +177,6 @@
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="ComponentCache.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentTypeID.h">
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">

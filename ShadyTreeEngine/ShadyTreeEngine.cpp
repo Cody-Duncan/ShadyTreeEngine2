@@ -37,7 +37,6 @@ void ShadyTreeEngine::Load()
 
 void ShadyTreeEngine::Run()
 {
-    ComponentFactory& CF = ComponentFactory::Instance();
     float deltaTime = 0.0f;
 
     while( Running )

@@ -15,7 +15,6 @@
     <ClInclude Include="ComponentCache.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
-    <ClInclude Include="ComponentTypeID.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DebugOutput.h" />
@@ -59,7 +58,6 @@
     <ClCompile Include="ComponentCache.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentFactory.cpp" />
-    <ClCompile Include="ComponentTypeID.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DebugOutput.cpp" />
     <ClCompile Include="DirectX_GraphicsDevice.cpp" />
@@ -140,11 +138,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_WIN32_WINNT=0x0600;_DEBUG;_WINDOWS;_USRDLL;SHADYTREE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>StdAfx.h</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib\TypeLibInclude</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TypeLib.lib; d3d11.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>

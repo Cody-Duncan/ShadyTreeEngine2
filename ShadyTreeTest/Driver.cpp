@@ -21,7 +21,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     engine.AttachSystem(new GameLogic());
     engine.Initialize();
     engine.Load();
-    ComponentFactory& CF = ComponentFactory::Instance();
     engine.Run();
 
 
