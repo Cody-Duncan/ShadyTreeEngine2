@@ -89,6 +89,9 @@
     <ClCompile Include="PositionalComponent.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="Message.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX_GraphicsDevice.h">
@@ -212,6 +215,9 @@
     <ClInclude Include="PositionalComponent.h">
       <Filter>Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Message.h">
+      <Filter>Message</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -258,6 +264,9 @@
     </Filter>
     <Filter Include="Physics">
       <UniqueIdentifier>{fb9c8084-e11f-4707-b165-abc6c75e2733}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Message">
+      <UniqueIdentifier>{ea66c83d-00b1-4ec6-a8ae-c18054814e07}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -4,9 +4,11 @@
 #include "OSHighResTimer.h"
 #include "ComponentFactory.h"
 
+ShadyTreeEngine* CORE;
+
 ShadyTreeEngine::ShadyTreeEngine()
 {
-
+    CORE = this;
 }
 
 ShadyTreeEngine::~ShadyTreeEngine()
@@ -50,6 +52,14 @@ void ShadyTreeEngine::Run()
 
 void ShadyTreeEngine::Free()
 {
+    for(unsigned int i = 0; i < systems.size(); ++i)
+    {
+        systems[i]->Free();
+        delete systems[i];
+    }
+
+    ComponentFactory::Instance().clearAllCaches();
+
     DebugLogClose();
 }
 
@@ -64,4 +74,15 @@ void ShadyTreeEngine::Update(float deltaTime)
 void ShadyTreeEngine::AttachSystem(ISystem* system)
 {
     systems.push_back(system);
+}
+
+void ShadyTreeEngine::BroadcastMessage(Message* msg)
+{
+    if (msg->type == MessageType::Quit)
+        Running = false;
+
+    for(unsigned int i = 0; i < systems.size(); ++i)
+    {
+        systems[i]->RecieveMessage(msg);
+    }
 }

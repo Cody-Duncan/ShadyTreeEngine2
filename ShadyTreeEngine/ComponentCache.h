@@ -9,6 +9,7 @@ class AbstractComponentCache
 public:
     virtual void Reserve(unsigned int size) = 0;
     virtual void Delete(int id) = 0;
+    virtual void Clear() = 0;
 };
 
 
@@ -78,6 +79,13 @@ public:
                 storage.emplace_back();
             }
         }
+    }
+
+    void Clear()
+    {
+        storage.clear();
+        ID_Index.clear();
+        freeSlots.clear();
     }
 
     std::vector<T> storage;

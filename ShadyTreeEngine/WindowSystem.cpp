@@ -2,6 +2,7 @@
 #include "WindowSystem.h"
 #include <tchar.h>
 #include "WindowGlobals.h"
+#include "ShadyTreeEngine.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -104,10 +105,18 @@ void WindowSystem::Update(float deltaTime)
 void WindowSystem::Init() { ActivateWindow(); }
 void WindowSystem::Load() {}
 void WindowSystem::Unload() {};
+void WindowSystem::Free()
+{
+
+}
+void WindowSystem::RecieveMessage(Message* msg)
+{
+
+}
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-
+    Message quitmsg(MessageType::Quit);
     switch(msg)
     {
         case WM_LBUTTONDOWN:
@@ -116,11 +125,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
         case WM_KEYDOWN:
             if(wParam == VK_ESCAPE)
-            DestroyWindow(ghMainWnd);
+                DestroyWindow(ghMainWnd);
             break;
 
         case WM_DESTROY:
-            PostQuitMessage(0);
+            CORE->BroadcastMessage( &quitmsg );
             break;
         
         default:

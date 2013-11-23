@@ -22,26 +22,34 @@ void GameLogic::Load()
 {
     Resources::Instance().LoadTextureFile("test", "resources/test.png");
 
-    GameObjectFactory::Instance().createGraphicalEntity();
-
+    oneobject = GameObjectFactory::Instance().createGraphicalEntity();
     
-    int scale = 30;
-    for(int i = 0; i < 1000; i++)
+    for(int i = 0; i < 20; ++i)
     {
-        GameObject* g = GameObjectFactory::Instance().createGraphicalEntity();
-        PositionalComponent* p = g->getComponent<PositionalComponent>();
-        p->position.x = 30*i;
-        continue;
+        GameObjectFactory::Instance().createGraphicalEntity();
     }
     
 }
 
 void GameLogic::Update(float deltaTime)
 {
-    
+    PositionalComponent* p = oneobject->getComponent<PositionalComponent>();
+    p->position.x += 0.2f;
+    p->position.y = sin(p->position.x/20) * 100.0f;
+    p->rotation+=0.0f;
 }
 
 void GameLogic::Unload()
 {
     
+}
+
+void GameLogic::Free()
+{
+
+}
+
+void GameLogic::RecieveMessage(Message* msg)
+{
+
 }

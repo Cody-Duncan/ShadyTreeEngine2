@@ -67,3 +67,14 @@ void GraphicsSystem::Unload()
 {
     
 }
+
+void GraphicsSystem::Free()
+{
+    spriteBatch->Dispose();
+    device->Free();
+}
+
+void GraphicsSystem::RecieveMessage(Message* msg)
+{
+    
+}

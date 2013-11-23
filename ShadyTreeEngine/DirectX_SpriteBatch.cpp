@@ -153,10 +153,10 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
     textureArea.dimensions = Vector2(rect.dimensions.x / texData.width, rect.dimensions.y / texData.width);
 
     //calculate mesh vertex positions
-    Vector2 position = Vector2(0,0);
-    Vector2 corner = rect.dimensions;
-    position = Vector2::Transform(position, transform);
-    corner = Vector2::Transform(corner, transform);
+    Vector2 topLeft = Vector2::Transform( Vector2(0,0), transform);
+    Vector2 topRight = Vector2::Transform( Vector2(rect.dimensions.x, 0), transform );
+    Vector2 botLeft  = Vector2::Transform( Vector2(0, rect.dimensions.y), transform);
+    Vector2 botRight = Vector2::Transform( Vector2(rect.dimensions.x, rect.dimensions.y), transform);
 
     VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(batchVBuffers[texH]);
     
@@ -169,10 +169,11 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
     //counter-clockwise
     Vertex vertices[] = 
     {
-        { Vector4(position.x, corner.y, 0, 1), textureArea.botLeft() },    //0 topLeft
-        { Vector4(position.x, position.y, 0, 1), textureArea.topLeft() },  //3 botLeft
-        { Vector4(corner.x, position.y, 0, 1), textureArea.topRight() },   //2 botRight
-        { Vector4(corner.x, corner.y, 0, 1), textureArea.botRight() },     //1 topRight
+        //comments on the right note where it shows up visually (because y goes to bottom of screen)
+        { Vector4(botLeft.x, botLeft.y, 0, 1), textureArea.botLeft() },     //0 TopLeft
+        { Vector4(topLeft.x, topLeft.y, 0, 1), textureArea.topLeft() },     //1 BotLeft
+        { Vector4(topRight.x, topRight.y, 0, 1), textureArea.topRight() },  //2 BotRight
+        { Vector4(botRight.x, botRight.y, 0, 1), textureArea.botRight() },  //3 TopRight
     };
 #endif
 #ifdef CLOCKWISE_VERTS_SPRITEBATCH

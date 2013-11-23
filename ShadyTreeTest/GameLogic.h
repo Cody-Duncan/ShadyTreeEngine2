@@ -1,5 +1,8 @@
 #pragma once
-#include "isystem.h"
+#include "ISystem.h"
+
+class GameObject;
+
 class GameLogic : public ISystem
 {
 public:
@@ -10,5 +13,9 @@ public:
     virtual void Load();
     virtual void Update(float deltaTime);
     virtual void Unload();
+    virtual void Free();
+    virtual void RecieveMessage(Message* msg);
+
+    GameObject* oneobject;
 };
 

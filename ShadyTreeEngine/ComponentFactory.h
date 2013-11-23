@@ -51,6 +51,8 @@ public:
     template<class T>
     ComponentCache<T>* getCache();
 
+    void clearAllCaches();
+
     std::vector<AbstractComponentCache*> map;
 
 private:

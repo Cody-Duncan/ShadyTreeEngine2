@@ -22,6 +22,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     engine.Initialize();
     engine.Load();
     engine.Run();
+    engine.Free();
 
 
     return 0;

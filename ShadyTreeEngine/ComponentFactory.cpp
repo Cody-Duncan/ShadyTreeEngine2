@@ -26,3 +26,10 @@ void ComponentFactory::deleteComponent(int id, int typeID)
     map[typeID]->Delete(id);
 }
 
+void ComponentFactory::clearAllCaches()
+{
+    for( std::vector<AbstractComponentCache*>::iterator iter = map.begin(); iter != map.end(); ++iter)
+    {
+        (**(iter)).Clear();
+    }
+}

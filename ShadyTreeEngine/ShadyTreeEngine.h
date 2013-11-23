@@ -2,6 +2,7 @@
 #include "GraphicsSystem.h"
 #include <vector>
 #include "GameTimer.h"
+#include "Message.h"
 
 class ShadyTreeEngine
 {
@@ -14,6 +15,8 @@ public:
     ST_API void Run();
     ST_API void Free();
 
+    ST_API void BroadcastMessage(Message* msg);
+
 private: 
     void Update(float deltaTime);
 
@@ -22,3 +25,6 @@ private:
     GameTimer timer;
 
 };
+
+//A global pointer to the instance of the core
+ST_API extern ShadyTreeEngine* CORE;

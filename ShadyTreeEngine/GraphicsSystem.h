@@ -14,6 +14,8 @@ public:
     virtual void Load();
     virtual void Update(float deltaTime);
     virtual void Unload();
+    virtual void Free();
+    virtual void RecieveMessage(Message* msg);
 
 private: 
     GraphicsDevice* device;

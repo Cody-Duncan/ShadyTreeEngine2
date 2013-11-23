@@ -36,6 +36,7 @@
     <ClInclude Include="MathLib.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshResourcer.h" />
+    <ClInclude Include="Message.h" />
     <ClInclude Include="OSHighResTimer.h" />
     <ClInclude Include="PositionalComponent.h" />
     <ClInclude Include="Resources.h" />
@@ -72,6 +73,7 @@
     <ClCompile Include="GraphicsSystem.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshResourcer.cpp" />
+    <ClCompile Include="Message.cpp" />
     <ClCompile Include="OSHighResTimer.cpp" />
     <ClCompile Include="PositionalComponent.cpp" />
     <ClCompile Include="Resources.cpp" />
