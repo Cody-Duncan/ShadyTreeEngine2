@@ -8,6 +8,12 @@ int GameObjectCache::genID = 0;
 #define INACTIVE_GAMEOBJECT_ID -1;
 
 
+GameObjectCache& GameObjectCache::Instance()
+{
+    static GameObjectCache factory;
+    return factory;
+}
+
 GameObjectCache::GameObjectCache(void)
 {
     entities.resize(DEFAULT_NUM_OBJECTS);

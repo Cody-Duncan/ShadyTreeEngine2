@@ -5,6 +5,12 @@
 #include "MeshResourcer.h"
 #include "BufferResourcer.h"
 
+IResources& Resources::Instance()
+{
+    static Resources res;
+    return res;
+}
+
 Resources::Resources(void)
 {
 }

@@ -19,6 +19,12 @@ ID3D11Buffer* IndexBufferData::getIndexBuffer()
 int BufferResourcer::IDGen_Vbuffer = 0;
 int BufferResourcer::IDGen_Ibuffer = 0;
 
+BufferResourcer& BufferResourcer::Instance()
+{
+    static BufferResourcer b;
+    return b;
+}
+
 BufferResourcer::BufferResourcer(void)
 {
     

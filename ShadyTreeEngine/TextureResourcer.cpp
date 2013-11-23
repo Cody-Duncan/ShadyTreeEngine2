@@ -48,6 +48,12 @@ void GetTextureSizeD3D( ID3D11Resource* res, unsigned int* width, unsigned int* 
 
 int TextureResourcer::IDGen_texture = 0;
 
+TextureResourcer& TextureResourcer::Instance()
+{
+    static TextureResourcer texRes;
+    return texRes;
+}
+
 TextureResourcer::TextureResourcer(void)
 {
 }

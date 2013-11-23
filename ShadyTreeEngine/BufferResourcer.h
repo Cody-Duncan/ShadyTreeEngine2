@@ -58,11 +58,7 @@ public:
 
     void Dispose();
 
-    static BufferResourcer& Instance()
-    {
-        static BufferResourcer b;
-        return b;
-    }
+    static BufferResourcer& Instance();
 
 private:
 

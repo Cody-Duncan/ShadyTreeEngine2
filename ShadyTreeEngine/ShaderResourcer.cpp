@@ -147,6 +147,14 @@ int generateInputLayout(const char* FileName, D3D11_INPUT_ELEMENT_DESC* inputLay
 }
 // end inputlayout resources
 
+
+ShaderResourcer& ShaderResourcer::Instance()
+{
+    static ShaderResourcer  instance; 
+    return instance;
+}
+
+
 int ShaderResourcer::GenerateVertexShaderFromFile(
     ID3D11Device* device, ID3D11DeviceContext* deviceContext,  
     const char* FileName, const char *EntryPoint, const char *ShaderModel)

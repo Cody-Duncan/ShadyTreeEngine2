@@ -32,11 +32,7 @@ public:
 
     void GetTextureSize(TextureHandle tex, unsigned int* width, unsigned int* height);
 
-    static TextureResourcer& Instance()
-    {
-        static TextureResourcer texRes;
-        return texRes;
-    }
+    static TextureResourcer& Instance();
 
 private: 
 

@@ -17,11 +17,7 @@ public:
 
     void Dispose();
 
-    static MeshResourcer& Instance()
-    {
-        static MeshResourcer m;
-        return m;
-    }
+    static MeshResourcer& Instance();
 
 private:
 

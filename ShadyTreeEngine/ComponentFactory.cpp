@@ -1,6 +1,12 @@
 #include "ComponentFactory.h"
 
 
+ComponentFactory& ComponentFactory::Instance()
+{
+    static ComponentFactory instance;
+    return instance;
+}
+
 ComponentFactory::ComponentFactory(void)
 {
     typeIDGen = 0;

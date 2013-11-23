@@ -33,11 +33,7 @@ public:
     PixelShaderHandle Resources::LoadPixelShaderFile(std::string FileName, const char * EntryPoint, const char * ShaderModel);
     PixelShaderHandle Resources::LoadPixelShader(uint8_t* data);
 
-    ST_API static IResources& Instance()
-    {
-        static Resources res;
-        return res;
-    }
+    ST_API static IResources& Instance();
 
 private:
     //necessary for instantiating graphics resources

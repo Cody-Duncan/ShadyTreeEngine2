@@ -28,11 +28,7 @@
 class ComponentFactory
 {
 public:
-    static ComponentFactory& Instance()
-    {
-        static ComponentFactory instance;
-        return instance;
-    }
+    ST_API static ComponentFactory& Instance();
 
     template<class T>
     T* createComponent();

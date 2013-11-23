@@ -6,6 +6,12 @@
 
 int MeshResourcer::IDGen_mesh = 0;
 
+MeshResourcer& MeshResourcer::Instance()
+{
+    static MeshResourcer m;
+    return m;
+}
+
 MeshResourcer::MeshResourcer(void)
 {
 }

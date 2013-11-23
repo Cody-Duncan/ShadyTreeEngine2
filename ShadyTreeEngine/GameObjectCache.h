@@ -5,11 +5,7 @@
 class GameObjectCache
 {
 public:
-    ST_API static GameObjectCache& Instance()
-    {
-        static GameObjectCache factory;
-        return factory;
-    }
+    ST_API static GameObjectCache& Instance();
 
     std::vector<GameObject> entities;
     std::list<int> freeSlots;

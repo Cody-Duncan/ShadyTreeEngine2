@@ -39,11 +39,7 @@ public:
 
     void Dispose();
 
-    static ShaderResourcer& Instance()
-    {
-        static ShaderResourcer  instance; 
-        return instance;
-    }
+    static ShaderResourcer& Instance();
 
 private:
     std::unordered_map<std::string, int> nameToVertexShaderID;
