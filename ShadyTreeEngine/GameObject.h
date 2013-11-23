@@ -10,7 +10,8 @@ public:
     ST_API GameObject(void);
     ST_API ~GameObject(void);
 
-    std::unordered_map<int, Component*> components;
+    //map of componentTypeID to componentID
+    std::unordered_map<int, int> components;
 
     template<class T>
     void attachComponent(T* comp);
@@ -34,15 +35,17 @@ public:
 template<class T>
 void GameObject::attachComponent(T* comp)
 {
-    components.insert( std::make_pair<int,Component*>(getID<T>(), static_cast<Component*>(comp) ) );
-    comp->parent = this;
+    int id = (int)comp->id;
+    components.insert( std::make_pair(getID<T>(), id ) );
+    comp->parentID = this->id;
 }
 
 
 template<class T>
 T* GameObject::getComponent()
 {
-     return static_cast<T*>( components[getID<T>()] );
+    int id = components[getID<T>()];
+    return ComponentFactory::Instance().getComponent<T>(id);
 }
 
 
@@ -56,10 +59,10 @@ bool GameObject::hasComponent()
 template<class T>
 void GameObject::removeComponent()
 {
-    int id = getID<T>();
-    T* comp = static_cast<T*>( components[id] );
-    components.erase( id );
+    int type = getID<T>();
+    int id = components[type];
+    components.erase( type );
 
-    ComponentFactory::Instance().deleteComponent<T>(comp->id);
+    ComponentFactory::Instance().deleteComponent<T>(id);
 }
 

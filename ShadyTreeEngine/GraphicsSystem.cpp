@@ -47,14 +47,14 @@ void GraphicsSystem::Update(float deltaTime)
         GraphicsComponent& g = graphC[i];
         if(g.active)
         {
-            assert(g.parent);
-            GameObject& go = *g.parent;
+            GameObject& go = *GOC.Get(g.parentID);
             PositionalComponent* posC = go.getComponent<PositionalComponent>();
-            assert(posC->active);
+            assert(posC && posC->active);
             
-            Matrix m = Matrix::CreateTranslation(posC->position.x, posC->position.y, 0)
-                * Matrix::CreateRotationZ(posC->rotation)
-                * Matrix::CreateScale(posC->scale);
+            Matrix m = 
+                Matrix::CreateRotationZ(posC->rotation)
+                * Matrix::CreateScale(posC->scale)
+                * Matrix::CreateTranslation(posC->position.x, posC->position.y, 0);
 
             spriteBatch->Draw(g.texture, m, g.textureArea);
         }

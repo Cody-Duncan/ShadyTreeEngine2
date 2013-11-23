@@ -2,7 +2,7 @@
 #include "DirectX_SpriteBatch.h"
 #include "Resources.h"
 
-#define BatchSize 250
+#define BatchSize 2000
 
 DirectX_SpriteBatch::DirectX_SpriteBatch(GraphicsDevice* deviceIn) : SpriteBatch(DeviceAPI::DirectX11)
 {
@@ -144,6 +144,7 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
     {
         addBatchBuffer(texH);
         texData = TextureResourcer::Instance().getTextureData(texH);
+        lastTex.textureIndex = texH.textureIndex;
     }
     
     //calculate normalized UV coordinates

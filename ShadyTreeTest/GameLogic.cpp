@@ -24,14 +24,16 @@ void GameLogic::Load()
 
     GameObjectFactory::Instance().createGraphicalEntity();
 
+    
     int scale = 30;
-    for(int i = 0; i < 10; i++)
+    for(int i = 0; i < 1000; i++)
     {
         GameObject* g = GameObjectFactory::Instance().createGraphicalEntity();
         PositionalComponent* p = g->getComponent<PositionalComponent>();
         p->position.x = 30*i;
         continue;
     }
+    
 }
 
 void GameLogic::Update(float deltaTime)

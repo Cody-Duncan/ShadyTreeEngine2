@@ -13,6 +13,6 @@ public:
 
     int id;
     bool active;
-    GameObject* parent;
+    int parentID;
 };
 

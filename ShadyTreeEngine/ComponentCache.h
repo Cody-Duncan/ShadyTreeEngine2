@@ -63,7 +63,7 @@ public:
 
         component.active = false;
         component.id = INACTIVE_ID;
-        component.parent = nullptr;
+        component.parentID = INACTIVE_ID;
     }
 
     void Reserve(unsigned int size)
