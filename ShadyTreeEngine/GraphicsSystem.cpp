@@ -3,6 +3,8 @@
 #include "ComponentFactory.h"
 #include "GraphicsComponent.h"
 #include "PositionalComponent.h"
+#include "GameObject.h"
+#include "GameObjectCache.h"
 
 void GraphicsSystem::Init()
 {
@@ -35,16 +37,26 @@ void GraphicsSystem::Update(float deltaTime)
         return;
 
     std::vector<GraphicsComponent>& graphC = CF.getCache<GraphicsComponent>()->storage;
-    std::vector<PositionalComponent>& posC = CF.getCache<PositionalComponent>()->storage;
-
+    std::vector<PositionalComponent>* posC = &CF.getCache<PositionalComponent>()->storage;
+    GameObjectCache& GOC = GameObjectCache::Instance();
 
     spriteBatch->Begin();
         //spriteBatch->Draw(t, matrixArray[i], r);
     for(unsigned int i = 0; i < graphC.size(); i++)
     {
-        if(graphC[i].active)
+        GraphicsComponent& g = graphC[i];
+        if(g.active)
         {
+            assert(g.parent);
+            GameObject& go = *g.parent;
+            PositionalComponent* posC = go.getComponent<PositionalComponent>();
+            assert(posC->active);
+            
+            Matrix m = Matrix::CreateTranslation(posC->position.x, posC->position.y, 0)
+                * Matrix::CreateRotationZ(posC->rotation)
+                * Matrix::CreateScale(posC->scale);
 
+            spriteBatch->Draw(g.texture, m, g.textureArea);
         }
     }
 

@@ -29,6 +29,10 @@ GameObject* GameObjectFactory::createGraphicalEntity()
     PositionalComponent* posC = CF.createComponent<PositionalComponent>();
     posC->position = Vector2(10,10);
     posC->rotation = 0.0f;
+    posC->scale = 0.1f;
+
+    e->attachComponent(graphics);
+    e->attachComponent(posC);
 
     return e;
 }
