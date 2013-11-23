@@ -27,6 +27,8 @@ DirectX_GraphicsDevice::DirectX_GraphicsDevice(void) :
     enable4xMsaa(false),
     samplerLinear(nullptr),
     samplerPoint(nullptr),
+    blendNone(nullptr),
+    blendAlpha(nullptr),
     s_vMeshColor(Vector4(0.9f, 0.0f, 0.9f,1.0f)) //bright purple
 {
     
@@ -47,6 +49,9 @@ void DirectX_GraphicsDevice::Free()
     ShaderResourcer::Instance().Dispose();
     BufferResourcer::Instance().Dispose();
     TextureResourcer::Instance().Dispose();
+
+    if(blendNone) blendNone->Release();
+    if(blendAlpha) blendAlpha->Release();
 
     if(samplerLinear) samplerLinear->Release();
     if(samplerPoint) samplerPoint->Release();
@@ -161,6 +166,11 @@ int DirectX_GraphicsDevice::Init()
     }
 
     if( hr =  createTextureSampler() )
+    {
+        return hr;
+    }
+
+    if( hr = createBlendStates())
     {
         return hr;
     }
@@ -318,6 +328,30 @@ int DirectX_GraphicsDevice::createTextureSampler()
     return hr;
 }
 
+int DirectX_GraphicsDevice::createBlendStates()
+{
+    D3D11_BLEND_DESC BlendState;
+    ZeroMemory(&BlendState, sizeof(D3D11_BLEND_DESC));
+    BlendState.RenderTarget[0].BlendEnable = FALSE;
+    BlendState.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+    device->CreateBlendState(&BlendState, &blendNone);
+
+    currentBlend = blendNone;
+
+    ZeroMemory(&BlendState, sizeof(D3D11_BLEND_DESC));
+    BlendState.RenderTarget[0].BlendEnable = TRUE;
+    BlendState.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+    BlendState.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+    BlendState.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+    BlendState.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+    BlendState.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+    BlendState.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    BlendState.RenderTarget[0].RenderTargetWriteMask = 0x0f;
+    device->CreateBlendState(&BlendState, &blendAlpha);
+
+    return 0;
+}
+
 void DirectX_GraphicsDevice::clearRenderTarget()
 {
     deviceContext->ClearRenderTargetView(renderTargetView, clearColor);
@@ -345,6 +379,9 @@ void DirectX_GraphicsDevice::BeginDraw()
     deviceContext->UpdateSubresource( constantBuffer.infrequentBuffer, 0, nullptr, &newProjBuffer, 0, 0 );
     deviceContext->VSSetConstantBuffers( 0, 1, &constantBuffer.infrequentBuffer );
     
+    float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+    UINT sampleMask   = 0xffffffff;
+    deviceContext->OMSetBlendState(currentBlend, blendFactor, sampleMask);
     
 }
 
@@ -390,6 +427,7 @@ void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
     deviceContext->PSSetSamplers( 0, 1, &currentSampler );
     deviceContext->PSSetConstantBuffers( 1, 1, &constantBuffer.frameBuffer );
 
+    
     //draw
     deviceContext->DrawIndexed( indexCount, indexOffset, vertexoffset ); 
 }
@@ -567,5 +605,17 @@ void DirectX_GraphicsDevice::setTextureSampler(bool isLinear)
     else
     {
         currentSampler = samplerPoint;
+    }
+}
+
+void DirectX_GraphicsDevice::setBlend(bool isBlendingAlpha)
+{
+    if(isBlendingAlpha)
+    {
+        currentBlend = blendAlpha;
+    }
+    else
+    {
+        currentBlend = blendNone;
     }
 }

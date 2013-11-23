@@ -40,7 +40,7 @@ void GraphicsSystem::Update(float deltaTime)
     std::vector<PositionalComponent>* posC = &CF.getCache<PositionalComponent>()->storage;
     GameObjectCache& GOC = GameObjectCache::Instance();
 
-    spriteBatch->Begin();
+    spriteBatch->Begin(true);
         //spriteBatch->Draw(t, matrixArray[i], r);
     for(unsigned int i = 0; i < graphC.size(); i++)
     {
@@ -50,13 +50,8 @@ void GraphicsSystem::Update(float deltaTime)
             GameObject& go = *GOC.Get(g.parentID);
             PositionalComponent* posC = go.getComponent<PositionalComponent>();
             assert(posC && posC->active);
-            
-            Matrix m = 
-                Matrix::CreateRotationZ(posC->rotation)
-                * Matrix::CreateScale(posC->scale)
-                * Matrix::CreateTranslation(posC->position.x, posC->position.y, 0);
 
-            spriteBatch->Draw(g.texture, m, g.textureArea);
+            spriteBatch->Draw(g.texture, posC->Transform(), g.textureArea);
         }
     }
 

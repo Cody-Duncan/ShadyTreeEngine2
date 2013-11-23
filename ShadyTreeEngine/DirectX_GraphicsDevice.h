@@ -54,6 +54,7 @@ public:
 
     void ToggleDepthBuffer(bool turnItOn);
     void setTextureSampler(bool isLinear = true);
+    void setBlend(bool isBlendingAlpha = false);
 
 protected:
     D3D_DRIVER_TYPE			driverType;
@@ -68,11 +69,16 @@ protected:
     ID3D11SamplerState*     samplerLinear;
     ID3D11SamplerState*     samplerPoint;
     ID3D11SamplerState*     currentSampler;
+    ID3D11BlendState*       blendNone;
+    ID3D11BlendState*       blendAlpha;
+    ID3D11BlendState*       currentBlend;
+
 
     ID3D11DepthStencilState* m_depthDisabledStencilState;
     ID3D11DepthStencilState* m_depthStencilState;
 
     int createTextureSampler();
+    int createBlendStates();
 
 
     unsigned int m4xMsaaQuality;

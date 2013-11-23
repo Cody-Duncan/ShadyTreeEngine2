@@ -106,7 +106,7 @@ void DirectX_SpriteBatch::resetAllBatchBuffers()
     }
 }
 
-void DirectX_SpriteBatch::Begin()
+void DirectX_SpriteBatch::Begin(bool alphaBlend)
 {   
     static Matrix m = Matrix::Identity();
     device->setWorld(m);
@@ -122,11 +122,13 @@ void DirectX_SpriteBatch::Begin()
     device->clearRenderTarget();
     
     //device->ToggleDepthBuffer(false);
+    device->setBlend(alphaBlend);
 
     device->setVertexShader(vertexShaderH);
     device->setPixelShader(pixelShaderH);
 
     device->setTextureSampler(false);
+    device->ToggleDepthBuffer(false);
 
     device->BeginDraw();
 }

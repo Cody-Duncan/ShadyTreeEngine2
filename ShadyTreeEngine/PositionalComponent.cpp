@@ -10,3 +10,10 @@ PositionalComponent::PositionalComponent(void) : position(Vector2(0,0)), rotatio
 PositionalComponent::~PositionalComponent(void)
 {
 }
+
+Matrix PositionalComponent::Transform()
+{
+    return Matrix::CreateRotationZ(rotation)
+         * Matrix::CreateScale(scale)
+         * Matrix::CreateTranslation(position.x, position.y, 0);
+}

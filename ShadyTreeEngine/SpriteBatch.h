@@ -15,7 +15,7 @@ public:
 
     virtual void Init() = 0;
 
-    virtual void Begin() = 0;
+    virtual void Begin(bool AlphaBlend = false) = 0;
     virtual void Draw(TextureHandle texH, Matrix transform, Rectangle2 rect) = 0;
     virtual void End() = 0;
 

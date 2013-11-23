@@ -14,7 +14,7 @@ public:
 
     void Init();
 
-    void Begin();
+    void Begin(bool AlphaBlend = false);
     void Draw(TextureHandle texH, Matrix transform, Rectangle2 rect);
     void End();
 

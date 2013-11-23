@@ -15,5 +15,7 @@ public:
     Vector2 position;
     float rotation;
     float scale;
+
+    Matrix Transform();
 };
 
