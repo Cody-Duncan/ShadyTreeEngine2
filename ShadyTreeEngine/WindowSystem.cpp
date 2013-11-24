@@ -3,6 +3,7 @@
 #include <tchar.h>
 #include "WindowGlobals.h"
 #include "ShadyTreeEngine.h"
+#include "InputState.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -20,6 +21,7 @@ WindowSystem::WindowSystem(const char* windowTitle, int width, int height)
 
 WindowSystem::~WindowSystem(void)
 {
+    delete gINPUTSTATE;
 }
 
 bool WindowSystem::GenerateWindow(WNDPROC WndProc, int width, int height)
@@ -89,6 +91,7 @@ void WindowSystem::ActivateWindow()	//Activate the game window so it is actually
 void WindowSystem::Update(float deltaTime)
 {
     MSG msg = {0};
+    
     while( PeekMessage( &msg, nullptr, 0, 0, PM_REMOVE ) )
     {
         TranslateMessage( &msg );
@@ -96,13 +99,18 @@ void WindowSystem::Update(float deltaTime)
 
         if (msg.message == WM_QUIT)
         {
-            //MessageQuit q;
-            //CORE->BroadcastMessage(&q);
+            Message quitmsg(MessageType::Quit);
+            CORE->BroadcastMessage( &quitmsg );
         }
     }
 }
 
-void WindowSystem::Init() { ActivateWindow(); }
+void WindowSystem::Init() 
+{ 
+    ActivateWindow(); 
+    gINPUTSTATE = new InputState();
+    gINPUTSTATE->Init();
+}
 void WindowSystem::Load() {}
 void WindowSystem::Unload() {};
 void WindowSystem::Free()
@@ -116,7 +124,7 @@ void WindowSystem::RecieveMessage(Message* msg)
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    Message quitmsg(MessageType::Quit);
+   
     switch(msg)
     {
         case WM_LBUTTONDOWN:
@@ -124,12 +132,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_KEYDOWN:
-            if(wParam == VK_ESCAPE)
-                DestroyWindow(ghMainWnd);
+        case WM_KEYUP:
+            gINPUTSTATE->updateKey(msg, wParam, lParam);
             break;
 
         case WM_DESTROY:
-            CORE->BroadcastMessage( &quitmsg );
+            PostQuitMessage(0);
             break;
         
         default:

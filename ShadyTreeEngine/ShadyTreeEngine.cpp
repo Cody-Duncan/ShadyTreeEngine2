@@ -3,6 +3,8 @@
 #include "GraphicsFactory.h"
 #include "OSHighResTimer.h"
 #include "ComponentFactory.h"
+#include "InputState.h"
+#include "Stopwatch.h"
 
 ShadyTreeEngine* CORE;
 
@@ -41,11 +43,13 @@ void ShadyTreeEngine::Run()
 {
     float deltaTime = 0.0f;
 
+    Stopwatch watch;
     while( Running )
     {
         deltaTime = timer.GetDeltaTime();
 
         Update(deltaTime);
+        gINPUTSTATE->shift();
         Sleep(1);
     }
 }

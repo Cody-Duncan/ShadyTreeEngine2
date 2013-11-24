@@ -31,6 +31,7 @@
     <ClInclude Include="GraphicsFactory.h" />
     <ClInclude Include="GraphicsResourceHandles.h" />
     <ClInclude Include="GraphicsSystem.h" />
+    <ClInclude Include="InputState.h" />
     <ClInclude Include="IResources.h" />
     <ClInclude Include="ISystem.h" />
     <ClInclude Include="MathLib.h" />
@@ -71,6 +72,7 @@
     <ClCompile Include="GraphicsDevice.cpp" />
     <ClCompile Include="GraphicsFactory.cpp" />
     <ClCompile Include="GraphicsSystem.cpp" />
+    <ClCompile Include="InputState.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshResourcer.cpp" />
     <ClCompile Include="Message.cpp" />

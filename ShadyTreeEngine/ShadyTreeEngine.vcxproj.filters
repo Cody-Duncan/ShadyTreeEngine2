@@ -92,6 +92,9 @@
     <ClCompile Include="Message.cpp">
       <Filter>Message</Filter>
     </ClCompile>
+    <ClCompile Include="InputState.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX_GraphicsDevice.h">
@@ -218,6 +221,9 @@
     <ClInclude Include="Message.h">
       <Filter>Message</Filter>
     </ClInclude>
+    <ClInclude Include="InputState.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -267,6 +273,9 @@
     </Filter>
     <Filter Include="Message">
       <UniqueIdentifier>{ea66c83d-00b1-4ec6-a8ae-c18054814e07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{d874c952-62f0-4b97-bf6f-1770760f184c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

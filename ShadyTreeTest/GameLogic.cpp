@@ -3,7 +3,7 @@
 #include "GameObjectFactory.h"
 #include "GraphicsComponent.h"
 #include "PositionalComponent.h"
-
+#include "InputState.h"
 GameLogic::GameLogic(void)
 {
 }
@@ -34,9 +34,13 @@ void GameLogic::Load()
 void GameLogic::Update(float deltaTime)
 {
     PositionalComponent* p = oneobject->getComponent<PositionalComponent>();
-    p->position.x += 0.2f;
-    p->position.y = sin(p->position.x/20) * 100.0f;
-    p->rotation+=0.0f;
+    
+    if(gINPUTSTATE->keyHeld(VK_LEFT))
+    {
+        p->position.x += 0.2f;
+        p->position.y = sin(p->position.x/20) * 100.0f;
+        p->rotation+=0.0f;
+    }
 }
 
 void GameLogic::Unload()
