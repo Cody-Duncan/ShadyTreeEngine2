@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "DirectX_SpriteBatch.h"
 #include "Resources.h"
+#include "FileResourcer.h"
 
 #define BatchSize 2000
 
@@ -30,6 +31,7 @@ void DirectX_SpriteBatch::Init()
 {
     vertexShaderH = Resources::Instance().LoadVertexShaderFile("resources/Tutorial07.fx","VS", "vs_4_0");
     pixelShaderH  = Resources::Instance().LoadPixelShaderFile("resources/Tutorial07.fx","PS", "ps_4_0");
+    LoadDebugFont("resources/DebugFont.fnt");
 
     BufferResourcer::Instance().createDynamicIndexBuffer(BatchSize*6, device->getDevice(), &batchIBuffer);
 
@@ -166,7 +168,9 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
     //vertices need normalized UV coordinates based on the rect in texture Coordinates.
 
 //#define CLOCKWISE_VERTS_SPRITEBATCH//
+#if !defined(COUNTERCLOCKWISE_VERTS_SPRITEBATCH) && !defined(CLOCKWISE_VERTS_SPRITEBATCH)
 #define COUNTERCLOCKWISE_VERTS_SPRITEBATCH
+#endif
 #ifdef  COUNTERCLOCKWISE_VERTS_SPRITEBATCH
     //counter-clockwise
     Vertex vertices[] = 
@@ -182,10 +186,10 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
     //clockwise
     Vertex vertices[] = 
     {
-        { Vector4(position.x, corner.y, 0, 1), textureArea.botLeft() },    //0 topLeft
-        { Vector4(corner.x, corner.y, 0, 1), textureArea.botRight() },     //1 topRight
-        { Vector4(corner.x, position.y, 0, 1), textureArea.topRight() },   //2 botRight
-        { Vector4(position.x, position.y, 0, 1), textureArea.topLeft() },  //3 botLeft
+        { Vector4(botLeft.x, botLeft.y, 0, 1), textureArea.botLeft() },     //0 TopLeft
+        { Vector4(botRight.x, botRight.y, 0, 1), textureArea.botRight() },  //3 TopRight
+        { Vector4(topRight.x, topRight.y, 0, 1), textureArea.topRight() },  //2 BotRight
+        { Vector4(topLeft.x, topLeft.y, 0, 1), textureArea.topLeft() },     //1 BotLeft
     };
 #endif
 
@@ -248,4 +252,57 @@ void DirectX_SpriteBatch::sentBatchToBuffers(TextureHandle t)
     //set index buffer
     IndexBufferData& indexBufData = BufferResourcer::Instance().getIBuffer(batchIBuffer);
     indexBufData.startIndex = quadBufferData.startVertex * 3 / 2; //6 indices per 4 vertices
+}
+
+void DirectX_SpriteBatch::LoadDebugFont(std::string filename)
+{
+    using namespace std;
+    FileDataHandle h = Resources::Instance().LoadDataFile("DebugFontCfg", filename);
+    std::iostream& dataStream = *FileResourcer::Instance().getFile(h);
+    
+
+    std::string line;
+    dataStream >> line; //info
+
+    //font face
+    dataStream >> line; 
+    int start = line.find('"');
+    int end = line.find('"', start+1);
+    fontTex.face = std::string(line, start+1, end-start-1);
+
+    for(int i = 0 ; i < 24; ++i)
+    {
+        dataStream >> line;
+    }
+
+    //texture file name
+    dataStream >> line;
+    start = line.find('"');
+    end = line.find('"', start+1);
+    fontTex.textureFileName = line.substr(start+1,end-start-1);
+
+    dataStream >> line; //chars
+    dataStream >> line; //count=###
+    int charCount = std::stoi( line.substr(line.find('=')+1) );
+
+    for(int i = 0; i < charCount; ++i)
+    {
+        FontLetter let;
+        //char id=32   x=180   y=49    width=1     height=1     xoffset=0     yoffset=0     xadvance=17    page=0  chnl=15
+        dataStream >> line; //char
+        dataStream >> line; //id=###
+        let.id = stoi( line.substr(line.find('=')+1) ); dataStream >> line; 
+        let.x = stoi( line.substr(line.find('=')+1) ); dataStream >> line; 
+        let.y = stoi( line.substr(line.find('=')+1) ); dataStream >> line; 
+        let.width = stoi( line.substr(line.find('=')+1) ); dataStream >> line; 
+        let.height = stoi( line.substr(line.find('=')+1) ); dataStream >> line; 
+        let.xoffset = stoi( line.substr(line.find('=')+1) ); dataStream >> line; 
+        let.yoffset = stoi( line.substr(line.find('=')+1) ); dataStream >> line; 
+        let.xadvance = stoi( line.substr(line.find('=')+1) ); 
+        dataStream >> line; //page
+        dataStream >> line; //chnl
+
+        fontTex.letters[let.id] = let;
+    }
+    
 }

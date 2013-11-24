@@ -18,8 +18,9 @@ public:
     virtual Vector2 GetTextureWidthHeight(std::string token) = 0;
 
     //GameData
-    virtual GameDataHandle LoadDataFile(std::string token, std::string filename) = 0;
-    virtual GameDataHandle LoadData(std::string token, uint8_t data) = 0;
+    virtual FileDataHandle LoadDataFile(std::string token, std::string filename) = 0;
+    virtual FileDataHandle LoadStringData(std::string token, char* data) = 0;
+    virtual FileDataHandle GetData(std::string token) = 0;
 
     //Shaders
     virtual VertexShaderHandle LoadVertexShaderFile(std::string FileName, const char * EntryPoint, const char * ShaderModel) = 0;

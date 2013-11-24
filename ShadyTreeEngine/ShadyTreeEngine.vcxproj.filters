@@ -95,6 +95,9 @@
     <ClCompile Include="InputState.cpp">
       <Filter>Input</Filter>
     </ClCompile>
+    <ClCompile Include="FileResourcer.cpp">
+      <Filter>Resources\Resourcers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX_GraphicsDevice.h">
@@ -223,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="InputState.h">
       <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="FileResourcer.h">
+      <Filter>Resources\Resourcers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

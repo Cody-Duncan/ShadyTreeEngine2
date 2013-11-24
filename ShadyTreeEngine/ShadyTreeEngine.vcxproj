@@ -22,6 +22,7 @@
     <ClInclude Include="DeviceAPI.h" />
     <ClInclude Include="DirectX_GraphicsDevice.h" />
     <ClInclude Include="DirectX_SpriteBatch.h" />
+    <ClInclude Include="FileResourcer.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectCache.h" />
     <ClInclude Include="GameTimer.h" />
@@ -64,6 +65,7 @@
     <ClCompile Include="DebugOutput.cpp" />
     <ClCompile Include="DirectX_GraphicsDevice.cpp" />
     <ClCompile Include="DirectX_SpriteBatch.cpp" />
+    <ClCompile Include="FileResourcer.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectCache.cpp" />
     <ClCompile Include="GameTimer.cpp" />

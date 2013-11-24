@@ -23,8 +23,9 @@ public:
     Vector2 Resources::GetTextureWidthHeight(std::string token);
 
     //GameData
-    GameDataHandle Resources::LoadDataFile(std::string token, std::string filename);
-    GameDataHandle Resources::LoadData(std::string token, uint8_t data);
+    FileDataHandle Resources::LoadDataFile(std::string token, std::string filename);
+    FileDataHandle Resources::LoadStringData(std::string token, char* data);
+    FileDataHandle Resources::GetData(std::string token);
 
     //Shaders
     VertexShaderHandle Resources::LoadVertexShaderFile(std::string FileName, const char * EntryPoint, const char * ShaderModel);
@@ -43,7 +44,7 @@ private:
     ~Resources(void);
 
     std::unordered_map<std::string, TextureHandle> tokenToTexH;
-    std::unordered_map<std::string, GameDataHandle> tokenToGamH;
+    std::unordered_map<std::string, FileDataHandle> tokenToFileH;
 
 };
 

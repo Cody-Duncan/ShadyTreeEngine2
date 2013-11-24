@@ -1,6 +1,6 @@
 #pragma once
 
-struct GameDataHandle
+struct FileDataHandle
 {
     int gameDataID;
 };

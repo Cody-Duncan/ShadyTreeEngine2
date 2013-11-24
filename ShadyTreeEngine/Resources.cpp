@@ -4,6 +4,7 @@
 #include "Mesh.h"
 #include "MeshResourcer.h"
 #include "BufferResourcer.h"
+#include "FileResourcer.h"
 
 IResources& Resources::Instance()
 {
@@ -88,18 +89,29 @@ Vector2 Resources::GetTextureWidthHeight(std::string token)
 }
 
 
-GameDataHandle Resources::LoadDataFile(std::string token, std::string filename)
+FileDataHandle Resources::LoadDataFile(std::string token, std::string filename)
 {
-    GameDataHandle h = {-1};
-    tokenToGamH[token] = h;
+    FileDataHandle h = {-1};
+    if(!FileResourcer::Instance().LoadFile(filename, &h))
+    {
+        tokenToFileH[token] = h;
+    }
     return h;
 }
 
-GameDataHandle Resources::LoadData(std::string token, uint8_t data)
+FileDataHandle Resources::LoadStringData(std::string token, char* data)
 {
-    GameDataHandle h = {-1};
-    tokenToGamH[token] = h;
+    FileDataHandle h = {-1};
+    if(!FileResourcer::Instance().LoadStringData(data, &h))
+    {
+        tokenToFileH[token] = h;
+    }
     return h;
+}
+
+FileDataHandle Resources::GetData(std::string token)
+{
+    return tokenToFileH[token];
 }
 
 

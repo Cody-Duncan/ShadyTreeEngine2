@@ -4,7 +4,27 @@
 #include "GraphicsDevice.h"
 #include "DirectX_GraphicsDevice.h"
 
+struct FontLetter
+{
+    int id;
+    int x;
+    int y;
+    int width;
+    int height;
+    int xoffset;
+    int yoffset;
+    int xadvance;
+};
 
+class FontTexture
+{
+public:
+    TextureHandle t;
+    std::unordered_map<int, FontLetter> letters;
+
+    std::string face;
+    std::string textureFileName;
+};
 
 class DirectX_SpriteBatch : public SpriteBatch
 {
@@ -21,6 +41,8 @@ public:
     void Dispose(); 
 
     void DrawBatch(TextureHandle t);
+
+    void LoadDebugFont(std::string filename);
 
 private:
     DirectX_GraphicsDevice* device;
@@ -42,5 +64,7 @@ private:
     std::unordered_map<TextureHandle, VertexBufferHandle> batchVBuffers;
     IndexBufferHandle batchIBuffer;
     std::unordered_map<TextureHandle, std::vector<Vertex> > batch;
+
+    FontTexture fontTex;
 };
 
