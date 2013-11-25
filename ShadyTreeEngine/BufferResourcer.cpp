@@ -112,6 +112,12 @@ int BufferResourcer::createStaticBuffers(Mesh& mesh, ID3D11Device* device, Verte
     int V_ID = generateVBufferID();
     int I_ID = generateIBufferID();
 
+    assert(V_ID < 0 && "Vertex Buffer generated ID is less than 0. Check ID generation");
+
+    //size vector to ensure index (key) is available
+    checkVBufferSize(V_ID);
+    checkIBufferSize(I_ID);
+
     //store data reference
     VbufferData[V_ID] = dVBuf;
     IbufferData[I_ID] = dIBuf;
@@ -164,6 +170,7 @@ int BufferResourcer::createDynamicVertexBuffer(int vertexLength, ID3D11Device* d
     };
 
     int V_ID = generateVBufferID();     //gen ID
+    checkVBufferSize(V_ID);
     VbufferData[V_ID] = dVBuf;          //store data reference
     VertexBufferHandle hV = { V_ID };   //create and send back handle
     *handle = hV;
@@ -198,6 +205,7 @@ int BufferResourcer::createDynamicIndexBuffer(int indexLength, ID3D11Device* dev
     };
     
     int I_ID = generateIBufferID();     //generate IDs
+    checkIBufferSize(I_ID);
     IbufferData[I_ID] = dIBuf;          //store data reference
     IndexBufferHandle hI = { I_ID };    //set handle
     *handle = hI;
@@ -244,6 +252,17 @@ int BufferResourcer::generateIBufferID()
     return IDGen_Ibuffer++;
 }
 
+void BufferResourcer::checkVBufferSize(int vBufSize)
+{
+    if(VbufferData.size() <= (unsigned int) vBufSize)
+        VbufferData.resize(vBufSize+5);
+}
+
+void BufferResourcer::checkIBufferSize(int iBufSize)
+{
+    if(IbufferData.size() <= (unsigned int) iBufSize)
+        IbufferData.resize(iBufSize+5);
+}
 
 void BufferResourcer::Dispose()
 {

@@ -43,8 +43,8 @@ public:
     std::vector<ID3D11Buffer*> vertexBuffers;
     std::vector<ID3D11Buffer*> indexBuffers;
 
-    std::unordered_map<int, VertexBufferData> VbufferData;
-    std::unordered_map<int, IndexBufferData> IbufferData;
+    std::vector<VertexBufferData> VbufferData;
+    std::vector<IndexBufferData> IbufferData;
 
     int createStaticBuffers(Mesh& mesh, ID3D11Device* device, VertexBufferHandle* hVBuf, IndexBufferHandle* hIBuf);
 
@@ -66,6 +66,9 @@ private:
     int generateVBufferID();
     static int IDGen_Ibuffer;
     int generateIBufferID();
+
+    void checkVBufferSize(int vBufSize);
+    void checkIBufferSize(int iBufSize);
 
     //Singleton
     BufferResourcer(void);
