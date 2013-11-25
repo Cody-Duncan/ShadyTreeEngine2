@@ -20,6 +20,9 @@ ST_API int OutputDebugLog(const char* message);
 #define DebugLogClose() CloseDebugLogFile()
 #else
 #define DebugPrintf(format, ...) 
+#define DebugVerbosePrintf(verbosity,format, ...)
+#define DebugLogOpen() 
+#define DebugLogClose() 
 #endif
 
 #define CHECKHR(hr, message) \
