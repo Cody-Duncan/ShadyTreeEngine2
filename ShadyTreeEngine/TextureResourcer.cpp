@@ -116,7 +116,12 @@ int TextureResourcer::createTextureFromWIC(ID3D11Device* device, ID3D11DeviceCon
     delete[] wfilename;
     //HRESULT hr = DirectX::CreateDDSTextureFromFile( device, , nullptr, &textureView );
 
-    assert(textureView);
+    if(!textureView)
+    {
+        DebugPrintf("Failed to load texture: ", filename);
+        assert(textureView);
+    }
+    
 
     D3D11_SHADER_RESOURCE_VIEW_DESC desc;
     textureView->GetDesc(&desc);

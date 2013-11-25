@@ -13,15 +13,17 @@ GameTimer::~GameTimer(void)
 
 void GameTimer::Start()
 {
+    elapsedSeconds = 0.0;
     last = readHiResTimer();
 }
 
 void GameTimer::Update()
 {
     current = readHiResTimer();
-    double seconds = (current - last) / readHiResTimerFrequency() * timeScale;
+    double seconds = (current - last) / (double)readHiResTimerFrequency();
     elapsedSeconds += seconds;
     deltaTime = (float) seconds * 1000.0f;
+    last = current;
 }
 
 float GameTimer::GetDeltaTime()

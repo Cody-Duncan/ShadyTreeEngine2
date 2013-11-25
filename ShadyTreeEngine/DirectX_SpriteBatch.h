@@ -16,7 +16,7 @@ struct FontLetter
     int xadvance;
 };
 
-class FontTexture
+class SpriteFont
 {
 public:
     TextureHandle t;
@@ -36,7 +36,10 @@ public:
 
     void Begin(bool AlphaBlend = false);
     void Draw(TextureHandle texH, Matrix transform, Rectangle2 rect);
+    void TextDraw(Vector2 position, const char* text);
     void End();
+
+    
 
     void Dispose(); 
 
@@ -65,6 +68,6 @@ private:
     IndexBufferHandle batchIBuffer;
     std::unordered_map<TextureHandle, std::vector<Vertex> > batch;
 
-    FontTexture fontTex;
+    SpriteFont fontTex;
 };
 

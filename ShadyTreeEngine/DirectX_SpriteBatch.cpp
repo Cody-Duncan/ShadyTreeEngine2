@@ -142,15 +142,17 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
     //@@optimization: gets another good chunk of fps by avoiding call to getTextureData
     //Works when draw calls are sorted by texture.
     static TextureHandle lastTex = {texH.textureIndex-1}; //guarantee initial value is not the same
-    static TextureData& texData = TextureResourcer::Instance().getTextureData(texH); 
+    static TextureData* texDataP = &TextureResourcer::Instance().getTextureData(texH); 
 
     if(lastTex.textureIndex != texH.textureIndex)
     {
         addBatchBuffer(texH);
-        texData = TextureResourcer::Instance().getTextureData(texH);
+        texDataP = &TextureResourcer::Instance().getTextureData(texH);
         lastTex.textureIndex = texH.textureIndex;
     }
     
+    TextureData& texData = *texDataP; //I like using . for accessing class variables
+
     //calculate normalized UV coordinates
     Rectangle2 textureArea;
     textureArea.position = Vector2(rect.position.x / texData.width, rect.position.y / texData.width);
@@ -203,6 +205,20 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
     quadBufferData.startVertex += 4;
 }
 
+void DirectX_SpriteBatch::TextDraw(Vector2 position, const char* text)
+{
+    for(int i = 0; text[i] != '\0'; ++i)
+    {
+        char c = text[i];
+        FontLetter& letter = fontTex.letters[c];
+        
+        Matrix m = Matrix::CreateTranslation(position.x + letter.xoffset, position.y + letter.yoffset, 0);
+        Rectangle2 r((float)letter.x, (float)letter.y, (float)letter.width, (float)letter.height);
+        Draw(fontTex.t, m, r);
+        position.x += letter.xadvance;
+    }
+}
+
 void DirectX_SpriteBatch::End()
 {
     for(auto iter = batchVBuffers.begin(); iter != batchVBuffers.end(); iter++)
@@ -215,6 +231,8 @@ void DirectX_SpriteBatch::End()
 
     resetAllBatchBuffers();
 }
+
+
 
 void DirectX_SpriteBatch::DrawBatch(TextureHandle t)
 {
@@ -260,7 +278,6 @@ void DirectX_SpriteBatch::LoadDebugFont(std::string filename)
     FileDataHandle h = Resources::Instance().LoadDataFile("DebugFontCfg", filename);
     std::iostream& dataStream = *FileResourcer::Instance().getFile(h);
     
-
     std::string line;
     dataStream >> line; //info
 
@@ -304,5 +321,8 @@ void DirectX_SpriteBatch::LoadDebugFont(std::string filename)
 
         fontTex.letters[let.id] = let;
     }
+
+    fontTex.t = Resources::Instance().LoadTextureFile("DebugFontTxt", fontTex.textureFileName);
+    assert( fontTex.t.textureIndex >= 0 );
     
 }

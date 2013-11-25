@@ -47,6 +47,7 @@ void ShadyTreeEngine::Run()
     while( Running )
     {
         deltaTime = timer.GetDeltaTime();
+        timer.Update();
 
         Update(deltaTime);
         gINPUTSTATE->shift();

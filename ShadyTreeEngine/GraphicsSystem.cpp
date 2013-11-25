@@ -28,6 +28,10 @@ void GraphicsSystem::Load()
     
 }
 
+int count = 0;
+double totalTime = 0;
+std::stringstream ss;
+std::string resetString = "";
 void GraphicsSystem::Update(float deltaTime)
 {
     assert(spriteBatch && "no spritebatch initialized. Did you forget to call Init()?");
@@ -54,6 +58,13 @@ void GraphicsSystem::Update(float deltaTime)
             spriteBatch->Draw(g.texture, posC->Transform(), g.textureArea);
         }
     }
+
+    ++count;
+    totalTime += deltaTime;
+    char buf[100];
+    sprintf_s(buf, "FPS: %f", (count / totalTime * 1000));
+    spriteBatch->TextDraw(Vector2(1,1), buf);
+    ss.str(resetString);
 
     spriteBatch->End();
 }
