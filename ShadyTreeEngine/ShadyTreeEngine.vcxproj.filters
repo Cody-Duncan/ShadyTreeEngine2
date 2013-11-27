@@ -230,6 +230,9 @@
     <ClInclude Include="FileResourcer.h">
       <Filter>Resources\Resourcers</Filter>
     </ClInclude>
+    <ClInclude Include="TinyDir.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">

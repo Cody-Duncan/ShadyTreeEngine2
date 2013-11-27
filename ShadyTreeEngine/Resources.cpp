@@ -6,6 +6,9 @@
 #include "BufferResourcer.h"
 #include "FileResourcer.h"
 
+#include "TinyDir.h"
+#include "StringUtility.h"
+
 IResources& Resources::Instance()
 {
     static Resources res;
@@ -24,6 +27,53 @@ Resources::~Resources(void)
 void Resources::setGraphicsDevice(GraphicsDevice* _gd)
 {
     gd = dynamic_cast<DirectX_GraphicsDevice*>(_gd);
+}
+
+
+
+void getListOfFilesInDir(const char* directory, std::vector<std::string>& filenames)
+{
+    tinydir_dir dir;
+    tinydir_open(&dir, directory);
+    
+    while (dir.has_next)
+    {
+        tinydir_file file;
+        tinydir_readfile(&dir, &file);
+
+        filenames.push_back(file.name);
+
+        tinydir_next(&dir);
+    }
+
+    tinydir_close(&dir);
+}
+
+void Resources::parseResourceIDs(std::string directory)
+{
+    std::vector<std::string> filenames;
+    getListOfFilesInDir(directory.c_str(), filenames);
+
+    int lastDot;
+    std::string filePath;
+    std::string fileNameSansExt;
+
+    for(unsigned int i = 2; i < filenames.size(); ++i)
+    {
+        lastDot = filenames[i].find_last_of('.');
+        filePath = directory + "/" + filenames[i];
+        fileNameSansExt = filenames[i].substr(0,lastDot) ;
+
+        if( hasResID(fileNameSansExt) )
+            resID_to_filename[filenames[i]] = filePath; //set just the filename as key
+        else
+            resID_to_filename[fileNameSansExt] = filePath; //key already exists, use extension too
+    }
+}
+
+bool Resources::hasResID(std::string resID)
+{
+    return resID_to_filename.find( resID ) != resID_to_filename.end();
 }
 
 Mesh* Resources::generateMesh(std::string identifierName)
@@ -75,6 +125,16 @@ TextureHandle Resources::LoadTexture(std::string token, uint8_t* data, int lengt
     return texHandle;
 }
 
+TextureHandle Resources::LoadTextureRes(std::string resID)
+{
+    TextureHandle h = {-1};
+    if(hasResID(resID))
+    {
+        h = Resources::LoadTextureFile(resID, resID_to_filename[resID]);
+    }
+    return h;
+}
+
 TextureHandle Resources::GetTexture(std::string token)
 {
     return tokenToTexH[token];
@@ -105,6 +165,16 @@ FileDataHandle Resources::LoadStringData(std::string token, char* data)
     if(!FileResourcer::Instance().LoadStringData(data, &h))
     {
         tokenToFileH[token] = h;
+    }
+    return h;
+}
+
+FileDataHandle Resources::LoadDataRes(std::string resID)
+{
+    FileDataHandle h = {-1};
+    if(hasResID(resID))
+    {
+        h = LoadDataFile(resID, resID_to_filename[resID]);
     }
     return h;
 }
@@ -143,13 +213,6 @@ VertexShaderHandle Resources::LoadVertexShaderFile(std::string FileName, const c
     return vsHandle;
 }
 
-VertexShaderHandle Resources::LoadVertexShader(uint8_t* data)
-{
-    assert(false && "NOT IMPLEMENTED YET: Loading Vertex Shader from string");
-    VertexShaderHandle h = {-1};
-    return h;
-}
-
 PixelShaderHandle Resources::LoadPixelShaderFile(std::string FileName, const char * EntryPoint, const char * ShaderModel)
 {
     PixelShaderHandle psHandle;
@@ -170,9 +233,21 @@ PixelShaderHandle Resources::LoadPixelShaderFile(std::string FileName, const cha
     return psHandle;
 }
 
-PixelShaderHandle Resources::LoadPixelShader(uint8_t* data)
+VertexShaderHandle Resources::LoadVertexShaderRes(std::string ResID, const char * EntryPoint, const char * ShaderModel)
 {
-    assert(false && "NOT IMPLEMENTED YET: Loading Pixel Shader from string");
-    PixelShaderHandle h = {-1};;
+    VertexShaderHandle h = {-1};
+    if(hasResID(ResID))
+    {
+        h = LoadVertexShaderFile(resID_to_filename[ResID], EntryPoint, ShaderModel);
+    }
+    return h;
+}
+PixelShaderHandle  Resources::LoadPixelShaderRes (std::string ResID, const char * EntryPoint, const char * ShaderModel)
+{
+    PixelShaderHandle h = {-1};
+    if(hasResID(ResID))
+    {
+        h = LoadPixelShaderFile(resID_to_filename[ResID], EntryPoint, ShaderModel);
+    }
     return h;
 }

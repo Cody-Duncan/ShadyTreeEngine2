@@ -12,6 +12,7 @@ public:
     }
 
     GameObject* createGraphicalEntity();
+    void LoadArchetypes(std::string resourceName);
 
 private:
     GameObjectFactory(void);

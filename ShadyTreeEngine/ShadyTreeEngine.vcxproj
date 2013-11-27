@@ -51,6 +51,7 @@
     <ClInclude Include="StringUtility.h" />
     <ClInclude Include="TextureResourcer.h" />
     <ClInclude Include="ShadyTreeEngine.h" />
+    <ClInclude Include="TinyDir.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="WICTextureLoader.h" />
     <ClInclude Include="WindowGlobals.h" />

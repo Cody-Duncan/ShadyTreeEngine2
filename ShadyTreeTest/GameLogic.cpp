@@ -20,7 +20,10 @@ void GameLogic::Init()
 
 void GameLogic::Load()
 {
-    Resources::Instance().LoadTextureFile("test", "resources/test.png");
+    IResources& res = Resources::Instance();
+
+    res.parseResourceIDs("resources");
+    res.LoadTextureRes("test");
 
     oneobject = GameObjectFactory::Instance().createGraphicalEntity();
     
@@ -39,7 +42,7 @@ void GameLogic::Update(float deltaTime)
     {
         p->position.x += 0.2f;
         p->position.y = sin(p->position.x/20) * 100.0f;
-        p->rotation+=0.0f;
+        p->rotation+=0.01f;
     }
 }
 
