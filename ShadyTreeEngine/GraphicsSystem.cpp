@@ -29,7 +29,7 @@ void GraphicsSystem::Load()
 }
 
 int count = 0;
-double totalTime = 0;
+double totalTime = 1.0f;
 std::stringstream ss;
 std::string resetString = "";
 void GraphicsSystem::Update(float deltaTime)
@@ -62,9 +62,15 @@ void GraphicsSystem::Update(float deltaTime)
     ++count;
     totalTime += deltaTime;
     char buf[100];
-    sprintf_s(buf, "FPS: %f", (count / totalTime * 1000));
+    sprintf_s(buf, "FPS: %8.2f", (count / totalTime * 1000));
     spriteBatch->TextDraw(Vector2(1,1), buf);
     ss.str(resetString);
+
+    if(totalTime > 1000.0f)
+    {
+        count = 0;
+        totalTime = 0;
+    }
 
     spriteBatch->End();
 }

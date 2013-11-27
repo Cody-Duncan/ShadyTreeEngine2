@@ -532,7 +532,7 @@ void DirectX_GraphicsDevice::setView(Vector4& eye, Vector4& at, Vector4& up)
 {
     using namespace DirectX;
 
-    g_Up = XMLoadFloat4( &up );
+    g_Up = up;
     updateView(eye, at);
 }
 
@@ -543,7 +543,7 @@ void DirectX_GraphicsDevice::updateView(Vector4& eyePosition, Vector4& focusPosi
     // Initialize the view matrix
     XMVECTOR EyePosition = XMLoadFloat4( &eyePosition );
     XMVECTOR FocusPosition = XMLoadFloat4( &focusPosition );
-    g_View = XMMatrixLookAtRH( EyePosition, FocusPosition, g_Up );
+    g_View = XMMatrixLookAtRH( EyePosition, FocusPosition, XMLoadFloat4( &g_Up )  );
 }
 
 

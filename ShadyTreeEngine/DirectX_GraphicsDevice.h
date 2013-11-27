@@ -14,10 +14,10 @@
 __declspec(align(16)) class DirectX_GraphicsDevice : public GraphicsDevice
 {
 private:
-    DirectX::XMMATRIX    g_World;
-    DirectX::XMMATRIX    g_View;
-    DirectX::XMMATRIX    g_Projection;
-    DirectX::XMVECTOR    g_Up;
+    Matrix    g_World;
+    Matrix    g_View;
+    Matrix    g_Projection;
+    Vector4   g_Up;
 
 public:
     DirectX_GraphicsDevice(void);
