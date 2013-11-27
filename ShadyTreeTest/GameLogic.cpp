@@ -20,29 +20,35 @@ void GameLogic::Init()
 
 void GameLogic::Load()
 {
+    GameObjectCache::Instance().Reserve(400);
+    GameObjectFactory& GF = GameObjectFactory::Instance();
     IResources& res = Resources::Instance();
-
+  
     res.parseResourceIDs("resources");
     res.LoadTextureRes("test");
 
-    oneobject = GameObjectFactory::Instance().createGraphicalEntity();
+    oneobject = GF.createGraphicalEntity();
     
-    for(int i = 0; i < 20; ++i)
+    for(int i = 0; i < 300; ++i)
     {
-        GameObjectFactory::Instance().createGraphicalEntity();
+        GF.createGraphicalEntity();
     }
     
 }
 
 void GameLogic::Update(float deltaTime)
 {
-    PositionalComponent* p = oneobject->getComponent<PositionalComponent>();
-    
-    if(gINPUTSTATE->keyHeld(VK_LEFT))
+    GameObjectCache& GOC = GameObjectCache::Instance();
+    for(int i = 0; i < GOC.entities.size(); ++i)
     {
-        p->position.x += 0.2f;
-        p->position.y = sin(p->position.x/20) * 100.0f;
-        p->rotation+=0.01f;
+        PositionalComponent* p = GOC.entities[i].getComponent<PositionalComponent>();
+    
+        if(gINPUTSTATE->keyHeld(VK_LEFT))
+        {
+            p->position.x += 0.002f;
+            p->position.y = sin(p->position.x/20) * 100.0f;
+            p->rotation+=0.0001f * i;
+        }
     }
 }
 
