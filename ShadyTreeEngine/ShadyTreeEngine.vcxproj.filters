@@ -98,6 +98,9 @@
     <ClCompile Include="FileResourcer.cpp">
       <Filter>Resources\Resourcers</Filter>
     </ClCompile>
+    <ClCompile Include="BaseDeserializer.cpp">
+      <Filter>DeSerializer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX_GraphicsDevice.h">
@@ -233,6 +236,9 @@
     <ClInclude Include="TinyDir.h">
       <Filter>Resources</Filter>
     </ClInclude>
+    <ClInclude Include="BaseDeserializer.h">
+      <Filter>DeSerializer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -285,6 +291,9 @@
     </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{d874c952-62f0-4b97-bf6f-1770760f184c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeSerializer">
+      <UniqueIdentifier>{fe76b53c-69fe-48ec-88d4-7357a14d04f5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

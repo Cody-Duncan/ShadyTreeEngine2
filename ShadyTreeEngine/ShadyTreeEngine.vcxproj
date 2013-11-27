@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseDeserializer.h" />
     <ClInclude Include="BufferResourcer.h" />
     <ClInclude Include="ComponentCache.h" />
     <ClInclude Include="Component.h" />
@@ -58,6 +59,7 @@
     <ClInclude Include="WindowSystem.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BaseDeserializer.cpp" />
     <ClCompile Include="BufferResourcer.cpp" />
     <ClCompile Include="ComponentCache.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -146,7 +148,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_WIN32_WINNT=0x0600;_DEBUG;_WINDOWS;_USRDLL;SHADYTREE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>StdAfx.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)lib\TypeLibInclude</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -170,7 +172,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_WIN32_WINNT=0x0600;NDEBUG;_WINDOWS;_USRDLL;SHADYTREE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>StdAfx.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)lib\TypeLibInclude</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
