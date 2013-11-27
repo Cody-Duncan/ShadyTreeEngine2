@@ -1,12 +1,20 @@
-#include "stdafx.h"
 #include "BaseDeserializer.h"
 
-
-BaseDeserializer::BaseDeserializer(void)
+GraphicsComponent* parseGraphics(json_t* root)
 {
+    if(json_is_object(root))
+    {
+
+    }
+
+    return nullptr;
 }
 
-
-BaseDeserializer::~BaseDeserializer(void)
+PositionalComponent* parsePosition(json_t* root)
 {
+    if(json_is_object(root))
+    {
+        
+    }
+    return nullptr;
 }

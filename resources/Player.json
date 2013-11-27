@@ -1,0 +1,10 @@
+{
+    "Player": 
+    {
+        "Graphics": 
+        {
+          "texture": "test",
+          "textureArea": [0,0,756,756]
+        }
+    }
+}

@@ -1,11 +1,6 @@
-#pragma once
-class BaseDeserializer
-{
-public:
-    BaseDeserializer(void);
-    ~BaseDeserializer(void);
+#include "jansson.h"
+#include "GraphicsComponent.h"
+#include "PositionalComponent.h"
 
-    void ParseGraphics();
-
-};
-
+extern GraphicsComponent* parseGraphics();
+extern PositionalComponent* parsePosition();

@@ -8,6 +8,7 @@
     <ClCompile Include="GameLogic.cpp">
       <Filter>GameLogic</Filter>
     </ClCompile>
+    <ClCompile Include="DeSerializer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObjectFactory.h">
@@ -16,6 +17,7 @@
     <ClInclude Include="GameLogic.h">
       <Filter>GameLogic</Filter>
     </ClInclude>
+    <ClInclude Include="DeSerializer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameLogic">

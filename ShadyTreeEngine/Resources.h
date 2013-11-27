@@ -28,11 +28,12 @@ public:
     FileDataHandle Resources::LoadDataFile(std::string token, std::string filename);
     FileDataHandle Resources::LoadStringData(std::string token, char* data);
     FileDataHandle Resources::LoadDataRes(std::string id);
-    FileDataHandle Resources::GetData(std::string token);
+    FileDataHandle Resources::GetFileHandle(std::string token);
+    std::iostream* Resources::GetFileData(FileDataHandle h);
+    void Resources::CloseFile(FileDataHandle h);
 
     //Shaders
     VertexShaderHandle Resources::LoadVertexShaderFile(std::string FileName, const char * EntryPoint, const char * ShaderModel);
-
     PixelShaderHandle Resources::LoadPixelShaderFile(std::string FileName, const char * EntryPoint, const char * ShaderModel);
 
     VertexShaderHandle LoadVertexShaderRes(std::string ResID, const char * EntryPoint, const char * ShaderModel);

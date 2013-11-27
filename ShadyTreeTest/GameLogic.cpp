@@ -4,6 +4,9 @@
 #include "GraphicsComponent.h"
 #include "PositionalComponent.h"
 #include "InputState.h"
+
+#include "DeSerializer.h"
+
 GameLogic::GameLogic(void)
 {
 }
@@ -33,13 +36,16 @@ void GameLogic::Load()
     {
         GF.createGraphicalEntity();
     }
+
+    DeSerializer s;
+    s.BuildArchetypes("Player");
     
 }
 
 void GameLogic::Update(float deltaTime)
 {
     GameObjectCache& GOC = GameObjectCache::Instance();
-    for(int i = 0; i < GOC.entities.size(); ++i)
+    for(unsigned int i = 0; i < GOC.entities.size(); ++i)
     {
         PositionalComponent* p = GOC.entities[i].getComponent<PositionalComponent>();
     

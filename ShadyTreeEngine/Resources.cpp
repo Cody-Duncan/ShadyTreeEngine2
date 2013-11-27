@@ -179,11 +179,20 @@ FileDataHandle Resources::LoadDataRes(std::string resID)
     return h;
 }
 
-FileDataHandle Resources::GetData(std::string token)
+FileDataHandle Resources::GetFileHandle(std::string token)
 {
     return tokenToFileH[token];
 }
 
+std::iostream* Resources::GetFileData(FileDataHandle h)
+{
+    return FileResourcer::Instance().getFile(h);
+}
+
+void Resources::CloseFile(FileDataHandle h)
+{
+    FileResourcer::Instance().closeFile(h);
+}
 
 VertexShaderHandle Resources::LoadVertexShaderFile(std::string FileName, const char * EntryPoint, const char * ShaderModel)
 {

@@ -24,7 +24,9 @@ public:
     virtual FileDataHandle LoadDataFile(std::string token, std::string filename) = 0;
     virtual FileDataHandle LoadDataRes(std::string resID) = 0;
     virtual FileDataHandle LoadStringData(std::string token, char* data) = 0;
-    virtual FileDataHandle GetData(std::string token) = 0;
+    virtual FileDataHandle GetFileHandle(std::string token) = 0;
+    virtual std::iostream* GetFileData(FileDataHandle h) = 0;
+    virtual void CloseFile(FileDataHandle h) = 0;
 
     //Shaders
     virtual VertexShaderHandle LoadVertexShaderFile(std::string FileName, const char * EntryPoint, const char * ShaderModel) = 0;
