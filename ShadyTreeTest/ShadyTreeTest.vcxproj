@@ -119,14 +119,10 @@
     <ClCompile Include="Driver.cpp" />
     <ClCompile Include="GameLogic.cpp" />
     <ClCompile Include="GameObjectFactory.cpp" />
-    <ClCompile Include="GraphicsTestUser.cpp" />
-    <ClCompile Include="SpriteBatchTestUser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameLogic.h" />
     <ClInclude Include="GameObjectFactory.h" />
-    <ClInclude Include="GraphicsTestUser.h" />
-    <ClInclude Include="SpriteBatchTestUser.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ShadyTreeEngine\ShadyTreeEngine.vcxproj">

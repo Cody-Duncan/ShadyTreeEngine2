@@ -2,8 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Driver.cpp" />
-    <ClCompile Include="GraphicsTestUser.cpp" />
-    <ClCompile Include="SpriteBatchTestUser.cpp" />
     <ClCompile Include="GameObjectFactory.cpp">
       <Filter>GameLogic</Filter>
     </ClCompile>
@@ -12,8 +10,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GraphicsTestUser.h" />
-    <ClInclude Include="SpriteBatchTestUser.h" />
     <ClInclude Include="GameObjectFactory.h">
       <Filter>GameLogic</Filter>
     </ClInclude>
