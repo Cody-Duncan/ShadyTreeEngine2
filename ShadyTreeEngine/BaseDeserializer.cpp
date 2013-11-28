@@ -14,7 +14,7 @@ void parseGraphics(json_t* root, GraphicsComponent* gc)
             const char* resName = json_string_value( json_object_get(root, key) );
             gc->texture = Resources::Instance().LoadTextureRes(resName);
         }
-        if(sameKey(key, "textureArea"))
+        else if(sameKey(key, "textureArea"))
         {
             int x, y, width, height;
             json_unpack(json_object_get(root, key), "[i,i,i,i]", &x, &y, &width, &height);
