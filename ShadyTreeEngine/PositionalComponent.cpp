@@ -17,3 +17,10 @@ Matrix PositionalComponent::Transform()
          * Matrix::CreateScale(scale)
          * Matrix::CreateTranslation(position.x, position.y, 0);
 }
+
+ void PositionalComponent::CloneInto(PositionalComponent* newPC)
+{
+    newPC->position = position;
+    newPC->rotation = rotation;
+    newPC->scale = scale;
+}

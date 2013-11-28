@@ -102,6 +102,9 @@ MeshHandle Resources::BindMesh(Mesh* mesh)
 
 TextureHandle Resources::LoadTextureFile(std::string token, std::string filename)
 {
+    if(tokenToTexH.find(token) != tokenToTexH.end())
+        return tokenToTexH[token];
+
     TextureHandle texHandle;
     const char* filenameCSTR = filename.c_str();
     int result = TextureResourcer::Instance().createTextureFromWIC(gd->getDevice(), gd->getContext(), filenameCSTR, &texHandle);

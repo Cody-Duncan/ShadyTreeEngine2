@@ -11,6 +11,8 @@ public:
     Component(int _id, bool _active);
     ~Component(void);
 
+    virtual void CloneInto(Component* c) {};
+
     int id;
     bool active;
     int parentID;

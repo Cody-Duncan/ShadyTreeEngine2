@@ -36,6 +36,8 @@ public:
     template<class T>
     T* getComponent(int id);
 
+    ST_API Component* getComponent(int type, int id);
+
     template<class T>
     void deleteComponent(int id);
 

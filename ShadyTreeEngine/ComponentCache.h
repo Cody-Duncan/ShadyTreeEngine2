@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <unordered_map>
+#include "Component.h"
 
 #define INACTIVE_ID -1;
 
@@ -10,6 +11,7 @@ public:
     virtual void Reserve(unsigned int size) = 0;
     virtual void Delete(int id) = 0;
     virtual void Clear() = 0;
+    virtual Component* GetComponent(int i) = 0;
 };
 
 
@@ -86,6 +88,11 @@ public:
         storage.clear();
         ID_Index.clear();
         freeSlots.clear();
+    }
+
+    virtual Component* GetComponent(int id)
+    {
+        return &storage[ID_Index[id]];
     }
 
     std::vector<T> storage;

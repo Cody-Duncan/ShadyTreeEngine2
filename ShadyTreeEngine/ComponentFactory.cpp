@@ -19,7 +19,10 @@ ComponentFactory::~ComponentFactory(void)
 
 int ComponentFactory::typeIDGen = 0;
 
-
+Component* ComponentFactory::getComponent(int type, int id)
+{
+    return map[type]->GetComponent(id);
+}
 
 void ComponentFactory::deleteComponent(int id, int typeID)
 {
