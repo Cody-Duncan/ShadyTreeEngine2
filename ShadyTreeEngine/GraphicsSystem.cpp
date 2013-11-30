@@ -84,6 +84,9 @@ void GraphicsSystem::Free()
 {
     spriteBatch->Dispose();
     device->Free();
+
+    delete spriteBatch;
+    delete device;
 }
 
 void GraphicsSystem::RecieveMessage(Message* msg)

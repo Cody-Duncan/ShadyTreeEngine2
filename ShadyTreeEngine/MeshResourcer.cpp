@@ -65,7 +65,9 @@ void MeshResourcer::Dispose()
     }
 
     meshIdByName.clear();
+    meshIdByName.swap(std::unordered_map<std::string, int>());
     meshes.clear();
+    meshes.swap(std::unordered_map<int, Mesh*>());
 
     IDGen_mesh = 0;
 }

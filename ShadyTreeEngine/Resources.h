@@ -41,6 +41,8 @@ public:
 
     ST_API static IResources& Instance();
 
+    void Free();
+
 private:
     //necessary for instantiating graphics resources
     DirectX_GraphicsDevice* gd;

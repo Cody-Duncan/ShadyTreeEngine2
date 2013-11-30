@@ -107,6 +107,14 @@ void GameObjectCache::Clear()
     }
 }
 
+void GameObjectCache::Free()
+{
+    entities.clear();
+    entities.swap(std::vector<GameObject>());
+    freeSlots.clear();
+    freeSlots.swap(std::list<int>());
+}
+
 int GameObjectCache::generateID()
 {
     return genID++;
