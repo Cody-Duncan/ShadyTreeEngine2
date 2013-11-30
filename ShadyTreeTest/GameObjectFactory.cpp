@@ -1,7 +1,6 @@
-#include "GameObjectFactory.h"
 #include "GraphicsComponent.h"
 #include "PositionalComponent.h"
-#include "Resources.h"
+
 
 GameObjectFactory::GameObjectFactory(void)
 {
@@ -35,4 +34,16 @@ GameObject* GameObjectFactory::createGraphicalEntity()
     e->attachComponent(posC);
 
     return e;
+}
+
+void GameObjectFactory::addArchetype(std::string archetypeName, int id)
+{
+    if(archetypes.find(archetypeName) != archetypes.end())
+    {
+        archetypes[archetypeName] = id;
+    }
+    else
+    {
+        DebugPrintf("Tried to overwrite an archetype");
+    }
 }

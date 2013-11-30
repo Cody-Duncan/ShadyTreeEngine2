@@ -5,7 +5,6 @@
 #include "WindowSystem.h"
 #include "GraphicsSystem.h"
 #include "GameLogic.h"
-#include "ComponentFactory.h"
 
 ST_API HWND ghMainWnd;
 ST_API HINSTANCE ghInstance;
