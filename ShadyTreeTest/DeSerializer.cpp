@@ -26,23 +26,7 @@ void getJsonStringFromFileRes(std::string resID, std::string& buffer)
     is->unsetf(std::ios::skipws); //don't skip whitespace
     buffer.assign( std::istream_iterator<char>(*is), std::istream_iterator<char>() ); //read into string
 
-    /*
-    // get length of file:
-    is->seekg (0, is->end);
-    int end = (int)is->tellg();
-    is->seekg (0, is->beg);
-    int beg = (int)is->tellg();
-    length = end-beg;
-
-    //read into buffer
-    char * buffer = new char [length];
-    is->read (buffer,length);
-    int realLen = is->gcount();
-    */
-
     res.CloseFile(fileH);
-
-    //return buffer;
 }
 
 GameObject* ParsePlayer(json_t* player)
