@@ -11,6 +11,7 @@ public:
     
     void setGraphicsDevice(GraphicsDevice* gd);
     void parseResourceIDs(std::string directory);
+    virtual std::string getFileSourceOfRes(std::string resID);
 
     //Meshes
     Mesh* generateMesh(std::string identifierName);

@@ -58,6 +58,7 @@ GameObject* ParsePlayer(json_t* player)
 
 void DeSerializer::BuildArchetypes(std::string resID)
 {
+    DebugPrintf("GAME: Building Archetypes from resource: %s  File: %s\n", resID.c_str(), Resources::Instance().getFileSourceOfRes(resID).c_str());
     std::string buffer;
     getJsonStringFromFileRes(resID, buffer);
 

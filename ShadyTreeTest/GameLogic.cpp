@@ -22,6 +22,8 @@ void GameLogic::Init()
 
 void GameLogic::Load()
 {
+    DebugPrintf("GAME: Loading Game Logic\n");
+
     GameObjectCache::Instance().Reserve(400);
     GameObjectFactory& GF = GameObjectFactory::Instance();
     IResources& res = Resources::Instance();

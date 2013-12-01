@@ -86,6 +86,7 @@ void GraphicsSystem::Unload()
 
 void GraphicsSystem::Free()
 {
+    DebugPrintf("GRAPHICS: Deallocated resources in Graphics Device\n");
     spriteBatch->Dispose();
     device->Free();
 

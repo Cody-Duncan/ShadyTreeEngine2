@@ -26,6 +26,8 @@ Resources::~Resources(void)
 
 void Resources::Free()
 {
+    DebugPrintf("RESOURCES: Freeing Resources\n");
+
     MeshResourcer& MR = MeshResourcer::Instance();
     MR.Dispose();
 
@@ -53,6 +55,7 @@ void Resources::Free()
 
 void Resources::setGraphicsDevice(GraphicsDevice* _gd)
 {
+    DebugPrintf("RESOURCES: Setting Graphics Device for Loading\n");
     gd = dynamic_cast<DirectX_GraphicsDevice*>(_gd);
 }
 
@@ -78,6 +81,8 @@ void getListOfFilesInDir(const char* directory, std::vector<std::string>& filena
 
 void Resources::parseResourceIDs(std::string directory)
 {
+    DebugPrintf("RESOURCES: Parsing Resource Directory: %s\n", directory.c_str());
+
     std::vector<std::string> filenames;
     getListOfFilesInDir(directory.c_str(), filenames);
 
@@ -96,6 +101,11 @@ void Resources::parseResourceIDs(std::string directory)
         else
             resID_to_filename[fileNameSansExt] = filePath; //key already exists, use extension too
     }
+}
+
+std::string Resources::getFileSourceOfRes(std::string resID)
+{
+    return resID_to_filename[resID];
 }
 
 bool Resources::hasResID(std::string resID)

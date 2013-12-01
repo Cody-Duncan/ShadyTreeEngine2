@@ -7,6 +7,7 @@ public:
     virtual void setGraphicsDevice(GraphicsDevice* gd) = 0;
 
     virtual void parseResourceIDs(std::string directory) = 0;
+    virtual std::string getFileSourceOfRes(std::string resID) = 0;
 
     virtual void Free() = 0;
 

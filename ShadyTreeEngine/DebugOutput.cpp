@@ -61,6 +61,7 @@ int InitDebugLogFile()
 
 int CloseDebugLogFile() 
 {
+    DebugPrintf("\n");
     debugLogFile.close();
     return 0;
 }

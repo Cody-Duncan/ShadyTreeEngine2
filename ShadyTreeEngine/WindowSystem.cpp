@@ -11,9 +11,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 WindowSystem::WindowSystem(const char* windowTitle, int width, int height)
 {
     //create window
+    DebugPrintf("WINDOW: Creating Window\n");
     if(!GenerateWindow(WndProc, width, height))
     {
-        DebugPrintF("Failed to create Window");
+        DebugPrintf("Failed to create Window");
         assert(false && "Failed to create Window");
     }
 
@@ -116,6 +117,7 @@ void WindowSystem::Load() {}
 void WindowSystem::Unload() {};
 void WindowSystem::Free()
 {
+    DebugPrintf("WINDOW: Deallocating Window\n");
     delete gINPUTSTATE;
     gINPUTSTATE = 0;
 }
