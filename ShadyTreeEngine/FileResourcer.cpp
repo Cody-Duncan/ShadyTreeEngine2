@@ -92,6 +92,28 @@ void FileResourcer::closeFile(FileDataHandle h)
     delete stream;
 }
 
+void FileResourcer::Dispose()
+{
+    //close all open file resources
+    std::vector<FileDataHandle> toRemove;
+    for(auto iter = fileNameToID.begin(); iter != fileNameToID.end(); ++iter)
+    {
+        FileDataHandle h = {iter->second};
+        toRemove.push_back(h);
+    }
+
+    for(int i = 0; i < toRemove.size(); ++i)
+    {
+        closeFile(toRemove[i]);
+    }
+
+    fileStreams.clear();
+    fileStreams.swap(std::vector<std::iostream*>());
+
+    fileNameToID.clear();
+    fileNameToID.swap(std::unordered_map<std::string, int>());
+}
+
 FileResourcer& FileResourcer::Instance()
 {
     static FileResourcer fileRes;

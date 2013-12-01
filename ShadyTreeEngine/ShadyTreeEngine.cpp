@@ -1,10 +1,11 @@
 #include "ShadyTreeEngine.h"
 
-#include "GraphicsFactory.h"
 #include "OSHighResTimer.h"
 #include "ComponentFactory.h"
 #include "InputState.h"
 #include "Stopwatch.h"
+#include "GameObjectCache.h"
+#include "Resources.h"
 
 ShadyTreeEngine* CORE;
 
@@ -63,7 +64,10 @@ void ShadyTreeEngine::Free()
         delete systems[i];
     }
 
-    ComponentFactory::Instance().clearAllCaches();
+    ComponentFactory::Instance().FreeAllCaches();
+    GameObjectCache::Instance().Free();
+
+    Resources::Instance().Free();
 
     DebugLogClose();
 }

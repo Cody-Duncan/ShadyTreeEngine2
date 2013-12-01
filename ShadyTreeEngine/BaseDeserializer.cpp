@@ -28,8 +28,23 @@ void parseGraphics(json_t* root, GraphicsComponent* gc)
 
 void parsePosition(json_t* root, PositionalComponent* pc)
 {
-    if(json_is_object(root))
+    const char *key;
+    json_t *value;
+    json_object_foreach(root, key, value) 
     {
-        
+        if(sameKey(key, "position"))
+        {
+            int x, y;
+            json_unpack(json_object_get(root, key), "[i,i]", &x, &y);
+            pc->position = Vector2((float)x,(float)y);
+        }
+        else if(sameKey(key, "rotation"))
+        {
+            pc->rotation = (float) json_real_value( json_object_get(root, key));
+        }
+        else if(sameKey(key, "scale"))
+        {
+            pc->scale = (float) json_real_value( json_object_get(root, key));
+        }
     }
 }

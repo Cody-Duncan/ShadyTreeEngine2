@@ -14,6 +14,7 @@ public:
     int LoadFile(std::string filename, FileDataHandle* h);
     std::iostream* getFile(FileDataHandle h);
     void closeFile(FileDataHandle h);
+    void Dispose();
 
     static FileResourcer& Instance();
 

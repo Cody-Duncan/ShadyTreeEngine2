@@ -8,6 +8,8 @@ public:
 
     virtual void parseResourceIDs(std::string directory) = 0;
 
+    virtual void Free() = 0;
+
     //Meshes
     virtual Mesh* generateMesh(std::string identifierName) = 0;
     virtual MeshHandle LoadMeshFile(std::string filename) = 0;

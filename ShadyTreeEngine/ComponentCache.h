@@ -12,6 +12,7 @@ public:
     virtual void Reserve(unsigned int size) = 0;
     virtual void Delete(int id) = 0;
     virtual void Clear() = 0;
+    virtual void Free() = 0;
     virtual Component* GetComponent(int i) = 0;
 };
 
@@ -89,6 +90,14 @@ public:
         storage.clear();
         ID_Index.clear();
         freeSlots.clear();
+    }
+
+    void Free()
+    {
+        Clear();
+        storage.swap(std::vector<T>());
+        ID_Index.swap(std::unordered_map<int, int>());
+        freeSlots.swap(std::list<int>());
     }
 
     virtual Component* GetComponent(int id)

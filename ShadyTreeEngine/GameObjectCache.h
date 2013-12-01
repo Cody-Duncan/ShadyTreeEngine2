@@ -21,6 +21,7 @@ public:
     ST_API void DestroyCleanup();
 
     ST_API void Clear();
+    ST_API void Free();
 
 private:
     GameObjectCache(void);

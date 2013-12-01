@@ -9,6 +9,8 @@ Mesh::Mesh(void)
 
 Mesh::~Mesh(void)
 {
+    delete[] vertices;
+    delete[] indices;
 }
 
 MeshHandle Mesh::handle()

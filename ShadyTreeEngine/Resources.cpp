@@ -24,6 +24,33 @@ Resources::~Resources(void)
 {
 }
 
+void Resources::Free()
+{
+    MeshResourcer& MR = MeshResourcer::Instance();
+    MR.Dispose();
+
+    BufferResourcer& BR = BufferResourcer::Instance();
+    BR.Dispose();
+
+    ShaderResourcer& SR = ShaderResourcer::Instance();
+    SR.Dispose();
+
+
+
+    tokenToTexH.clear();
+    tokenToTexH.swap(std::unordered_map<std::string, TextureHandle>());
+    TextureResourcer& TR = TextureResourcer::Instance();
+    TR.Dispose();
+
+    tokenToFileH.clear();
+    tokenToFileH.swap(std::unordered_map<std::string, FileDataHandle>());
+    FileResourcer& FR = FileResourcer::Instance();
+    FR.Dispose();
+
+    resID_to_filename.clear();
+    resID_to_filename.swap(std::unordered_map<std::string, std::string>());
+}
+
 void Resources::setGraphicsDevice(GraphicsDevice* _gd)
 {
     gd = dynamic_cast<DirectX_GraphicsDevice*>(_gd);

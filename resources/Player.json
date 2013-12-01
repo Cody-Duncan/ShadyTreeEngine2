@@ -5,6 +5,12 @@
         {
           "texture": "test",
           "textureArea": [0,0,756,756]
-        }
+        },
+		"Position":
+		{
+			"position": [0,0],
+			"rotation": 0.0,
+			"scale": 1.0
+		}
     }
 }

@@ -66,6 +66,11 @@ void DeSerializer::BuildArchetypes(std::string resID)
     
     //root = json_load_file("Player.json", 0, &error);
     root = json_loadb(buffer.c_str(), buffer.size(), 0, &error);
+    if(!root)
+    {
+        DebugPrintf("\nPARSING ERROR: %s ; Resource: %s\nLine:%d, Position:%d\n", error.text, resID.c_str(), error.line, error.position);
+        assert(root && "Parsing Error");
+    }
 
     if(json_is_object(root))
     {
@@ -87,5 +92,7 @@ void DeSerializer::BuildArchetypes(std::string resID)
             GameObjectFactory::Instance().addArchetype(key, newArch->id);
         }
     }
+
+    json_decref(root);
 
 }

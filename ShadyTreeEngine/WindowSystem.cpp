@@ -21,7 +21,8 @@ WindowSystem::WindowSystem(const char* windowTitle, int width, int height)
 
 WindowSystem::~WindowSystem(void)
 {
-    delete gINPUTSTATE;
+    if(gINPUTSTATE)
+        delete gINPUTSTATE;
 }
 
 bool WindowSystem::GenerateWindow(WNDPROC WndProc, int width, int height)
@@ -115,7 +116,8 @@ void WindowSystem::Load() {}
 void WindowSystem::Unload() {};
 void WindowSystem::Free()
 {
-
+    delete gINPUTSTATE;
+    gINPUTSTATE = 0;
 }
 void WindowSystem::RecieveMessage(Message* msg)
 {

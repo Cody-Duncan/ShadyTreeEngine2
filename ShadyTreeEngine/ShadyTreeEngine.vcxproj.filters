@@ -256,9 +256,6 @@
     <Filter Include="Diagnostic">
       <UniqueIdentifier>{8f2eb0b6-d968-4483-94b9-528f6942e512}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics\2D Adapter">
-      <UniqueIdentifier>{3e3988b8-b221-42d1-80cf-db6a5634496e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{99f52ad7-b6f1-41fb-87cc-134c02764fc2}</UniqueIdentifier>
     </Filter>

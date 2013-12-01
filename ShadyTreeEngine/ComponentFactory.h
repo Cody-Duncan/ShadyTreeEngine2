@@ -55,6 +55,7 @@ public:
     ComponentCache<T>* getCache();
 
     void clearAllCaches();
+    void FreeAllCaches();
 
     std::vector<AbstractComponentCache*> map;
 
