@@ -56,6 +56,9 @@ void DirectX_GraphicsDevice::Free()
     if(samplerLinear) samplerLinear->Release();
     if(samplerPoint) samplerPoint->Release();
 
+    if(m_depthDisabledStencilState) m_depthDisabledStencilState->Release();
+    if(m_depthStencilState) m_depthStencilState->Release() ;
+
     //release resources
     if( depthStencilBuffer ) depthStencilBuffer->Release();
     if( depthStencilView ) depthStencilView->Release();

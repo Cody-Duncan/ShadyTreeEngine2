@@ -16,7 +16,7 @@ ShadyTreeEngine::ShadyTreeEngine()
 
 ShadyTreeEngine::~ShadyTreeEngine()
 {
-
+    DebugPrintf("\n\n\n\n\n\n\n\n");
 }
 
 void ShadyTreeEngine::Initialize()
