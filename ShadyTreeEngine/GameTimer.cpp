@@ -22,7 +22,7 @@ void GameTimer::Update()
     current = readHiResTimer();
     double seconds = (current - last) / (double)readHiResTimerFrequency();
     elapsedSeconds += seconds;
-    deltaTime = (float) seconds * 1000.0f;
+    deltaTime = (float) seconds;
     last = current;
 }
 

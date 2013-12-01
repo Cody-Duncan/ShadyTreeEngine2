@@ -78,18 +78,31 @@ void DeSerializer::BuildArchetypes(std::string resID)
         json_t *value;
         json_object_foreach(root, key, value) 
         {
+            GameObject* newArch = nullptr;
             json_t* baseObject = json_object_get(root, key);
-            GameObject* newArch = ParsePlayer(baseObject);
-                
-            //deactivate the archetype
-            ComponentFactory& CF = ComponentFactory::Instance();
-            newArch->active = false;
-            for(auto iter = newArch->components.begin(); iter != newArch->components.end(); ++iter)
+
+            if(strcmp(key, "Player") == 0)
             {
-                CF.getComponent(iter->first, iter->second)->active = false;
+                newArch = ParsePlayer(baseObject);
             }
-            
-            GameObjectFactory::Instance().addArchetype(key, newArch->id);
+            if(strcmp(key, "Herp") == 0)
+            {
+                newArch = ParsePlayer(baseObject);
+            }
+
+            if(newArch != nullptr)
+            {
+                //deactivate the archetype and its components
+                ComponentFactory& CF = ComponentFactory::Instance();
+                newArch->active = false;
+                for(auto iter = newArch->components.begin(); iter != newArch->components.end(); ++iter)
+                {
+                    CF.getComponent(iter->first, iter->second)->active = false;
+                }
+
+                //add to archetype list in factory
+                GameObjectFactory::Instance().addArchetype(key, newArch->id);
+            }
         }
     }
 

@@ -46,5 +46,9 @@ void parsePosition(json_t* root, PositionalComponent* pc)
         {
             pc->scale = (float) json_real_value( json_object_get(root, key));
         }
+        else if(sameKey(key, "rotationCentered"))
+        {
+            json_unpack(json_object_get(root, key), "b", &pc->rotationCentered);
+        }
     }
 }

@@ -27,5 +27,6 @@ void  GameObject::CloneFrom(GameObject* g)
     {
         Component* c = CF.cloneComponent(iter->first, iter->second);
         components[iter->first] = c->id;
+        c->parentID = id;
     }
 }

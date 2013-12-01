@@ -4,13 +4,29 @@
         "Graphics": 
         {
           "texture": "test",
-          "textureArea": [0,0,756,756]
+          "textureArea": [0,0,736,736]
         },
 		"Position":
 		{
-			"position": [10,10],
+			"position": [250,250],
 			"rotation": 0.0,
-			"scale": 1.0
+			"scale": 0.2,
+			"rotationCentered": true
 		}
-    }
+    },
+	"Herp":
+	{
+		"Graphics": 
+        {
+          "texture": "seafloor2",
+          "textureArea": [0,0,256,256]
+        },
+		"Position":
+		{
+			"position": [250,400],
+			"rotation": 0.0,
+			"scale": 0.7,
+			"rotationCentered": true
+		}
+	}
 }

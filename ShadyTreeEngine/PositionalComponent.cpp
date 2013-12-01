@@ -24,4 +24,5 @@ Matrix PositionalComponent::Transform()
     position = oldPC->position;
     rotation = oldPC->rotation;
     scale = oldPC->scale;
+    rotationCentered = oldPC->rotationCentered;
 }

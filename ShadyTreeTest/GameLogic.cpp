@@ -31,6 +31,20 @@ void GameLogic::Load()
     s.BuildArchetypes("Player");
 
     oneobject = GF.cloneArchetype("Player");
+    GF.cloneArchetype("Player")->getComponent<PositionalComponent>()->position.x += 150;
+
+    GF.cloneArchetype("Player")->getComponent<PositionalComponent>()->position.x += 300;
+    GF.cloneArchetype("Player")->getComponent<PositionalComponent>()->position.x += 450;
+    GF.cloneArchetype("Player")->getComponent<PositionalComponent>()->position.x += 600;
+    GF.cloneArchetype("Player")->getComponent<PositionalComponent>()->position.x += 750;
+
+    PositionalComponent* herpDerpPos = GF.cloneArchetype("Herp")->getComponent<PositionalComponent>();
+    herpDerpPos->position.x = 400;
+    herpDerpPos->position.y += 100;
+
+    herpDerpPos = GF.cloneArchetype("Herp")->getComponent<PositionalComponent>();
+    herpDerpPos->position.x = 850;
+    herpDerpPos->position.y += 100;
     
     /*for(int i = 0; i < 300; ++i)
     {
@@ -41,6 +55,7 @@ void GameLogic::Load()
     
 }
 
+float scale = 0;
 void GameLogic::Update(float deltaTime)
 {
     GameObjectCache& GOC = GameObjectCache::Instance();
@@ -56,9 +71,10 @@ void GameLogic::Update(float deltaTime)
     
         if(gINPUTSTATE->keyHeld(VK_LEFT))
         {
-            p.position.x += 0.002f;
-            p.position.y = sin(p.position.x/20) * 100.0f;
-            p.rotation+=0.0001f * i;
+            //p.position.x += 7.0f * deltaTime;
+            //p.position.y += sin(p.position.x) * 100.0f * deltaTime;
+            p.rotation += scale * i * deltaTime;
+            scale+=0.001f;
         }
     }
 }

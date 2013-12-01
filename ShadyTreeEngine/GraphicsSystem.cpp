@@ -55,18 +55,22 @@ void GraphicsSystem::Update(float deltaTime)
             PositionalComponent* posC = go.getComponent<PositionalComponent>();
             assert(posC && posC->active);
 
-            spriteBatch->Draw(g.texture, posC->Transform(), g.textureArea);
+            Matrix transform = posC->rotationCentered ?
+                Matrix::CreateTranslation(-g.textureArea.dimensions.x/2, -g.textureArea.dimensions.y/2, 0) * posC->Transform() :
+                posC->Transform();
+
+            spriteBatch->Draw(g.texture, transform, g.textureArea);
         }
     }
 
     ++count;
     totalTime += deltaTime;
     char buf[100];
-    sprintf_s(buf, "FPS: %8.2f", (count / totalTime * 1000));
+    sprintf_s(buf, "FPS: %8.2f", (count / totalTime));
     spriteBatch->TextDraw(Vector2(1,1), buf);
     ss.str(resetString);
 
-    if(totalTime > 1000.0f)
+    if(totalTime > 1.0f)
     {
         count = 0;
         totalTime = 0;
