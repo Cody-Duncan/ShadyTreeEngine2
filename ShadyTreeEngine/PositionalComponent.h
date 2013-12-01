@@ -2,6 +2,7 @@
 #include "component.h"
 #include "MathLib.h"
 #include "ST_API_Def.h"
+#include "ComponentTypeID.h"
 
 class PositionalComponent : public Component
 {
@@ -20,3 +21,4 @@ public:
     Matrix Transform();
 };
 
+RegisterType(PositionalComponent)

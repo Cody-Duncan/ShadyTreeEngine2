@@ -15,3 +15,4 @@ int getID()
     return idKey;
 }
 
+#define RegisterType(t) template ST_API int getID<t>(); 

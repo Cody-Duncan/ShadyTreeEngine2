@@ -16,3 +16,4 @@
 #include "GameObjectFactory.h"
 
 #include "DebugOutput.h"
+#include "ComponentTypeID.h"

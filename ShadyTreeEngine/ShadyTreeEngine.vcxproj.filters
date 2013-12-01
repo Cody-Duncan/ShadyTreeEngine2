@@ -101,6 +101,9 @@
     <ClCompile Include="BaseDeserializer.cpp">
       <Filter>DeSerializer</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentTypeID.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX_GraphicsDevice.h">
@@ -238,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="BaseDeserializer.h">
       <Filter>DeSerializer</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTypeID.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

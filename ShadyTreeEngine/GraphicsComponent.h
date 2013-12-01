@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "GraphicsResourceHandles.h"
 #include "MathLib.h"
+#include "ComponentTypeID.h"
 
 class GraphicsComponent : public Component
 {
@@ -16,3 +17,4 @@ public:
     Rectangle2 textureArea;
 };
 
+RegisterType(GraphicsComponent)
