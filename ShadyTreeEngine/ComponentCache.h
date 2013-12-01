@@ -8,6 +8,7 @@
 class AbstractComponentCache
 {
 public:
+     virtual Component* Generate() = 0;
     virtual void Reserve(unsigned int size) = 0;
     virtual void Delete(int id) = 0;
     virtual void Clear() = 0;

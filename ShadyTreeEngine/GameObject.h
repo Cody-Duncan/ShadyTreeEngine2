@@ -29,6 +29,8 @@ public:
 
     int id;
     bool active;
+
+    ST_API void CloneFrom(GameObject* g);
 };
 
 

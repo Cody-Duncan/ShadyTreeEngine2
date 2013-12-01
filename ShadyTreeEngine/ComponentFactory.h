@@ -43,6 +43,7 @@ public:
 
     ST_API void deleteComponent(int id, int typeID);
 
+    ST_API Component* cloneComponent(int typeID, int id);
 
     template<class T>
     void createComponentCache();
@@ -117,7 +118,7 @@ bool ComponentFactory::hasComponentCache()
 template<class T>
 inline ComponentCache<T>* ComponentFactory::getCache()
 {
-    if(map.size() == 0)
+    if(map.size() == 0 || !hasComponentCache<T>())
         return nullptr;
     int index = getID<T>();
     return static_cast<ComponentCache<T>*>(map[index]);

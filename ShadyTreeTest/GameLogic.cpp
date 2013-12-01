@@ -25,34 +25,40 @@ void GameLogic::Load()
     GameObjectCache::Instance().Reserve(400);
     GameObjectFactory& GF = GameObjectFactory::Instance();
     IResources& res = Resources::Instance();
-  
+
     res.parseResourceIDs("resources");
-    res.LoadTextureRes("test");
-
-    oneobject = GF.createGraphicalEntity();
-    
-    for(int i = 0; i < 300; ++i)
-    {
-        GF.createGraphicalEntity();
-    }
-
     DeSerializer s;
     s.BuildArchetypes("Player");
+
+    oneobject = GF.cloneArchetype("Player");
+    
+    /*for(int i = 0; i < 300; ++i)
+    {
+        GF.createGraphicalEntity();
+    }*/
+
+    
     
 }
 
 void GameLogic::Update(float deltaTime)
 {
     GameObjectCache& GOC = GameObjectCache::Instance();
-    for(unsigned int i = 0; i < GOC.entities.size(); ++i)
+    ComponentFactory& CF = ComponentFactory::Instance();
+
+    if(!CF.hasComponentCache<PositionalComponent>())
+        return;
+
+    std::vector<PositionalComponent>& posCache = CF.getCache<PositionalComponent>()->storage;
+    for(unsigned int i = 0; i < posCache.size(); ++i)
     {
-        PositionalComponent* p = GOC.entities[i].getComponent<PositionalComponent>();
+        PositionalComponent& p = posCache[i];
     
         if(gINPUTSTATE->keyHeld(VK_LEFT))
         {
-            p->position.x += 0.002f;
-            p->position.y = sin(p->position.x/20) * 100.0f;
-            p->rotation+=0.0001f * i;
+            p.position.x += 0.002f;
+            p.position.y = sin(p.position.x/20) * 100.0f;
+            p.rotation+=0.0001f * i;
         }
     }
 }

@@ -39,12 +39,35 @@ GameObject* GameObjectFactory::createGraphicalEntity()
 
 void GameObjectFactory::addArchetype(std::string archetypeName, int id)
 {
-    if(archetypes.find(archetypeName) != archetypes.end())
+    if (!hasArchetype(archetypeName))
     {
         archetypes[archetypeName] = id;
     }
     else
     {
-        DebugPrintf("Tried to overwrite an archetype");
+        DebugPrintf("Tried to overwrite an archetype: %s", archetypeName.c_str());
     }
+}
+
+GameObject* GameObjectFactory::cloneArchetype(std::string archetypeName)
+{
+    GameObject* newGO = nullptr;
+    if (hasArchetype(archetypeName))
+    {
+        GameObjectCache& GOC = GameObjectCache::Instance();
+        ComponentFactory& CF = ComponentFactory::Instance();
+        IResources& RES = Resources::Instance();
+        int id = archetypes[archetypeName];
+
+        GameObject* archGO = GOC.Get(id);
+        newGO = GOC.Create();
+
+        newGO->CloneFrom(archGO);
+    }
+    return newGO;
+}
+
+bool GameObjectFactory::hasArchetype(std::string name)
+{
+    return archetypes.find(name) != archetypes.end();
 }

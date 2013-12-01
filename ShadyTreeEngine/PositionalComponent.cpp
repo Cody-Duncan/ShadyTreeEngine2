@@ -18,9 +18,10 @@ Matrix PositionalComponent::Transform()
          * Matrix::CreateTranslation(position.x, position.y, 0);
 }
 
- void PositionalComponent::CloneInto(PositionalComponent* newPC)
+ void PositionalComponent::CloneFrom(Component* _oldPC)
 {
-    newPC->position = position;
-    newPC->rotation = rotation;
-    newPC->scale = scale;
+    PositionalComponent* oldPC = dynamic_cast<PositionalComponent*>(_oldPC);
+    position = oldPC->position;
+    rotation = oldPC->rotation;
+    scale = oldPC->scale;
 }

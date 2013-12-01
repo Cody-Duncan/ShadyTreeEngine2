@@ -37,7 +37,7 @@ void GraphicsSystem::Update(float deltaTime)
     assert(spriteBatch && "no spritebatch initialized. Did you forget to call Init()?");
 
     ComponentFactory& CF = ComponentFactory::Instance();
-    if(!CF.getCache<GraphicsComponent>()) //check for any graphicsComponents
+    if(!CF.hasComponentCache<GraphicsComponent>() || !CF.hasComponentCache<PositionalComponent>() ) //check for any graphicsComponents
         return;
 
     std::vector<GraphicsComponent>& graphC = CF.getCache<GraphicsComponent>()->storage;

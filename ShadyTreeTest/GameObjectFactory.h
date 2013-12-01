@@ -11,6 +11,7 @@ public:
 
     GameObject* createGraphicalEntity();
     void addArchetype(std::string archetypeName, int id);
+    GameObject* cloneArchetype(std::string archetypeName);
 
 private:
     GameObjectFactory(void);
@@ -19,5 +20,7 @@ private:
     GameObjectFactory& operator=(GameObjectFactory& rhs);
 
     std::unordered_map<std::string, int> archetypes;
+
+    bool hasArchetype(std::string name);
 };
 

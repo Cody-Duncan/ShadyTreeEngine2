@@ -11,8 +11,9 @@ GraphicsComponent::~GraphicsComponent(void)
 {
 }
 
-void GraphicsComponent::CloneInto(GraphicsComponent* newGC)
+void GraphicsComponent::CloneFrom(Component* _oldGC)
 {
-    newGC->texture = texture;
-    newGC->textureArea = textureArea;
+    GraphicsComponent* oldGC = dynamic_cast<GraphicsComponent*>(_oldGC);
+    texture = oldGC->texture;
+    textureArea = oldGC->textureArea ;
 }
