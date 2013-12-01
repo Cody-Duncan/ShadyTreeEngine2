@@ -9,7 +9,7 @@
       <Filter>GameLogic</Filter>
     </ClCompile>
     <ClCompile Include="DeSerializer.cpp" />
-    <ClCompile Include="StdAfx.cpp" />
+    <ClCompile Include="StdAfx2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObjectFactory.h">
@@ -19,7 +19,7 @@
       <Filter>GameLogic</Filter>
     </ClInclude>
     <ClInclude Include="DeSerializer.h" />
-    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="StdAfx2.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameLogic">

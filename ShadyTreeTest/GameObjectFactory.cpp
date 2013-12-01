@@ -1,3 +1,4 @@
+#include "GameObjectFactory.h"
 #include "GraphicsComponent.h"
 #include "PositionalComponent.h"
 
