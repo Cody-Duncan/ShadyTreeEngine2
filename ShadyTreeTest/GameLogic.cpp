@@ -46,12 +46,6 @@ void GameLogic::Load()
     herpDerpPos->position.x = 850;
     herpDerpPos->position.y += 100;
     
-    /*for(int i = 0; i < 300; ++i)
-    {
-        GF.createGraphicalEntity();
-    }*/
-
-    
     
 }
 
@@ -75,6 +69,11 @@ void GameLogic::Update(float deltaTime)
             //p.position.y += sin(p.position.x) * 100.0f * deltaTime;
             p.rotation += scale * i * deltaTime;
             scale+=0.001f;
+        }
+        else
+        {
+            p.rotation += scale * i * deltaTime;
+            scale *= 0.99991f;
         }
     }
 }
