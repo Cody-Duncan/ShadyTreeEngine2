@@ -1,9 +1,8 @@
 #include "GameLogic.h"
-#include "Resources.h"
-#include "GameObjectFactory.h"
+#include "InputState.h"
+
 #include "GraphicsComponent.h"
 #include "PositionalComponent.h"
-#include "InputState.h"
 
 #include "DeSerializer.h"
 

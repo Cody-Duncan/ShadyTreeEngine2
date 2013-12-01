@@ -1,7 +1,5 @@
 #pragma once
 
-#include "GameObjectCache.h"
-
 class GameObjectFactory
 {
 public:
@@ -12,12 +10,14 @@ public:
     }
 
     GameObject* createGraphicalEntity();
-    void LoadArchetypes(std::string resourceName);
+    void addArchetype(std::string archetypeName, int id);
 
 private:
     GameObjectFactory(void);
     ~GameObjectFactory(void);
     GameObjectFactory( GameObjectFactory& rhs);
     GameObjectFactory& operator=(GameObjectFactory& rhs);
+
+    std::unordered_map<std::string, int> archetypes;
 };
 
