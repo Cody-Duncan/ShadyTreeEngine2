@@ -4,7 +4,8 @@
 
 void GetTextureSizeD3D( ID3D11Resource* res, unsigned int* width, unsigned int* height )
 {
-    assert( res != 0 );
+
+    DebugAssert( res != 0, "Tried to get size of texture on a null ID3D11Resource (the texture resource bound to graphics card)");
 
     // This is the most generic solution. you can make it a lot
     // simpler if you know it will always be a 2D texture file
@@ -118,8 +119,8 @@ int TextureResourcer::createTextureFromWIC(ID3D11Device* device, ID3D11DeviceCon
 
     if(!textureView)
     {
-        DebugPrintf("Failed to load texture: ", filename);
-        assert(textureView);
+        assert(false);
+        DebugAssert(textureView, "Failed to load texture: ", filename);
     }
     
 

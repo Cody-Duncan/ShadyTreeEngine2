@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GameObject.h"
+#include "GameObjectCache.h"
 
 
 GameObject::GameObject(void)
@@ -19,9 +20,11 @@ void GameObject::clearComponents()
     }
 }
 
-void  GameObject::CloneFrom(GameObject* g)
+void  GameObject::CloneFrom(int ObjectID)
 {
     ComponentFactory& CF = ComponentFactory::Instance();
+    GameObjectCache& GOC = GameObjectCache::Instance();
+    GameObject* g = GOC.Get(ObjectID);
     
     for(auto iter = g->components.begin(); iter != g->components.end(); ++iter)
     {

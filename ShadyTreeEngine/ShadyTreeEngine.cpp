@@ -11,18 +11,17 @@ ShadyTreeEngine* CORE;
 
 ShadyTreeEngine::ShadyTreeEngine()
 {
+    DebugLogOpen();
     CORE = this;
 }
 
 ShadyTreeEngine::~ShadyTreeEngine()
 {
-    DebugPrintf("\n\n\n\n\n\n\n\n");
+    DebugLogClose();
 }
 
 void ShadyTreeEngine::Initialize()
 {
-    DebugLogOpen();
-
     for(unsigned int i = 0; i < systems.size(); ++i)
     {
         systems[i]->Init();
@@ -58,18 +57,18 @@ void ShadyTreeEngine::Run()
 
 void ShadyTreeEngine::Free()
 {
-    for(unsigned int i = 0; i < systems.size(); ++i)
-    {
-        systems[i]->Free();
-        delete systems[i];
-    }
-
     ComponentFactory::Instance().FreeAllCaches();
     GameObjectCache::Instance().Free();
 
     Resources::Instance().Free();
 
-    DebugLogClose();
+    //note, this goes backwards to free the systems in reverse order of thier initialization
+    //also note, that unsigned int overflows when it goes below 0, hence the odd-looking condition.
+    for(unsigned int i = systems.size()-1; i < systems.size(); --i)
+    {
+        systems[i]->Free();
+        delete systems[i];
+    }
 }
 
 void ShadyTreeEngine::Update(float deltaTime)

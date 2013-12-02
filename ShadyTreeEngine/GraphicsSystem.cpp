@@ -16,7 +16,7 @@ void GraphicsSystem::Init()
         delete device;
         device = 0;
         DebugPrintF("Failed to create Graphics Device");
-        assert(false && "Failed to create Graphics Device");
+        DebugAssert(false, "Failed to create Graphics Device");
     }
 
     spriteBatch = generateSpriteBatch(device);
@@ -34,7 +34,7 @@ std::stringstream ss;
 std::string resetString = "";
 void GraphicsSystem::Update(float deltaTime)
 {
-    assert(spriteBatch && "no spritebatch initialized. Did you forget to call Init()?");
+    DebugAssert(spriteBatch, "No spritebatch initialized. Did you forget to call Init()?");
 
     ComponentFactory& CF = ComponentFactory::Instance();
     if(!CF.hasComponentCache<GraphicsComponent>() || !CF.hasComponentCache<PositionalComponent>() ) //check for any graphicsComponents
@@ -53,7 +53,8 @@ void GraphicsSystem::Update(float deltaTime)
         {
             GameObject& go = *GOC.Get(g.parentID);
             PositionalComponent* posC = go.getComponent<PositionalComponent>();
-            assert(posC && posC->active);
+            DebugAssert(posC, "Positional Component not found or null.");
+            DebugAssert(posC->active, "Trying to draw active graphicsComponent, with nonactive positionalComponent.");
 
             Matrix transform = posC->rotationCentered ?
                 Matrix::CreateTranslation(-g.textureArea.dimensions.x/2, -g.textureArea.dimensions.y/2, 0) * posC->Transform() :

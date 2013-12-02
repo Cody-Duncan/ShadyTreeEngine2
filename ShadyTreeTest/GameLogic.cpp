@@ -47,6 +47,11 @@ void GameLogic::Load()
     herpDerpPos = GF.cloneArchetype("Herp")->getComponent<PositionalComponent>();
     herpDerpPos->position.x = 850;
     herpDerpPos->position.y += 100;
+
+    for(int i = 0; i < 100; ++i)
+    {
+         GF.cloneArchetype("Player");
+    }
     
     
 }

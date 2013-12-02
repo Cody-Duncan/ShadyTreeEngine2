@@ -44,30 +44,26 @@ void GameObjectCache::Reserve(int newSize)
 
 GameObject* GameObjectCache::Create()
 {
+    int index;
+    int id;
     if(freeSlots.empty()) //use a free slot if available
     {
-        int index = entities.size();
-        int id = generateID();
+        index = entities.size();
+        id = generateID();
         entities.emplace_back();
-
-        ID_Index[id] = index;
-
-        return &entities.back();
     }
     else //make a new slot, use it
     {
-        int index = freeSlots.front();
-        int id = generateID();
+        index = freeSlots.front();
+        id = generateID();
         freeSlots.pop_front();
-            
-        GameObject& go = entities[index];
-        go.id = id;
-        go.active = true;
-
-        ID_Index[id] = index;
-
-        return &entities[index];
     }
+
+    ID_Index[id] = index;
+    GameObject& go = entities[index];
+    go.id = id;
+    go.active = true;
+    return &entities[index];
 }
 
 GameObject* GameObjectCache::Get(int id)

@@ -57,12 +57,10 @@ GameObject* GameObjectFactory::cloneArchetype(std::string archetypeName)
         GameObjectCache& GOC = GameObjectCache::Instance();
         ComponentFactory& CF = ComponentFactory::Instance();
         IResources& RES = Resources::Instance();
-        int id = archetypes[archetypeName];
+        int archeid = archetypes[archetypeName];
 
-        GameObject* archGO = GOC.Get(id);
         newGO = GOC.Create();
-
-        newGO->CloneFrom(archGO);
+        newGO->CloneFrom(archeid);
     }
     return newGO;
 }

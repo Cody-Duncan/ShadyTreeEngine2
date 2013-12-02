@@ -31,7 +31,9 @@ void ComponentFactory::deleteComponent(int id, int typeID)
 
 Component* ComponentFactory::cloneComponent(int typeID, int id)
 {
-    assert((unsigned int)typeID < map.size()); //make sure the cache exists
+    DebugAssert( (unsigned int)typeID < map.size(),
+        "ERROR: Trying to clone a component type that doesn't exist. \n"
+        "If the typeID < map.size(), that means there is not a cache that yet exists to contain that type of component.");
     
     AbstractComponentCache* cache = map[typeID];
     Component* newComp = cache->Generate();

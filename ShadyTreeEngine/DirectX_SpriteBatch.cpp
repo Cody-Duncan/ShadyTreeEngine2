@@ -56,7 +56,7 @@ void DirectX_SpriteBatch::Init()
     D3D11_MAPPED_SUBRESOURCE resource;
     context->Map(indexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);    //map the buffer to lock resource
         unsigned int* pI = (unsigned int*) resource.pData;                  //convert data to Vertex* so we can set
-        assert(pI != 0);
+        DebugAssert(pI != 0, "Pointer to the dynamic index buffer is null. Error in allocating Buffer");
         memcpy(pI, indices, sizeof( unsigned int ) * BatchSize*6);          //memcopy the vertices in
     context->Unmap(indexBuffer, 0);                                         //unmap to unlock resource
 
@@ -82,8 +82,8 @@ void DirectX_SpriteBatch::addBatchBuffer(TextureHandle t)
 {
     if(batchVBuffers.find(t) == batchVBuffers.end()) //if key nonexistent
     {
-        assert(device && "Spritebatch does not have a valid graphicsDevice");
-    
+        DebugAssert(device, "Spritebatch's graphicsDevice is null");
+
         VertexBufferHandle quadBuffer;
         BufferResourcer::Instance().createDynamicVertexBuffer(BatchSize*4, device->getDevice(), &quadBuffer);
 
@@ -239,7 +239,7 @@ void DirectX_SpriteBatch::DrawBatch(TextureHandle t)
     VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(batchVBuffers[t]);
     if(quadBufferData.startVertex > 0) //don't draw empty buffers
     {
-        assert(batchIBuffer.IbufferID >= 0);
+        DebugAssert(batchIBuffer.IbufferID >= 0, "Batch Index Buffer ID is invalid. Value: %d", batchIBuffer.IbufferID );
         device->Draw(batchVBuffers[t], batchIBuffer, t);
     }
 }
@@ -262,8 +262,8 @@ void DirectX_SpriteBatch::sentBatchToBuffers(TextureHandle t)
     D3D11_MAPPED_SUBRESOURCE resource;
     context->Map(vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);                           //map the buffer to lock resource
         Vertex* pV = (Vertex*) resource.pData;                                                      //convert data to Vertex* so we can set
-        assert(pV != 0);
-        assert(currBatch.size() <= BatchSize*4 && "Too many vertices for buffer size. Crash now before we crash the graphics card.");
+        DebugAssert(pV != 0, "Pointer to Dynamic Vertex Buffer is null. Cannot modify vertices. Check allocation of buffer.");
+        DebugAssert(currBatch.size() <= BatchSize*4, "Too many vertices for buffer size. Crash now before we crash the graphics card. Tried to draw %d vertices", (unsigned int)currBatch.size());
         memcpy(pV, currBatch.data(), sizeof( Vertex ) * quadBufferData.startVertex);   //memcopy the vertices in
     context->Unmap(vertexBuffer, 0);                                                                //unmap to unlock resource
 
@@ -323,6 +323,6 @@ void DirectX_SpriteBatch::LoadDebugFont(std::string filename)
     }
 
     fontTex.t = Resources::Instance().LoadTextureFile("DebugFontTxt", fontTex.textureFileName);
-    assert( fontTex.t.textureIndex >= 0 );
+    DebugAssert( fontTex.t.textureIndex >= 0, "Texture index is invalid. Value: %d", fontTex.t.textureIndex );
     
 }

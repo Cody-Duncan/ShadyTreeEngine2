@@ -113,7 +113,7 @@ int DirectX_GraphicsDevice::Init()
     hr = device->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, 4, &m4xMsaaQuality);
     CHECKHR(hr, "FAILED: Error Checking Multi Sample Quality Levels. \n") 
 
-    assert( m4xMsaaQuality > 0 );
+    DebugAssert( m4xMsaaQuality > 0, "M4xMsaaQuality is 0, Multisampling with the given format and sample count combination is not supported for the installed graphics adapter.");
 
     
 
@@ -180,16 +180,14 @@ int DirectX_GraphicsDevice::Init()
 
     g_Projection = g_View = g_World = DirectX::XMMatrixIdentity();
 
-    Resources::Instance().setGraphicsDevice(this);
-
     return 0;
 }
 
 int DirectX_GraphicsDevice::OnResize()
 {
-    assert(deviceContext);
-    assert(device);
-    assert(swapChain);
+    DebugAssert(deviceContext, "Device Context is null.");
+    DebugAssert(device, "Device is null. How did that happen?");
+    DebugAssert(swapChain, "Swap chain is null. This is really bad.");
 
     HRESULT hr = S_OK;
     
@@ -364,8 +362,8 @@ void DirectX_GraphicsDevice::clearRenderTarget()
 void DirectX_GraphicsDevice::BeginDraw()
 {
     using namespace DirectX;
-    assert(deviceContext);
-    assert(swapChain);
+    DebugAssert(deviceContext, "Device Context is null.");
+    DebugAssert(swapChain, "Swap chain is null. This is really bad.");
 
     //set shaders and resources
     vertexShader = ShaderResourcer::Instance().getVertexShader(toDraw_vertexShader);
@@ -390,8 +388,8 @@ void DirectX_GraphicsDevice::BeginDraw()
 
 void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
 {
-    assert(hMesh.meshID >= 0);
-    assert(hTex.textureIndex >= 0);
+    DebugAssert(hMesh.meshID >= 0, "Mesh ID is invalid. (Cannot be negative)");
+    DebugAssert(hTex.textureIndex >= 0, "Texture ID is invalid (Cannot be negative)");
 
     //Setup the world/view matrices
     CBChangesEveryFrame cb_Frame;
@@ -437,11 +435,9 @@ void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
 
 void DirectX_GraphicsDevice::Draw(VertexBufferHandle& hVBuf, IndexBufferHandle& hIBuf, const TextureHandle& hTex)
 {
-
-    
-    assert(hVBuf.VbufferID >= 0);
-    assert(hIBuf.IbufferID >= 0);
-    assert(hTex.textureIndex >= 0);
+    DebugAssert(hVBuf.VbufferID >= 0, "Vertex Buffer ID is invalid (Cannot be negative)");
+    DebugAssert(hIBuf.IbufferID >= 0, "Index Buffer ID is invalid (Cannot be negative)");
+    DebugAssert(hTex.textureIndex >= 0, "Texture ID is invalid (Cannot be negative)");
 
     //Setup the world/view matrices
     CBChangesEveryFrame cb_Frame;
@@ -460,8 +456,8 @@ void DirectX_GraphicsDevice::Draw(VertexBufferHandle& hVBuf, IndexBufferHandle& 
     unsigned int vertexCount = VertexData.startVertex; //startVertex is the first free vertex
     unsigned int indexCount = IndexData.startIndex;   //startIndex is the first free index
 
-    assert(vertexCount >0 && "Trying to draw 0 vertices?");
-    assert(indexCount >0 && "Trying to draw 0 indices?");
+    DebugAssert(indexCount > 0, "Trying to draw 0 indices?");
+    DebugAssert(vertexCount > 0, "Trying to draw 0 vertices?");
 
     //get texture data
     ID3D11ShaderResourceView* texture = TextureResourcer::Instance().getTextureData(hTex).textureView;

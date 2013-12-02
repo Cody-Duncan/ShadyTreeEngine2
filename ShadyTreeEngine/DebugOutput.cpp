@@ -75,3 +75,15 @@ int OutputDebugLog(const char* message)
     }
     return 0;
 }
+
+void AssertPrintF(const char* format, char* file, int line, ...)
+{
+    const int BufferSize = 1024;
+    char messageWithFileLine[BufferSize];
+    sprintf_s(messageWithFileLine,"\n%s\nError at File: %s( Line: %d) : \n", format, file , line);	
+
+    va_list argList;
+    va_start(argList, format);
+    int charsWritten = VDebugPrintF(messageWithFileLine, argList);
+    va_end(argList);
+}

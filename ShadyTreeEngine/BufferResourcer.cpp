@@ -112,7 +112,7 @@ int BufferResourcer::createStaticBuffers(Mesh& mesh, ID3D11Device* device, Verte
     int V_ID = generateVBufferID();
     int I_ID = generateIBufferID();
 
-    assert(V_ID < 0 && "Vertex Buffer generated ID is less than 0. Check ID generation");
+    DebugAssert(V_ID < 0, "Vertex Buffer generated ID is less than 0. Check ID generation");
 
     //size vector to ensure index (key) is available
     checkVBufferSize(V_ID);

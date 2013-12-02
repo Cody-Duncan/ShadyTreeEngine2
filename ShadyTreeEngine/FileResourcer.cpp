@@ -82,7 +82,7 @@ void FileResourcer::closeFile(FileDataHandle h)
                 fileToErase = iter->first;
             }
         }
-        assert(foundFile && "How did program try to remove nonexistent file resource?");
+        DebugAssert(foundFile, "How did program try to remove nonexistent file resource?");
         if(foundFile)
         {
             fileNameToID.erase(fileToErase);

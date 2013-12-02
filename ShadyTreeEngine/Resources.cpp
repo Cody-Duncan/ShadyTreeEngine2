@@ -120,7 +120,8 @@ Mesh* Resources::generateMesh(std::string identifierName)
 
 MeshHandle Resources::LoadMeshFile(std::string filename)
 {
-    assert(false && "NOT IMPLEMENTED YET: Loading Mesh from file");
+
+    DebugAssert(false, "NOT IMPLEMENTED YET: Loading Mesh from file");
     MeshHandle h = {-1};
     return h;
 }
@@ -131,7 +132,7 @@ MeshHandle Resources::BindMesh(Mesh* mesh)
     IndexBufferHandle i;
 
     int result =  BufferResourcer::Instance().createStaticBuffers(*mesh, gd->getDevice(), &v, &i);
-    assert(result == 0);
+    DebugAssert(result == 0, "Buffer Resourcer failed to create static buffer.");
 
     return mesh->handle();
 }
@@ -245,7 +246,7 @@ VertexShaderHandle Resources::LoadVertexShaderFile(std::string FileName, const c
         EntryPoint,
         ShaderModel);
 
-    assert(!result);
+    DebugAssert(result == 0, "Could not generate vertex shader");
     errorBox(result, L" Could not generate vertex shader ");
     
     VertexShaderHandle vsHandle = SR.getVertexShaderHandle(FileName);
@@ -253,6 +254,7 @@ VertexShaderHandle Resources::LoadVertexShaderFile(std::string FileName, const c
     int bl = SR.debug_GetInputLayoutByteLength(vsHandle);
     if( bl != sizeof(Vertex) )
     {
+        DebugAssert(false, " Vertex Size Differs from inputLayout. InputLayout: %d ; Vertex: %d \n", bl, sizeof(Vertex));
         std::wstringstream ss;
         ss << L" Vertex Size Differs from inputLayout. InputLayout:  " << bl
             << L" ; Vertex: " << sizeof(Vertex) << std::endl;
@@ -275,6 +277,7 @@ PixelShaderHandle Resources::LoadPixelShaderFile(std::string FileName, const cha
         ShaderModel
         );
 
+    DebugAssert(result == 0, "Could not generate pixel shader");
     errorBox(result, L" Could not generate pixel shader");
 
     psHandle = SR.getPixelShaderHandle(FileName);
