@@ -39,20 +39,6 @@ void GameLogic::Load()
     GF.cloneArchetype("Player")->getComponent<PositionalComponent>()->position.x += 450;
     GF.cloneArchetype("Player")->getComponent<PositionalComponent>()->position.x += 600;
     GF.cloneArchetype("Player")->getComponent<PositionalComponent>()->position.x += 750;
-
-    PositionalComponent* herpDerpPos = GF.cloneArchetype("Herp")->getComponent<PositionalComponent>();
-    herpDerpPos->position.x = 400;
-    herpDerpPos->position.y += 100;
-
-    herpDerpPos = GF.cloneArchetype("Herp")->getComponent<PositionalComponent>();
-    herpDerpPos->position.x = 850;
-    herpDerpPos->position.y += 100;
-
-    for(int i = 0; i < 100; ++i)
-    {
-         GF.cloneArchetype("Player");
-    }
-    
     
 }
 

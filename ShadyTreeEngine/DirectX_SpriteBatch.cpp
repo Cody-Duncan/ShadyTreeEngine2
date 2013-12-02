@@ -60,6 +60,8 @@ void DirectX_SpriteBatch::Init()
         memcpy(pI, indices, sizeof( unsigned int ) * BatchSize*6);          //memcopy the vertices in
     context->Unmap(indexBuffer, 0);                                         //unmap to unlock resource
 
+    device->setClearColor(Color(0.4f,0.6f,0.9f,1.0f)); // cornflower blue
+
     delete[] indices;
 }
 
@@ -120,7 +122,6 @@ void DirectX_SpriteBatch::Begin(bool alphaBlend)
 
     device->setOrthographicProjection();
 
-    device->setClearColor(Color(0.4f,0.6f,0.9f,1.0f));
     device->clearRenderTarget();
     
     //device->ToggleDepthBuffer(false);

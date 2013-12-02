@@ -99,3 +99,14 @@ void GraphicsSystem::RecieveMessage(Message* msg)
 {
     
 }
+
+/// <summary>
+/// Sets the color to clear the frame to.
+/// </summary>
+/// <remarks> Call after Initialize()</remarks>
+/// <param name="color">The color.</param>
+void GraphicsSystem::setClearColor(Color color)
+{
+    if(device)
+        device->setClearColor(color);
+}

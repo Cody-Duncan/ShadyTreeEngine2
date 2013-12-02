@@ -17,6 +17,9 @@ public:
     virtual void Free();
     virtual void RecieveMessage(Message* msg);
 
+    ST_API void setClearColor(Color color);
+
+
 private: 
     GraphicsDevice* device;
     SpriteBatch* spriteBatch;

@@ -15,10 +15,14 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
     
     ShadyTreeEngine engine;
+
     engine.AttachSystem(new WindowSystem("ShadyTreeTest", 1280, 720));
-    engine.AttachSystem(new GraphicsSystem() );
+    GraphicsSystem* gs = new GraphicsSystem();
+    engine.AttachSystem(gs);
     engine.AttachSystem(new GameLogic());
+
     engine.Initialize();
+    gs->setClearColor(Color(0,0,0,1.0f));
     engine.Load();
     engine.Run();
     engine.Free();
