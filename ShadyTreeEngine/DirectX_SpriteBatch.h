@@ -38,14 +38,14 @@ public:
     void Draw(TextureHandle texH, Matrix transform, Rectangle2 rect);
     void TextDraw(Vector2 position, const char* text);
     void End();
-
     
-
     void Dispose(); 
 
     void DrawBatch(TextureHandle t);
 
     void LoadDebugFont(std::string filename);
+    
+    void DrawTriangles(Vector2 points[3], Color c);
 
 private:
     DirectX_GraphicsDevice* device;

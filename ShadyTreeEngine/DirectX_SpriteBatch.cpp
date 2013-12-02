@@ -220,6 +220,11 @@ void DirectX_SpriteBatch::TextDraw(Vector2 position, const char* text)
     }
 }
 
+void DrawTriangles(Vector2 points[3], Color c)
+{
+
+}
+
 void DirectX_SpriteBatch::End()
 {
     for(auto iter = batchVBuffers.begin(); iter != batchVBuffers.end(); iter++)

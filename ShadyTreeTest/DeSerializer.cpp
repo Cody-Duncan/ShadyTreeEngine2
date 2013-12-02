@@ -56,22 +56,32 @@ GameObject* ParsePlayer(json_t* player)
     return go;
 }
 
-void DeSerializer::BuildArchetypes(std::string resID)
+void OpenJson(std::string resID, json_t** root)
 {
-    DebugPrintf("GAME: Building Archetypes from resource: %s  File: %s\n", resID.c_str(), Resources::Instance().getFileSourceOfRes(resID).c_str());
     std::string buffer;
     getJsonStringFromFileRes(resID, buffer);
-
-    json_t* root;
     json_error_t error;
     
     //root = json_load_file("Player.json", 0, &error);
-    root = json_loadb(buffer.c_str(), buffer.size(), 0, &error);
+    *root = json_loadb(buffer.c_str(), buffer.size(), 0, &error);
     if(!root)
     {
         DebugPrintf("\nPARSING ERROR: %s ; Resource: %s\nLine:%d, Position:%d\n", error.text, resID.c_str(), error.line, error.position);
         assert(root && "Parsing Error");
     }
+}
+
+void CloseJson(json_t* root)
+{
+    json_decref(root);
+}
+
+void DeSerializer::BuildArchetypes(std::string resID)
+{
+    DebugPrintf("GAME: Building Archetypes from resource: %s  File: %s\n", resID.c_str(), Resources::Instance().getFileSourceOfRes(resID).c_str());
+
+    json_t* root;
+    OpenJson(resID, &root);
 
     if(json_is_object(root))
     {
@@ -107,6 +117,29 @@ void DeSerializer::BuildArchetypes(std::string resID)
         }
     }
 
-    json_decref(root);
+    CloseJson(root);
 
+}
+
+void DeSerializer::BuildLevel(std::string resID)
+{
+    DebugPrintf("GAME: Building Level from resource: %s  File: %s\n", resID.c_str(), Resources::Instance().getFileSourceOfRes(resID).c_str());
+    
+    json_t* root;
+    OpenJson(resID, &root);
+
+    if(json_is_object(root))
+    {
+        const char *key;
+        json_t *value;
+        json_object_foreach(root, key, value) 
+        {
+            if(strcmp(key, "Platform") == 0)
+            {
+                
+            }
+        }
+    }
+
+    CloseJson(root);
 }
