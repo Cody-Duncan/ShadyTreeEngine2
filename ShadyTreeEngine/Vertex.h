@@ -10,4 +10,10 @@ struct Vertex
     Vector2 Tex;
 };
 
+struct VertexCol
+{
+    Vector4 Pos;
+    Color Col;
+}
+
 #endif

@@ -43,7 +43,7 @@ public:
 
     void DrawBatch(TextureHandle t);
 
-    void LoadDebugFont(std::string filename);
+    void LoadDebugFont(std::string resID);
     
     void DrawTriangles(Vector2 points[3], Color c);
 
@@ -55,6 +55,8 @@ private:
 
     VertexShaderHandle vertexShaderH;
     PixelShaderHandle pixelShaderH;
+    VertexShaderHandle colorVertSH;
+    PixelShaderHandle colorPixSH;
 
     void addBatchBuffer(TextureHandle t);
     void resetBatchBuffer(TextureHandle t);

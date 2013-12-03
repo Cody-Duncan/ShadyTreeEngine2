@@ -29,9 +29,15 @@ DirectX_SpriteBatch::~DirectX_SpriteBatch(void)
 
 void DirectX_SpriteBatch::Init()
 {
-    vertexShaderH = Resources::Instance().LoadVertexShaderFile("resources/Tutorial07.fx","VS", "vs_4_0");
-    pixelShaderH  = Resources::Instance().LoadPixelShaderFile("resources/Tutorial07.fx","PS", "ps_4_0");
-    LoadDebugFont("resources/DebugFont.fnt");
+    //texture shaders
+    vertexShaderH = Resources::Instance().LoadVertexShaderRes("Tutorial07","VS", "vs_4_0");
+    pixelShaderH  = Resources::Instance().LoadPixelShaderRes("Tutorial07","PS", "ps_4_0");
+
+    //color shaders
+    colorVertSH   = Resources::Instance().LoadVertexShaderRes("ColorShader","VS", "vs_4_0");
+    colorPixSH    = Resources::Instance().LoadPixelShaderRes("ColorShader","PS", "ps_4_0");
+
+    LoadDebugFont("DebugFont");
 
     BufferResourcer::Instance().createDynamicIndexBuffer(BatchSize*6, device->getDevice(), &batchIBuffer);
 
@@ -222,7 +228,9 @@ void DirectX_SpriteBatch::TextDraw(Vector2 position, const char* text)
 
 void DrawTriangles(Vector2 points[3], Color c)
 {
-
+    //going to need to get a shader for drawing triangles.
+    //need to reserve an index for a batch, and batchVBuffer.
+    //need a mechanism for sorting the layering of the geometry, might use z position.
 }
 
 void DirectX_SpriteBatch::End()
@@ -278,10 +286,10 @@ void DirectX_SpriteBatch::sentBatchToBuffers(TextureHandle t)
     indexBufData.startIndex = quadBufferData.startVertex * 3 / 2; //6 indices per 4 vertices
 }
 
-void DirectX_SpriteBatch::LoadDebugFont(std::string filename)
+void DirectX_SpriteBatch::LoadDebugFont(std::string resID)
 {
     using namespace std;
-    FileDataHandle h = Resources::Instance().LoadDataFile("DebugFontCfg", filename);
+    FileDataHandle h = Resources::Instance().LoadDataRes(resID);
     std::iostream& dataStream = *FileResourcer::Instance().getFile(h);
     
     std::string line;
