@@ -249,19 +249,27 @@ VertexShaderHandle Resources::LoadVertexShaderFile(std::string FileName, const c
     DebugAssert(result == 0, "Could not generate vertex shader");
     errorBox(result, L" Could not generate vertex shader ");
     
+    return SR.getVertexShaderHandle(FileName);
+}
+
+bool Resources::VerifyVertexSize(std::string FileName, size_t vertexSize)
+{
+    ShaderResourcer& SR = ShaderResourcer::Instance(); 
     VertexShaderHandle vsHandle = SR.getVertexShaderHandle(FileName);
 
     int bl = SR.debug_GetInputLayoutByteLength(vsHandle);
-    if( bl != sizeof(Vertex) )
+    if( bl != vertexSize)
     {
-        DebugAssert(false, " Vertex Size Differs from inputLayout. InputLayout: %d ; Vertex: %d \n", bl, sizeof(Vertex));
+        DebugAssert(false, " Vertex Size Differs from inputLayout. InputLayout: %i ; Vertex: %d \n", bl, vertexSize);
         std::wstringstream ss;
         ss << L" Vertex Size Differs from inputLayout. InputLayout:  " << bl
-            << L" ; Vertex: " << sizeof(Vertex) << std::endl;
+            << L" ; Vertex: " << vertexSize << std::endl;
         errorBox(-1, ss.str().c_str());
+
+        return false;
     }
 
-    return vsHandle;
+    return true;
 }
 
 PixelShaderHandle Resources::LoadPixelShaderFile(std::string FileName, const char * EntryPoint, const char * ShaderModel)

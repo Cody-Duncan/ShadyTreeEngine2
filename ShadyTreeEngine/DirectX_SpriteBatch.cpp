@@ -32,6 +32,7 @@ void DirectX_SpriteBatch::Init()
     //----- LOAD SHADERS AND FONT
     //texture shaders
     vertexShaderH = Resources::Instance().LoadVertexShaderFile("resources/Tutorial07.fx","VS", "vs_4_0");
+                    Resources::Instance().VerifyVertexSize("resources/Tutorial07.fx", sizeof(Vertex));
     pixelShaderH  = Resources::Instance().LoadPixelShaderFile("resources/Tutorial07.fx","PS", "ps_4_0");
 
     LoadDebugFont("resources/DebugFont.fnt");

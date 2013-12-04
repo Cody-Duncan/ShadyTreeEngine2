@@ -1,6 +1,7 @@
 #include "GraphicsFactory.h"
 
 #include "DirectX_SpriteBatch.h"
+#include "DirectX_PrimitiveBatch.h"
 #include "Resources.h"
 
 GraphicsDevice* generateGraphicsDevice(DeviceAPI type)
@@ -20,6 +21,14 @@ SpriteBatch* generateSpriteBatch(GraphicsDevice* graphicsDevice)
 {
     if( dynamic_cast<DirectX_GraphicsDevice*>(graphicsDevice) )
         return new DirectX_SpriteBatch(graphicsDevice);
+    
+    return nullptr;
+}
+
+PrimitiveBatch* generatePrimitiveBatch(GraphicsDevice* graphicsDevice)
+{
+    if( dynamic_cast<DirectX_GraphicsDevice*>(graphicsDevice) )
+        return new DirectX_PrimitiveBatch(graphicsDevice);
     
     return nullptr;
 }

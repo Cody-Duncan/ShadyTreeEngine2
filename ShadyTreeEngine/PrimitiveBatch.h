@@ -15,7 +15,7 @@ public:
     virtual void Init() = 0;
 
     virtual void Begin(bool AlphaBlend = false) = 0;
-    virtual void DrawTriangles(int layer, Vector2* points, int pointLength, Matrix transform, Color c) = 0;
+    virtual void DrawTriangles(unsigned int layer, Vector2* points, int pointLength, Matrix transform, Color c) = 0;
     virtual void End() = 0;
    
     virtual void Dispose() = 0;

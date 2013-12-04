@@ -29,6 +29,7 @@ void DirectX_PrimitiveBatch::Init()
 {
     //color shaders
     colorVertSH   = Resources::Instance().LoadVertexShaderFile("resources/ColorShader.fx","VS", "vs_4_0");
+                    Resources::Instance().VerifyVertexSize("resources/ColorShader.fx", sizeof(VertexCol));
     colorPixSH    = Resources::Instance().LoadPixelShaderFile("resources/ColorShader.fx","PS", "ps_4_0");
 
     //----- INITIALIZE TRIANGLE INDEX BUFFER

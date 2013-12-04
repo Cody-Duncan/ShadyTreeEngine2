@@ -20,7 +20,7 @@ HRESULT CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR sz
     if( FAILED(hr) )
     {
         if( pErrorBlob != nullptr )
-            OutputDebugStringA( (char*)pErrorBlob->GetBufferPointer() );
+            DebugPrintf("SHADERCOMPILER: %s", (char*)pErrorBlob->GetBufferPointer() );
         if( pErrorBlob ) pErrorBlob->Release();
         return hr;
     }

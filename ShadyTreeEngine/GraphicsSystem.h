@@ -1,8 +1,10 @@
 #pragma once
 
 #include "ISystem.h"
-#include "GraphicsDevice.h"
-#include "SpriteBatch.h"
+
+class GraphicsDevice;
+class SpriteBatch;
+class PrimitiveBatch;
 
 class GraphicsSystem : public ISystem
 {
@@ -23,4 +25,5 @@ public:
 private: 
     GraphicsDevice* device;
     SpriteBatch* spriteBatch;
+    PrimitiveBatch* primitiveBatch;
 };

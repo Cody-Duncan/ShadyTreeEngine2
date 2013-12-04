@@ -1,4 +1,9 @@
 #include "GraphicsSystem.h"
+
+#include "GraphicsDevice.h"
+#include "SpriteBatch.h"
+#include "PrimitiveBatch.h"
+
 #include "GraphicsFactory.h"
 #include "ComponentFactory.h"
 #include "GraphicsComponent.h"
@@ -21,6 +26,9 @@ void GraphicsSystem::Init()
 
     spriteBatch = generateSpriteBatch(device);
     spriteBatch->Init();
+
+    primitiveBatch = generatePrimitiveBatch(device);
+    primitiveBatch->Init();
 }
 
 void GraphicsSystem::Load()
@@ -40,47 +48,54 @@ void GraphicsSystem::Update(float deltaTime)
     if(!CF.hasComponentCache<GraphicsComponent>() || !CF.hasComponentCache<PositionalComponent>() ) //check for any graphicsComponents
         return;
 
-    std::vector<GraphicsComponent>& graphC = CF.getCache<GraphicsComponent>()->storage;
-    std::vector<PositionalComponent>* posC = &CF.getCache<PositionalComponent>()->storage;
-    GameObjectCache& GOC = GameObjectCache::Instance();
+    //grab the caches
+    std::vector<GraphicsComponent>& graphC = CF.getCache<GraphicsComponent>()->storage;  //graphics components
+    GameObjectCache& GOC = GameObjectCache::Instance();                                  //game objects
 
+    //BEGIN DRAWING
     device->clearRenderTarget();
 
+    primitiveBatch->Begin();
+    primitiveBatch->End();
+
     spriteBatch->Begin(true);
-        //spriteBatch->Draw(t, matrixArray[i], r);
-    for(unsigned int i = 0; i < graphC.size(); i++)
-    {
-        GraphicsComponent& g = graphC[i];
-        if(g.active)
+    
+        //draw all graphicsComponents
+        for(unsigned int i = 0; i < graphC.size(); i++)
         {
-            GameObject& go = *GOC.Get(g.parentID);
-            PositionalComponent* posC = go.getComponent<PositionalComponent>();
-            DebugAssert(posC, "Positional Component not found or null.");
-            DebugAssert(posC->active, "Trying to draw active graphicsComponent, with nonactive positionalComponent.");
+            GraphicsComponent& g = graphC[i];
+            if(g.active)
+            {
+                GameObject& go = *GOC.Get(g.parentID);
+                PositionalComponent* posC = go.getComponent<PositionalComponent>();
+                DebugAssert(posC, "Positional Component not found or null.");
+                DebugAssert(posC->active, "Trying to draw active graphicsComponent, with nonactive positionalComponent.");
 
-            Matrix transform = posC->rotationCentered ?
-                Matrix::CreateTranslation(-g.textureArea.dimensions.x/2, -g.textureArea.dimensions.y/2, 0) * posC->Transform() :
-                posC->Transform();
+                //center the transform?
+                Matrix transform = posC->rotationCentered ?
+                    Matrix::CreateTranslation(-g.textureArea.dimensions.x/2, -g.textureArea.dimensions.y/2, 0) * posC->Transform() :
+                    posC->Transform();
 
-            spriteBatch->Draw(g.texture, transform, g.textureArea);
+                spriteBatch->Draw(g.texture, transform, g.textureArea);
+            }
         }
-    }
 
-    ++count;
-    totalTime += deltaTime;
-    char buf[100];
-    sprintf_s(buf, "FPS: %8.2f", (count / totalTime));
-    spriteBatch->TextDraw(Vector2(1,1), buf);
-    ss.str(resetString);
+        //calculate and draw FPS
+        ++count;
+        totalTime += deltaTime;
+        char buf[100];
+        sprintf_s(buf, "FPS: %8.2f", (count / totalTime));
+        spriteBatch->TextDraw(Vector2(1,1), buf);
+        ss.str(resetString);
 
-    if(totalTime > 1.0f)
-    {
-        count = 0;
-        totalTime = 0;
-    }
+        if(totalTime > 1.0f)
+        {
+            count = 0;
+            totalTime = 0;
+        }
 
+    //END DRAWING
     spriteBatch->End();
-
     device->SwapBuffer();
 }
 

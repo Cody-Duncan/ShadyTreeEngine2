@@ -34,6 +34,7 @@ public:
     //Shaders
     virtual VertexShaderHandle LoadVertexShaderFile(std::string FileName, const char * EntryPoint, const char * ShaderModel) = 0;
     virtual PixelShaderHandle  LoadPixelShaderFile (std::string FileName, const char * EntryPoint, const char * ShaderModel) = 0;
+    virtual bool VerifyVertexSize(std::string FileName, size_t vertexSize) = 0;
 
     virtual VertexShaderHandle LoadVertexShaderRes(std::string ResID, const char * EntryPoint, const char * ShaderModel) = 0;
     virtual PixelShaderHandle  LoadPixelShaderRes (std::string ResID, const char * EntryPoint, const char * ShaderModel) = 0;
