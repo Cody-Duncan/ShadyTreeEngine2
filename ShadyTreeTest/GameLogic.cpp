@@ -31,6 +31,7 @@ void GameLogic::Load()
     res.parseResourceIDs("resources");
     DeSerializer s;
     s.BuildArchetypes("Player");
+    s.BuildLevel("arenaLevel");
 
     oneobject = GF.cloneArchetype("Player");
     GF.cloneArchetype("Player")->getComponent<PositionalComponent>()->position.x += 150;

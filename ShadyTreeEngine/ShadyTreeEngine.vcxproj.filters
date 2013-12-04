@@ -104,6 +104,9 @@
     <ClCompile Include="ComponentTypeID.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="DirectX_PrimitiveBatch.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX_GraphicsDevice.h">
@@ -244,6 +247,12 @@
     </ClInclude>
     <ClInclude Include="ComponentTypeID.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX_PrimitiveBatch.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimitiveBatch.h">
+      <Filter>Graphics\API</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -29,16 +29,14 @@ DirectX_SpriteBatch::~DirectX_SpriteBatch(void)
 
 void DirectX_SpriteBatch::Init()
 {
+    //----- LOAD SHADERS AND FONT
     //texture shaders
-    vertexShaderH = Resources::Instance().LoadVertexShaderRes("Tutorial07","VS", "vs_4_0");
-    pixelShaderH  = Resources::Instance().LoadPixelShaderRes("Tutorial07","PS", "ps_4_0");
+    vertexShaderH = Resources::Instance().LoadVertexShaderFile("resources/Tutorial07.fx","VS", "vs_4_0");
+    pixelShaderH  = Resources::Instance().LoadPixelShaderFile("resources/Tutorial07.fx","PS", "ps_4_0");
 
-    //color shaders
-    colorVertSH   = Resources::Instance().LoadVertexShaderRes("ColorShader","VS", "vs_4_0");
-    colorPixSH    = Resources::Instance().LoadPixelShaderRes("ColorShader","PS", "ps_4_0");
+    LoadDebugFont("resources/DebugFont.fnt");
 
-    LoadDebugFont("DebugFont");
-
+    //----- INITIALIZE SPRITE INDEX BUFFER
     BufferResourcer::Instance().createDynamicIndexBuffer(BatchSize*6, device->getDevice(), &batchIBuffer);
 
     unsigned int* indices = new unsigned int[BatchSize *6];
@@ -55,20 +53,22 @@ void DirectX_SpriteBatch::Init()
     }
 
     ID3D11DeviceContext* context = device->getContext();
-    IndexBufferData& IndexBufferData = BufferResourcer::Instance().getIBuffer(batchIBuffer);
-    ID3D11Buffer* indexBuffer = IndexBufferData.getIndexBuffer();
+    ID3D11Buffer* indexBuffer  = BufferResourcer::Instance().getIBuffer(batchIBuffer).getIndexBuffer();
 
-     //update vertex buffer
+    //update vertex buffer
     D3D11_MAPPED_SUBRESOURCE resource;
     context->Map(indexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);    //map the buffer to lock resource
-        unsigned int* pI = (unsigned int*) resource.pData;                  //convert data to Vertex* so we can set
+        unsigned int* pI = (unsigned int*) resource.pData;                  //convert data to unisgned int* so it can be assigned
         DebugAssert(pI != 0, "Pointer to the dynamic index buffer is null. Error in allocating Buffer");
-        memcpy(pI, indices, sizeof( unsigned int ) * BatchSize*6);          //memcopy the vertices in
+        memcpy(pI, indices, sizeof( unsigned int ) * BatchSize*6);          //memcopy the indices in
     context->Unmap(indexBuffer, 0);                                         //unmap to unlock resource
 
+    delete[] indices;
+
+    //----- SET OTHER VALUES
     device->setClearColor(Color(0.4f,0.6f,0.9f,1.0f)); // cornflower blue
 
-    delete[] indices;
+   
 }
 
 void DirectX_SpriteBatch::Dispose()
@@ -116,6 +116,7 @@ void DirectX_SpriteBatch::resetAllBatchBuffers()
     }
 }
 
+
 void DirectX_SpriteBatch::Begin(bool alphaBlend)
 {   
     static Matrix m = Matrix::Identity();
@@ -127,10 +128,7 @@ void DirectX_SpriteBatch::Begin(bool alphaBlend)
     device->setView( eye, at, up );
 
     device->setOrthographicProjection();
-
-    device->clearRenderTarget();
     
-    //device->ToggleDepthBuffer(false);
     device->setBlend(alphaBlend);
 
     device->setVertexShader(vertexShaderH);
@@ -166,13 +164,11 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
     textureArea.dimensions = Vector2(rect.dimensions.x / texData.width, rect.dimensions.y / texData.width);
 
     //calculate mesh vertex positions
-    Vector2 topLeft = Vector2::Transform( Vector2(0,0), transform);
+    Vector2 topLeft  = Vector2::Transform( Vector2(0,0), transform);
     Vector2 topRight = Vector2::Transform( Vector2(rect.dimensions.x, 0), transform );
     Vector2 botLeft  = Vector2::Transform( Vector2(0, rect.dimensions.y), transform);
     Vector2 botRight = Vector2::Transform( Vector2(rect.dimensions.x, rect.dimensions.y), transform);
 
-    VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(batchVBuffers[texH]);
-    
     //generate vertices and indices for quads
     //vertices need normalized UV coordinates based on the rect in texture Coordinates.
 
@@ -209,6 +205,7 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
     batchRef.push_back(vertices[2]);
     batchRef.push_back(vertices[3]);
 
+    VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(batchVBuffers[texH]);
     quadBufferData.startVertex += 4;
 }
 
@@ -226,12 +223,6 @@ void DirectX_SpriteBatch::TextDraw(Vector2 position, const char* text)
     }
 }
 
-void DrawTriangles(Vector2 points[3], Color c)
-{
-    //going to need to get a shader for drawing triangles.
-    //need to reserve an index for a batch, and batchVBuffer.
-    //need a mechanism for sorting the layering of the geometry, might use z position.
-}
 
 void DirectX_SpriteBatch::End()
 {
@@ -240,8 +231,6 @@ void DirectX_SpriteBatch::End()
         sentBatchToBuffers(iter->first);
         DrawBatch(iter->first);
     }
-
-    device->SwapBuffer();
 
     resetAllBatchBuffers();
 }
@@ -257,6 +246,7 @@ void DirectX_SpriteBatch::DrawBatch(TextureHandle t)
         device->Draw(batchVBuffers[t], batchIBuffer, t);
     }
 }
+
 
 void DirectX_SpriteBatch::sentBatchToBuffers(TextureHandle t)
 {
@@ -286,10 +276,13 @@ void DirectX_SpriteBatch::sentBatchToBuffers(TextureHandle t)
     indexBufData.startIndex = quadBufferData.startVertex * 3 / 2; //6 indices per 4 vertices
 }
 
-void DirectX_SpriteBatch::LoadDebugFont(std::string resID)
+
+
+
+void DirectX_SpriteBatch::LoadDebugFont(std::string filename)
 {
     using namespace std;
-    FileDataHandle h = Resources::Instance().LoadDataRes(resID);
+    FileDataHandle h = Resources::Instance().LoadDataFile("DebugFontCfg", filename);
     std::iostream& dataStream = *FileResourcer::Instance().getFile(h);
     
     std::string line;

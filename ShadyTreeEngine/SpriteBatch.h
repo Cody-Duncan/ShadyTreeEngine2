@@ -1,5 +1,5 @@
 #pragma once
-#pragma once
+
 
 #include "DeviceAPI.h"
 #include "GraphicsResourceHandles.h"
@@ -24,7 +24,5 @@ public:
     virtual void Dispose() = 0;
 
     virtual void DrawBatch(TextureHandle t) = 0;
-
-    virtual void DrawTriangles(Vector2 points[3], Color c) = 0;
 };
 

@@ -23,6 +23,7 @@
     <ClInclude Include="Debug_Graphics.h" />
     <ClInclude Include="DeviceAPI.h" />
     <ClInclude Include="DirectX_GraphicsDevice.h" />
+    <ClInclude Include="DirectX_PrimitiveBatch.h" />
     <ClInclude Include="DirectX_SpriteBatch.h" />
     <ClInclude Include="FileResourcer.h" />
     <ClInclude Include="GameObject.h" />
@@ -43,6 +44,7 @@
     <ClInclude Include="Message.h" />
     <ClInclude Include="OSHighResTimer.h" />
     <ClInclude Include="PositionalComponent.h" />
+    <ClInclude Include="PrimitiveBatch.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="ShaderResourcer.h" />
     <ClInclude Include="ST_API_Def.h" />
@@ -69,6 +71,7 @@
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DebugOutput.cpp" />
     <ClCompile Include="DirectX_GraphicsDevice.cpp" />
+    <ClCompile Include="DirectX_PrimitiveBatch.cpp" />
     <ClCompile Include="DirectX_SpriteBatch.cpp" />
     <ClCompile Include="FileResourcer.cpp" />
     <ClCompile Include="GameObject.cpp" />

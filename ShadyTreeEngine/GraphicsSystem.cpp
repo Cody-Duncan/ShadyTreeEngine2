@@ -44,6 +44,8 @@ void GraphicsSystem::Update(float deltaTime)
     std::vector<PositionalComponent>* posC = &CF.getCache<PositionalComponent>()->storage;
     GameObjectCache& GOC = GameObjectCache::Instance();
 
+    device->clearRenderTarget();
+
     spriteBatch->Begin(true);
         //spriteBatch->Draw(t, matrixArray[i], r);
     for(unsigned int i = 0; i < graphC.size(); i++)
@@ -78,6 +80,8 @@ void GraphicsSystem::Update(float deltaTime)
     }
 
     spriteBatch->End();
+
+    device->SwapBuffer();
 }
 
 void GraphicsSystem::Unload()

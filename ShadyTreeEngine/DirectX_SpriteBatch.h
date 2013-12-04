@@ -33,6 +33,7 @@ public:
     ~DirectX_SpriteBatch(void);
 
     void Init();
+    void LoadDebugFont(std::string filename);
 
     void Begin(bool AlphaBlend = false);
     void Draw(TextureHandle texH, Matrix transform, Rectangle2 rect);
@@ -43,29 +44,18 @@ public:
 
     void DrawBatch(TextureHandle t);
 
-    void LoadDebugFont(std::string resID);
-    
-    void DrawTriangles(Vector2 points[3], Color c);
-
 private:
     DirectX_GraphicsDevice* device;
 
-    int vertexLength;
-    int indexLength;
-
     VertexShaderHandle vertexShaderH;
     PixelShaderHandle pixelShaderH;
-    VertexShaderHandle colorVertSH;
-    PixelShaderHandle colorPixSH;
 
     void addBatchBuffer(TextureHandle t);
     void resetBatchBuffer(TextureHandle t);
     void resetAllBatchBuffers();
 
     void sentBatchToBuffers(TextureHandle t);
-
-    //textureID -> (transform, textureArea)
-    //std::unordered_map<TextureHandle, std::vector< std::pair<Matrix, Rectangle2 > > > batchBuffer;
+    
     std::unordered_map<TextureHandle, VertexBufferHandle> batchVBuffers;
     IndexBufferHandle batchIBuffer;
     std::unordered_map<TextureHandle, std::vector<Vertex> > batch;
