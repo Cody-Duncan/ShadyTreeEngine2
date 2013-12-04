@@ -49,7 +49,39 @@ GameObject* ParsePlayer(json_t* player)
         }
         else
         {
-            DebugPrintf("Error: Tried to parse json object %s" , key);
+            DebugPrintf("Error: Tried to parse json object %s\n" , key);
+        }
+    }
+
+    return go;
+}
+
+GameObject* ParsePlatform(json_t* platform)
+{
+    GameObjectCache& GOC = GameObjectCache::Instance();
+    ComponentFactory& CF = ComponentFactory::Instance();
+    GameObject* go = GOC.Create();
+
+    const char *key;
+    json_t *value;
+    json_object_foreach(platform, key, value) 
+    {
+        json_t* component = json_object_get(platform, key);
+        if( strcmp(key, "PrimitiveGraphics") == 0)
+        {
+            PrimitiveGraphicsComponent* pgc = CF.createComponent<PrimitiveGraphicsComponent>();
+            parsePrimitiveGraphics(component, pgc);
+            go->attachComponent(pgc);
+        }
+        else if( strcmp(key, "Position") == 0)
+        {
+            PositionalComponent* pc = CF.createComponent<PositionalComponent>();
+            parsePosition(component, pc);
+            go->attachComponent(pc);
+        }
+        else
+        {
+            DebugPrintf("Error: Tried to parse json object %s\n" , key);
         }
     }
 
@@ -64,9 +96,9 @@ void OpenJson(std::string resID, json_t** root)
     
     //root = json_load_file("Player.json", 0, &error);
     *root = json_loadb(buffer.c_str(), buffer.size(), 0, &error);
-    if(!root)
+    if(!*root)
     {
-        DebugPrintf("\nPARSING ERROR: %s ; Resource: %s\nLine:%d, Position:%d\n", error.text, resID.c_str(), error.line, error.position);
+        DebugPrintf("\nPARSING ERROR: %s \nResource: %s, Line:%d, Position:%d\n", error.text, resID.c_str(), error.line, error.position);
         assert(root && "Parsing Error");
     }
 }
@@ -134,9 +166,12 @@ void DeSerializer::BuildLevel(std::string resID)
         json_t *value;
         json_object_foreach(root, key, value) 
         {
+            GameObject* newArch = nullptr;
+            json_t* baseObject = json_object_get(root, key);
+
             if(strcmp(key, "Platform") == 0)
             {
-                
+                ParsePlatform(baseObject);
             }
         }
     }

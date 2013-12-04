@@ -1,7 +1,17 @@
 {
 	"Platform":
 	{
-		area: [10, 10, 400, 20]
-		color: [0.7, 0.7, 0.7, 1.0]
+		"PrimitiveGraphics":
+		{
+			"layer": 0,
+			"color": [1.0,1.0,1.0,1.0],
+			"center": [0,0],
+			"points": [10,10,20,20,10,20]
+		},
+		"Position":
+		{
+			"position": [30,30],
+			"rotation": 0.0
+		}
 	}
 }

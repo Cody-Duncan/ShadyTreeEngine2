@@ -75,6 +75,11 @@ void DirectX_PrimitiveBatch::Dispose()
 
 }
 
+bool DirectX_PrimitiveBatch::hasTriBatchBuffer(unsigned int layer)
+{
+    return layer < triBatchVBuffers.size();
+}
+
 void DirectX_PrimitiveBatch::addTriBatchBuffer(unsigned int layer)
 {
     if(layer >= triBatchVBuffers.size())
@@ -83,13 +88,14 @@ void DirectX_PrimitiveBatch::addTriBatchBuffer(unsigned int layer)
 
         VertexBufferHandle quadBuffer;
         BufferResourcer::Instance().createDynamicVertexBuffer(BatchSize*4, device->getDevice(), &quadBuffer);
+        BufferResourcer::Instance().getVBuffer(quadBuffer).stride = sizeof(VertexCol);
 
         //assign vBuffer
-        triBatchVBuffers.resize(layer);
+        triBatchVBuffers.resize(layer+1);
         triBatchVBuffers[layer] = quadBuffer;
 
         //create a batch
-        triBatch.resize(layer);
+        triBatch.resize(layer+1);
         triBatch[layer].reserve(BatchSize*4);
     }
 }
@@ -111,9 +117,8 @@ void DirectX_PrimitiveBatch::resetAllTriBatchBuffers()
 
 void DirectX_PrimitiveBatch::DrawTriangles(unsigned int layer, Vector2* points, int pointLength, Matrix transform, Color c)
 {
-    //going to need to get a shader for drawing triangles.
-    //need to reserve an index for a batch, and batchVBuffer.
-    //need a mechanism for sorting the layering of the geometry, might use z position.
+    if(!hasTriBatchBuffer(layer))
+        addTriBatchBuffer(layer);
 
     std::vector<VertexCol>& batchRef = triBatch[layer];
     for(int i = 0; i < pointLength; ++i)
@@ -133,7 +138,7 @@ void DirectX_PrimitiveBatch::DrawBatch(int layer)
     if(quadBufferData.startVertex > 0) //don't draw empty buffers
     {
         DebugAssert(triBatchIBuffer.IbufferID >= 0, "Batch Index Buffer ID is invalid. Value: %d", triBatchIBuffer.IbufferID );
-        //device->Draw(batchVBuffers[layer], triBatchIBuffer, t);
+        device->Draw(triBatchVBuffers[layer], triBatchIBuffer);
     }
 }
 
@@ -149,15 +154,15 @@ void DirectX_PrimitiveBatch::sendTriBatchToBuffers(unsigned int layer)
     //update vertex buffer
     D3D11_MAPPED_SUBRESOURCE resource;
     context->Map(vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);                           //map the buffer to lock resource
-        Vertex* pV = (Vertex*) resource.pData;                                                      //convert data to Vertex* so we can set
+        VertexCol* pV = (VertexCol*) resource.pData;                                                      //convert data to Vertex* so we can set
         DebugAssert(pV != 0, "Pointer to Dynamic Vertex Buffer is null. Cannot modify vertices. Check allocation of buffer.");
         DebugAssert(currBatch.size() <= BatchSize*4, "Too many vertices for buffer size. Crash now before we crash the graphics card. Tried to draw %d vertices", (unsigned int)currBatch.size());
-        memcpy(pV, currBatch.data(), sizeof( Vertex ) * triBufferData.startVertex);   //memcopy the vertices in
+        memcpy(pV, currBatch.data(), sizeof( VertexCol ) * triBufferData.startVertex);   //memcopy the vertices in
     context->Unmap(vertexBuffer, 0);                                                                //unmap to unlock resource
 
     //set index buffer
     IndexBufferData& indexBufData = BufferResourcer::Instance().getIBuffer(triBatchIBuffer);
-    indexBufData.startIndex = triBufferData.startVertex * 3 / 2; //6 indices per 4 vertices
+    indexBufData.startIndex = currBatch.size(); //6 indices per 4 vertices
 }
 
 void DirectX_PrimitiveBatch::Begin(bool alphaBlend)

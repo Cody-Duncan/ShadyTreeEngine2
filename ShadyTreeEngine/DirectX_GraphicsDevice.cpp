@@ -435,9 +435,18 @@ void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
 
 void DirectX_GraphicsDevice::Draw(VertexBufferHandle& hVBuf, IndexBufferHandle& hIBuf, const TextureHandle& hTex)
 {
+    DebugAssert(hTex.textureIndex >= 0, "Texture ID is invalid (Cannot be negative)");
+
+    //get texture data
+    ID3D11ShaderResourceView* texture = TextureResourcer::Instance().getTextureData(hTex).textureView;
+    deviceContext->PSSetShaderResources( 0, 1, &texture );
+    Draw(hVBuf,  hIBuf);
+}
+
+void DirectX_GraphicsDevice::Draw(VertexBufferHandle& hVBuf, IndexBufferHandle& hIBuf)
+{
     DebugAssert(hVBuf.VbufferID >= 0, "Vertex Buffer ID is invalid (Cannot be negative)");
     DebugAssert(hIBuf.IbufferID >= 0, "Index Buffer ID is invalid (Cannot be negative)");
-    DebugAssert(hTex.textureIndex >= 0, "Texture ID is invalid (Cannot be negative)");
 
     //Setup the world/view matrices
     CBChangesEveryFrame cb_Frame;
@@ -459,8 +468,6 @@ void DirectX_GraphicsDevice::Draw(VertexBufferHandle& hVBuf, IndexBufferHandle& 
     DebugAssert(indexCount > 0, "Trying to draw 0 indices?");
     DebugAssert(vertexCount > 0, "Trying to draw 0 vertices?");
 
-    //get texture data
-    ID3D11ShaderResourceView* texture = TextureResourcer::Instance().getTextureData(hTex).textureView;
 
     //input assembler for mesh data
     deviceContext->IASetVertexBuffers( 0, 1, &vertexBuffer, &stride, &vertexoffset );
@@ -472,7 +479,6 @@ void DirectX_GraphicsDevice::Draw(VertexBufferHandle& hVBuf, IndexBufferHandle& 
     deviceContext->VSSetConstantBuffers( 1, 1, &constantBuffer.frameBuffer );
 
     //set texture resources on pixel shader
-    deviceContext->PSSetShaderResources( 0, 1, &texture );
     deviceContext->PSSetSamplers( 0, 1, &currentSampler );
     deviceContext->PSSetConstantBuffers( 1, 1, &constantBuffer.frameBuffer );
 

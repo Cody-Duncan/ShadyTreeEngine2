@@ -29,6 +29,7 @@ private:
     PixelShaderHandle colorPixSH;
 
     //triangle batch methods.
+    bool hasTriBatchBuffer(unsigned int layer);
     void addTriBatchBuffer(unsigned int layer);
     void resetTriBatchBuffer(unsigned int layer);
     void resetAllTriBatchBuffers();
@@ -39,5 +40,7 @@ private:
     std::vector<std::vector<VertexCol>> triBatch;       // int (layer) -> array of triangles
     std::vector<VertexBufferHandle> triBatchVBuffers;   // int (layer) -> VertexBuffer
     IndexBufferHandle triBatchIBuffer;
+
+    
     
 };

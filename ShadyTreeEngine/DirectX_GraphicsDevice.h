@@ -49,6 +49,7 @@ public:
     ID3D11Device* getDevice();
     ID3D11DeviceContext* getContext();
     void Draw(VertexBufferHandle& hVBuf, IndexBufferHandle& hIBuf, const TextureHandle& hTex);
+    void Draw(VertexBufferHandle& hVBuf, IndexBufferHandle& hIBuf);
     int getWidth();
     int getHeight();
 

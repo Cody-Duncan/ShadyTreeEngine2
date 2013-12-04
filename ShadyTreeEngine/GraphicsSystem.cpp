@@ -7,6 +7,7 @@
 #include "GraphicsFactory.h"
 #include "ComponentFactory.h"
 #include "GraphicsComponent.h"
+#include "PrimitiveGraphicsComponent.h"
 #include "PositionalComponent.h"
 #include "GameObject.h"
 #include "GameObjectCache.h"
@@ -50,14 +51,34 @@ void GraphicsSystem::Update(float deltaTime)
 
     //grab the caches
     std::vector<GraphicsComponent>& graphC = CF.getCache<GraphicsComponent>()->storage;  //graphics components
+    std::vector<PrimitiveGraphicsComponent>& primC = CF.getCache<PrimitiveGraphicsComponent>()->storage;  //graphics components
     GameObjectCache& GOC = GameObjectCache::Instance();                                  //game objects
 
     //BEGIN DRAWING
     device->clearRenderTarget();
 
     primitiveBatch->Begin();
+    for(unsigned int i = 0; i < primC.size(); i++)
+    {
+        PrimitiveGraphicsComponent& pg= primC[i];
+        if(pg.active)
+        {
+            GameObject& go = *GOC.Get(pg.parentID);
+            PositionalComponent* posC = go.getComponent<PositionalComponent>();
+            DebugAssert(posC, "Positional Component not found or null.");
+            DebugAssert(posC->active, "Trying to draw active graphicsComponent, with nonactive positionalComponent.");
+
+            //center the transform?
+            Matrix transform = posC->rotationCentered ?
+                Matrix::CreateTranslation(-pg.center.x/2, -pg.center.y/2, 0) * posC->Transform() :
+                posC->Transform();
+
+            primitiveBatch->DrawTriangles(pg.layer,pg.triangleListPoints.data(), pg.triangleListPoints.size(), transform, pg.color);
+        }
+    }
     primitiveBatch->End();
 
+    /*
     spriteBatch->Begin(true);
     
         //draw all graphicsComponents
@@ -93,9 +114,10 @@ void GraphicsSystem::Update(float deltaTime)
             count = 0;
             totalTime = 0;
         }
-
+    
     //END DRAWING
     spriteBatch->End();
+    */
     device->SwapBuffer();
 }
 

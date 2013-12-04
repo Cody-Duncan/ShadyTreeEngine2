@@ -107,6 +107,9 @@
     <ClCompile Include="DirectX_PrimitiveBatch.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="PrimitiveGraphicsComponent.cpp">
+      <Filter>Graphics\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX_GraphicsDevice.h">
@@ -253,6 +256,9 @@
     </ClInclude>
     <ClInclude Include="PrimitiveBatch.h">
       <Filter>Graphics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimitiveGraphicsComponent.h">
+      <Filter>Graphics\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

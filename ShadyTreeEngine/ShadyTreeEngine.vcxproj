@@ -45,6 +45,7 @@
     <ClInclude Include="OSHighResTimer.h" />
     <ClInclude Include="PositionalComponent.h" />
     <ClInclude Include="PrimitiveBatch.h" />
+    <ClInclude Include="PrimitiveGraphicsComponent.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="ShaderResourcer.h" />
     <ClInclude Include="ST_API_Def.h" />
@@ -88,6 +89,7 @@
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="OSHighResTimer.cpp" />
     <ClCompile Include="PositionalComponent.cpp" />
+    <ClCompile Include="PrimitiveGraphicsComponent.cpp" />
     <ClCompile Include="Resources.cpp" />
     <ClCompile Include="ShaderResourcer.cpp" />
     <ClCompile Include="SpriteBatch.cpp" />
