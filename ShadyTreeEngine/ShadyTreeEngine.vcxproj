@@ -12,6 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseDeserializer.h" />
+    <ClInclude Include="BB.h" />
+    <ClInclude Include="BB_Math.h" />
     <ClInclude Include="BufferResourcer.h" />
     <ClInclude Include="ComponentCache.h" />
     <ClInclude Include="Component.h" />
@@ -67,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseDeserializer.cpp" />
+    <ClCompile Include="BB.cpp" />
     <ClCompile Include="BufferResourcer.cpp" />
     <ClCompile Include="ComponentCache.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -111,6 +114,7 @@
     <ClCompile Include="WindowSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BB_Math.inl" />
     <None Include="SimpleMath.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
