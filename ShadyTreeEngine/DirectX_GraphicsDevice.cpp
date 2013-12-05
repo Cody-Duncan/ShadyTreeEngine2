@@ -67,7 +67,9 @@ void DirectX_GraphicsDevice::Free()
     if( swapChain ) swapChain->Release();
     if( deviceContext ) deviceContext->Release();
 
+#ifdef _DEBUG_LEAK_REPORTING
     ReportLiveObjects(device);
+#endif
 
     //debugDev->Release();
     if( device ) device->Release();

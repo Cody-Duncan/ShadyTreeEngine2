@@ -12,7 +12,9 @@ ST_API HINSTANCE ghInstance;
 
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd )
 {
+#ifdef _DEBUG_LEAK_REPORTING
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+#endif
     
     ShadyTreeEngine engine;
 
