@@ -83,12 +83,6 @@
     <ClCompile Include="GameTimer.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="GraphicsComponent.cpp">
-      <Filter>Graphics\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="PositionalComponent.cpp">
-      <Filter>Physics</Filter>
-    </ClCompile>
     <ClCompile Include="Message.cpp">
       <Filter>Message</Filter>
     </ClCompile>
@@ -107,8 +101,26 @@
     <ClCompile Include="DirectX_PrimitiveBatch.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="PositionalComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
     <ClCompile Include="PrimitiveGraphicsComponent.cpp">
-      <Filter>Graphics\Component</Filter>
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsStaticComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsDynamicComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsSystem.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="BB.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -227,12 +239,6 @@
     <ClInclude Include="GameTimer.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicsComponent.h">
-      <Filter>Graphics\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="PositionalComponent.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
     <ClInclude Include="Message.h">
       <Filter>Message</Filter>
     </ClInclude>
@@ -257,8 +263,29 @@
     <ClInclude Include="PrimitiveBatch.h">
       <Filter>Graphics\API</Filter>
     </ClInclude>
+    <ClInclude Include="PositionalComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="PrimitiveGraphicsComponent.h">
-      <Filter>Graphics\Component</Filter>
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsStaticComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsDynamicComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsSystem.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="BB.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="BB_Math.h">
+      <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -298,9 +325,6 @@
     <Filter Include="Core">
       <UniqueIdentifier>{0c7672dc-115b-4923-9ee2-45f83f15a8f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics\Component">
-      <UniqueIdentifier>{93681db4-0836-4e31-8342-a8e5f0f1b767}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Physics">
       <UniqueIdentifier>{fb9c8084-e11f-4707-b165-abc6c75e2733}</UniqueIdentifier>
     </Filter>
@@ -313,10 +337,16 @@
     <Filter Include="DeSerializer">
       <UniqueIdentifier>{fe76b53c-69fe-48ec-88d4-7357a14d04f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{49d9ef4f-fb34-4e46-9584-a26d0428673c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
       <Filter>Math</Filter>
+    </None>
+    <None Include="BB_Math.inl">
+      <Filter>Physics</Filter>
     </None>
   </ItemGroup>
 </Project>

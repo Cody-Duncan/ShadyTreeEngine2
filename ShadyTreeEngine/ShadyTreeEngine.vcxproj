@@ -43,6 +43,9 @@
     <ClInclude Include="MeshResourcer.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="OSHighResTimer.h" />
+    <ClInclude Include="PhysicsDynamicComponent.h" />
+    <ClInclude Include="PhysicsStaticComponent.h" />
+    <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="PositionalComponent.h" />
     <ClInclude Include="PrimitiveBatch.h" />
     <ClInclude Include="PrimitiveGraphicsComponent.h" />
@@ -88,6 +91,9 @@
     <ClCompile Include="MeshResourcer.cpp" />
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="OSHighResTimer.cpp" />
+    <ClCompile Include="PhysicsDynamicComponent.cpp" />
+    <ClCompile Include="PhysicsStaticComponent.cpp" />
+    <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="PositionalComponent.cpp" />
     <ClCompile Include="PrimitiveGraphicsComponent.cpp" />
     <ClCompile Include="Resources.cpp" />

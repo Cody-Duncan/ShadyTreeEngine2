@@ -34,12 +34,6 @@ void GameLogic::Load()
     s.BuildLevel("arenaLevel");
 
     oneobject = GF.cloneArchetype("Player");
-    GF.cloneArchetype("Player")->getComponent<PositionalComponent>()->position.x += 150;
-
-    GF.cloneArchetype("Player")->getComponent<PositionalComponent>()->position.x += 300;
-    GF.cloneArchetype("Player")->getComponent<PositionalComponent>()->position.x += 450;
-    GF.cloneArchetype("Player")->getComponent<PositionalComponent>()->position.x += 600;
-    GF.cloneArchetype("Player")->getComponent<PositionalComponent>()->position.x += 750;
     
 }
 
@@ -56,19 +50,7 @@ void GameLogic::Update(float deltaTime)
     for(unsigned int i = 0; i < posCache.size(); ++i)
     {
         PositionalComponent& p = posCache[i];
-    
-        if(gINPUTSTATE->keyHeld(VK_LEFT))
-        {
-            //p.position.x += 7.0f * deltaTime;
-            //p.position.y += sin(p.position.x) * 100.0f * deltaTime;
-            p.rotation += scale * i * deltaTime;
-            scale+=0.001f;
-        }
-        else
-        {
-            p.rotation += scale * i * deltaTime;
-            scale *= 0.99991f;
-        }
+
     }
 }
 

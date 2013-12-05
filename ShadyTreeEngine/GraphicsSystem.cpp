@@ -55,8 +55,8 @@ void GraphicsSystem::Update(float deltaTime)
     GameObjectCache& GOC = GameObjectCache::Instance();                                  //game objects
 
     //check for cache, set length to 0 to prevent drawing nothing.
-    int graphicsCompLength = CF.hasComponentCache<GraphicsComponent>() ? graphC.size() : 0;
-    int primitivCompLength = CF.hasComponentCache<PrimitiveGraphicsComponent>() ? primC.size() : 0;
+    unsigned int graphicsCompLength = CF.hasComponentCache<GraphicsComponent>() ? graphC.size() : 0;
+    unsigned int primitivCompLength = CF.hasComponentCache<PrimitiveGraphicsComponent>() ? primC.size() : 0;
 
     //BEGIN DRAWING
     device->clearRenderTarget();
