@@ -35,7 +35,7 @@ bool WindowSystem::GenerateWindow(WNDPROC WndProc, int width, int height)
 
     RECT winSize = {0, 0, width, height};
     AdjustWindowRect(&winSize,			
-                    CS_HREDRAW | CS_VREDRAW,	
+                    WS_OVERLAPPEDWINDOW,
                     FALSE);	
 
     WNDCLASSEX  wcex;

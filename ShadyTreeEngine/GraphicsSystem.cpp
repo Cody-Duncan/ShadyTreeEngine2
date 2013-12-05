@@ -54,11 +54,16 @@ void GraphicsSystem::Update(float deltaTime)
     std::vector<PrimitiveGraphicsComponent>& primC = CF.getCache<PrimitiveGraphicsComponent>()->storage;  //graphics components
     GameObjectCache& GOC = GameObjectCache::Instance();                                  //game objects
 
+    //check for cache, set length to 0 to prevent drawing nothing.
+    int graphicsCompLength = CF.hasComponentCache<GraphicsComponent>() ? graphC.size() : 0;
+    int primitivCompLength = CF.hasComponentCache<PrimitiveGraphicsComponent>() ? primC.size() : 0;
+
     //BEGIN DRAWING
     device->clearRenderTarget();
 
+
     primitiveBatch->Begin();
-    for(unsigned int i = 0; i < primC.size(); i++)
+    for(unsigned int i = 0; i < primitivCompLength; i++)
     {
         PrimitiveGraphicsComponent& pg= primC[i];
         if(pg.active)
@@ -77,12 +82,13 @@ void GraphicsSystem::Update(float deltaTime)
         }
     }
     primitiveBatch->End();
-
     
+    
+
     spriteBatch->Begin(true);
     
         //draw all graphicsComponents
-        for(unsigned int i = 0; i < graphC.size(); i++)
+        for(unsigned int i = 0; i < graphicsCompLength; i++)
         {
             GraphicsComponent& g = graphC[i];
             if(g.active)
@@ -117,6 +123,7 @@ void GraphicsSystem::Update(float deltaTime)
     
     //END DRAWING
     spriteBatch->End();
+    
     
     device->SwapBuffer();
 }

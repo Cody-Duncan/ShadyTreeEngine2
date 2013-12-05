@@ -166,12 +166,16 @@ void DeSerializer::BuildLevel(std::string resID)
         json_t *value;
         json_object_foreach(root, key, value) 
         {
-            GameObject* newArch = nullptr;
-            json_t* baseObject = json_object_get(root, key);
-
-            if(strcmp(key, "Platform") == 0)
+            if(strcmp(key, "Platforms") == 0)
             {
-                ParsePlatform(baseObject);
+                json_t* jarray = json_object_get(root, key);
+                size_t index;
+                json_t *value;
+
+                json_array_foreach(jarray, index, value)
+                {
+                    ParsePlatform(value);
+                }
             }
         }
     }

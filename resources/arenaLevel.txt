@@ -1,17 +1,49 @@
 {
-	"Platform":
-	{
-		"PrimitiveGraphics":
+	"Platforms":
+	[
 		{
-			"layer": 0,
-			"color": [1.0,1.0,1.0,1.0],
-			"center": [0,0],
-			"square": [10,10,50,50]
+			"PrimitiveGraphics":
+			{
+				"layer": 0,
+				"color": [1.0,1.0,1.0,1.0],
+				"center": [0,0],
+				"square": [0,0,1152,40]
+			},
+			"Position":
+			{
+				"position": [64,620],
+				"rotation": 0.0
+			}
 		},
-		"Position":
+		
 		{
-			"position": [30,30],
-			"rotation": 0.0
+			"PrimitiveGraphics":
+			{
+				"layer": 0,
+				"color": [1.0,1.0,1.0,1.0],
+				"center": [0,0],
+				"square": [0,0,288,40]
+			},
+			"Position":
+			{
+				"position": [164,440],
+				"rotation": 0.0
+			}
+		},
+		
+		{
+			"PrimitiveGraphics":
+			{
+				"layer": 0,
+				"color": [1.0,1.0,1.0,1.0],
+				"center": [0,0],
+				"square": [0,0,288,40]
+			},
+			"Position":
+			{
+				"position": [828,440],
+				"rotation": 0.0
+			}
 		}
-	}
+	]
 }
