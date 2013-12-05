@@ -78,7 +78,7 @@ void GraphicsSystem::Update(float deltaTime)
     }
     primitiveBatch->End();
 
-    /*
+    
     spriteBatch->Begin(true);
     
         //draw all graphicsComponents
@@ -117,7 +117,7 @@ void GraphicsSystem::Update(float deltaTime)
     
     //END DRAWING
     spriteBatch->End();
-    */
+    
     device->SwapBuffer();
 }
 

@@ -175,10 +175,10 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
 
 //#define CLOCKWISE_VERTS_SPRITEBATCH//
 #if !defined(COUNTERCLOCKWISE_VERTS_SPRITEBATCH) && !defined(CLOCKWISE_VERTS_SPRITEBATCH)
-#define COUNTERCLOCKWISE_VERTS_SPRITEBATCH
+#define CLOCKWISE_VERTS_SPRITEBATCH
 #endif
-#ifdef  COUNTERCLOCKWISE_VERTS_SPRITEBATCH
-    //counter-clockwise
+#ifdef CLOCKWISE_VERTS_SPRITEBATCH
+    //Note: These are clockwise bound, orthogonal transform makes them counterclockwise in vertex shader.
     Vertex vertices[] = 
     {
         //comments on the right note where it shows up visually (because y goes to bottom of screen)
@@ -188,7 +188,7 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
         { Vector4(botRight.x, botRight.y, 0, 1), textureArea.botRight() },  //3 TopRight
     };
 #endif
-#ifdef CLOCKWISE_VERTS_SPRITEBATCH
+#ifdef  COUNTERCLOCKWISE_VERTS_SPRITEBATCH
     //clockwise
     Vertex vertices[] = 
     {

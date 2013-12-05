@@ -102,29 +102,32 @@ void parsePrimitiveGraphics(json_t* root, PrimitiveGraphicsComponent* pgc)
                 pointCoords.push_back( (float)json_integer_value(value) );
             }
 
-#define CLOCKWISE_VERTS_PRIMITIVE
             #if !defined(COUNTERCLOCKWISE_VERTS_PRIMITIVE) && !defined(CLOCKWISE_VERTS_PRIMITIVE)
-            #define COUNTERCLOCKWISE_VERTS_PRIMITIVE
+            #define CLOCKWISE_VERTS_PRIMITIVE
             #endif
-            #ifdef  COUNTERCLOCKWISE_VERTS_PRIMITIVE
-            pgc->triangleListPoints.push_back(Vector2(pointCoords[0], pointCoords[1]));  //top left
-            pgc->triangleListPoints.push_back(Vector2(pointCoords[0], pointCoords[3]));  //bottom left
-            pgc->triangleListPoints.push_back(Vector2(pointCoords[2], pointCoords[3]));  //bottom right
 
-            pgc->triangleListPoints.push_back(Vector2(pointCoords[0], pointCoords[1]));  //top left
-            pgc->triangleListPoints.push_back(Vector2(pointCoords[2], pointCoords[3]));  //bottom right
-            pgc->triangleListPoints.push_back(Vector2(pointCoords[2], pointCoords[1]));  //top right
-
-            #endif
             #ifdef CLOCKWISE_VERTS_PRIMITIVE
-            pgc->triangleListPoints.push_back(Vector2(pointCoords[0], pointCoords[1]));  //top left
-            pgc->triangleListPoints.push_back(Vector2(pointCoords[2], pointCoords[1]));  //top right
-            pgc->triangleListPoints.push_back(Vector2(pointCoords[2], pointCoords[3]));  //bottom right
+                //Note: These are clockwise bound, orthogonal transform makes them counterclockwise in vertex shader.
+                pgc->triangleListPoints.push_back(Vector2(pointCoords[0], pointCoords[1]));  //top left
+                pgc->triangleListPoints.push_back(Vector2(pointCoords[2], pointCoords[1]));  //top right
+                pgc->triangleListPoints.push_back(Vector2(pointCoords[2], pointCoords[3]));  //bottom right
 
-            pgc->triangleListPoints.push_back(Vector2(pointCoords[0], pointCoords[1]));  //top left
-            pgc->triangleListPoints.push_back(Vector2(pointCoords[2], pointCoords[3]));  //bottom right
-            pgc->triangleListPoints.push_back(Vector2(pointCoords[0], pointCoords[3]));  //bottom left
+                pgc->triangleListPoints.push_back(Vector2(pointCoords[0], pointCoords[1]));  //top left
+                pgc->triangleListPoints.push_back(Vector2(pointCoords[2], pointCoords[3]));  //bottom right
+                pgc->triangleListPoints.push_back(Vector2(pointCoords[0], pointCoords[3]));  //bottom left
             #endif
+
+            #ifdef  COUNTERCLOCKWISE_VERTS_PRIMITIVE
+                pgc->triangleListPoints.push_back(Vector2(pointCoords[0], pointCoords[1]));  //top left
+                pgc->triangleListPoints.push_back(Vector2(pointCoords[0], pointCoords[3]));  //bottom left
+                pgc->triangleListPoints.push_back(Vector2(pointCoords[2], pointCoords[3]));  //bottom right
+
+                pgc->triangleListPoints.push_back(Vector2(pointCoords[0], pointCoords[1]));  //top left
+                pgc->triangleListPoints.push_back(Vector2(pointCoords[2], pointCoords[3]));  //bottom right
+                pgc->triangleListPoints.push_back(Vector2(pointCoords[2], pointCoords[1]));  //top right
+
+            #endif
+            
 
         }
     }
