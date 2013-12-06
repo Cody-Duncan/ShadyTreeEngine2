@@ -1,5 +1,6 @@
 #include "BaseDeserializer.h"
 #include "Resources.h"
+#include "PhysicsComponent.h"
 
 #define sameKey(k, t) strcmp(k, t) == 0
 
@@ -129,6 +130,69 @@ void parsePrimitiveGraphics(json_t* root, PrimitiveGraphicsComponent* pgc)
             #endif
             
 
+        }
+    }
+}
+
+void parsePhysics(json_t* root, PhysicsComponent* phys)
+{
+ /*   "Physics"
+        {
+            "static": false,
+            "mass": 0.0,
+
+            "velocity": [0,0],
+            "acceleration":[0,0],
+
+            "body": 
+            { 
+                "circle":
+                {
+                    "radius": 147.2,
+                }
+            }
+            
+        }
+*/
+    const char *key;
+    json_t *value;
+    json_object_foreach(root, key, value) 
+    {
+        if(sameKey(key, "static"))
+        {
+        }
+        else if(sameKey(key, "mass"))
+        {
+        }
+        else if(sameKey(key, "velocity"))
+        {
+        }
+        else if(sameKey(key, "acceleration"))
+        {
+        }
+        else if(sameKey(key, "body"))
+        {
+            json_t* body = json_object_get(root, key);
+            if(json_t* circle = json_object_get(body, "circle"))
+            {
+                if(json_t* rad = json_object_get(circle, "radius"))
+                {
+                    BB_Circle* circ = new BB_Circle();
+                    circ->radius = (float)json_real_value( rad );
+                    phys->body = circ;
+                }
+            }
+            else if(json_t* rectangle = json_object_get(body, "rectangle"))
+            {
+                if(json_t* extent = json_object_get(rectangle, "dimension"))
+                {
+                    BB_Rectangle* rect = new BB_Rectangle();
+
+                    float x, y;
+                    json_unpack(extent, "[f,f]", &x, &y);
+                    rect->extents = Vector2((float)x,(float)y);
+                }
+            }
         }
     }
 }
