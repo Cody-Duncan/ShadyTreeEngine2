@@ -236,6 +236,16 @@ inline void Vector2::Normalize( Vector2& result ) const
     XMStoreFloat2( &result, X );
 }
 
+inline Vector2 Vector2::Normal()
+{
+    using namespace DirectX;
+    XMVECTOR v1 = XMLoadFloat2( this );
+    XMVECTOR X = XMVector2Normalize( v1 );
+    Vector2 result;
+    XMStoreFloat2( &result, X );
+    return result;
+}
+
 inline void Vector2::Clamp( const Vector2& vmin, const Vector2& vmax )
 {
     using namespace DirectX;

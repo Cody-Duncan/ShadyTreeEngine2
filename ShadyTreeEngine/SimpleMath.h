@@ -70,6 +70,7 @@ struct Vector2 : public DirectX::XMFLOAT2
     
     void Normalize();
     void Normalize( Vector2& result ) const;
+    Vector2 Normal();
 
     void Clamp( const Vector2& vmin, const Vector2& vmax );
     void Clamp( const Vector2& vmin, const Vector2& vmax, Vector2& result ) const;

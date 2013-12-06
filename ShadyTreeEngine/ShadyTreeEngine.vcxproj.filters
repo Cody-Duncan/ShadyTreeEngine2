@@ -110,17 +110,14 @@
     <ClCompile Include="PrimitiveGraphicsComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsStaticComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysicsDynamicComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="PhysicsSystem.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
     <ClCompile Include="BB.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -272,12 +269,6 @@
     <ClInclude Include="PrimitiveGraphicsComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsStaticComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsDynamicComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="PhysicsSystem.h">
       <Filter>Physics</Filter>
     </ClInclude>
@@ -286,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="BB_Math.h">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
