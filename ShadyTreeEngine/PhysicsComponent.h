@@ -19,8 +19,12 @@ public:
 
     bool IsStatic;
 
+    float Mass;
+    float InvMass;
+
     Vector2 velocity;
     Vector2 acceleration;
+    Vector2 force;
 
     BB* body;
 };

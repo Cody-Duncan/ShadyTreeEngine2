@@ -7,6 +7,8 @@
 #include "GameObjectCache.h"
 #include "BB.h"
 
+#include "Contact.h"
+
 PhysicsSystem::PhysicsSystem(void)
 {
 }
@@ -28,22 +30,9 @@ void PhysicsSystem::Load()
 
 void PhysicsSystem::Update(float deltaTime)
 {
-    ComponentFactory& CF = ComponentFactory::Instance();
-    if(!CF.hasComponentCache<PhysicsComponent>() ) //check for any graphicsComponents
-        return;
+    Integrate(deltaTime);
+    DetectCollisions();
 
-    //grab the caches
-    std::vector<PhysicsComponent>& phys         = CF.getCache<PhysicsComponent>()->storage;      //Static Physics components
-    std::vector<PositionalComponent>& positions = CF.getCache<PositionalComponent>()->storage;   //Position Components
-    GameObjectCache& GOC                        = GameObjectCache::Instance();                                                 
-
-    //check for cache, set length to 0 to prevent drawing nothing.
-    int physLength      = CF.hasComponentCache<PhysicsComponent>()    ? phys.size()      : 0;
-    int positionsLength = CF.hasComponentCache<PositionalComponent>() ? positions.size() : 0;
-
-    //Integrate
-
-    BB_Rectangle br;
 
 }
 
@@ -65,4 +54,81 @@ void PhysicsSystem::RecieveMessage(Message* msg)
 void PhysicsSystem::setGravity(float g)
 {
     gravity = g;
+}
+
+
+void PhysicsSystem::Integrate(float deltaTime)
+{
+    ComponentFactory& CF = ComponentFactory::Instance();
+    if(!CF.hasComponentCache<PhysicsComponent>() || !CF.hasComponentCache<PositionalComponent>() ) //check for any graphicsComponents
+        return;
+
+    //grab the caches
+    std::vector<PhysicsComponent>& phys         = CF.getCache<PhysicsComponent>()->storage;      //Static Physics components
+    std::vector<PositionalComponent>& positions = CF.getCache<PositionalComponent>()->storage;   //Position Components
+    GameObjectCache& GOC                        = GameObjectCache::Instance();                                                 
+
+    //Integrate
+    for(unsigned int i = 0; i < phys.size(); ++i)
+    {
+        PhysicsComponent& phy  = phys[i];
+        if(phy.IsStatic)
+            continue;
+
+        PositionalComponent& pos = *GOC.Get(phy.parentID)->getComponent<PositionalComponent>();
+
+        //gravity
+        phy.acceleration.y += gravity;
+        
+        //Integrate position
+        pos.position = pos.position + phy.velocity * deltaTime;
+
+        //Integrate velocity with force
+        Vector2 newAcc = phy.force * phy.InvMass + phy.acceleration;
+        phy.velocity = phy.velocity + newAcc * deltaTime;
+
+        //Zero force
+        phy.force = Vector2();
+    }
+}
+
+/// <summary>
+/// Detects the collisions.
+/// </summary>
+void PhysicsSystem::DetectCollisions()
+{
+    ComponentFactory& CF = ComponentFactory::Instance();
+    if(!CF.hasComponentCache<PhysicsComponent>() || !CF.hasComponentCache<PositionalComponent>() ) //check for any graphicsComponents
+        return;
+
+    //grab the caches
+    std::vector<PhysicsComponent>& phys         = CF.getCache<PhysicsComponent>()->storage;      //Static Physics components
+    std::vector<PositionalComponent>& positions = CF.getCache<PositionalComponent>()->storage;   //Position Components
+    GameObjectCache& GOC                        = GameObjectCache::Instance();
+
+    std::vector<PhysicsComponent>::iterator A_iter;
+    std::vector<PhysicsComponent>::iterator B_iter = A_iter = phys.begin();
+
+    std::vector<Contact> contacts;
+    Contact c;
+
+    for(; A_iter != phys.end(); ++A_iter)
+    {
+        PositionalComponent& posA = *A_iter->parent()->getComponent<PositionalComponent>();
+        for(; B_iter != phys.end(); ++B_iter)
+        {
+            PositionalComponent& posB = *B_iter->parent()->getComponent<PositionalComponent>();
+            if( !A_iter->IsStatic || !B_iter->IsStatic )
+            {
+                if(CollisionCheck(A_iter->body, posA.position, B_iter->body, posB.position, c))
+                {
+                    c.ObjIDs[0]     = A_iter->parentID;
+                    c.ObjIDs[1]     = B_iter->parentID;
+                    c.Velocities[0] = A_iter->velocity;
+                    c.Velocities[1] = B_iter->velocity;
+                    contacts.push_back(c);
+                }
+            }
+        }
+    }
 }

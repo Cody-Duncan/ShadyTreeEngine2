@@ -20,6 +20,7 @@
     <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="ComponentTypeID.h" />
     <ClInclude Include="ConstantBuffer.h" />
+    <ClInclude Include="Contact.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DebugOutput.h" />
     <ClInclude Include="Debug_Graphics.h" />

@@ -1,5 +1,5 @@
 #include "BB.h"
-
+#include "Contact.h"
 
 #ifndef MATH2D_H
 #define MATH2D_H
@@ -36,9 +36,9 @@ int StaticPointToStaticCircle(Vector2 *pP, Vector2 *pCenter, float Radius);
 int StaticPointToStaticRect(Vector2 *pPos, Vector2 *pRect, float Width, float Height);
 
 //CIRCLE - RECT
-int StaticCircleToStaticCircle(Vector2 *pCenter0, float Radius0, Vector2 *pCenter1, float Radius1);
-int StaticRectToStaticRect(Vector2 *pRect0, float Width0, float Height0, Vector2 *pRect1, float Width1, float Height1);
-int StaticCircleToStaticRectangle(Vector2 *pCenter, float Radius, Vector2 *pRect, float Width, float Height);
+int StaticCircleToStaticCircle(Vector2 *pCenter0, float Radius0, Vector2 *pCenter1, float Radius1, Contact& c);
+int StaticRectToStaticRect(Vector2 *pRect0, float Width0, float Height0, Vector2 *pRect1, float Width1, float Height1, Contact& c);
+int StaticCircleToStaticRectangle(Vector2 *pCenter, float Radius, Vector2 *pRect, float Width, float Height, Contact& c);
 
 //POINT - LINE
 float StaticPointToStaticLineSegment(Vector2 *P, LineSegment2D *LS);

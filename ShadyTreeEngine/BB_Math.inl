@@ -44,11 +44,18 @@ inline int StaticPointToStaticRect(Vector2 *pPos, Vector2 *pRect, float Width, f
 /// <param name="pCenter1">The center of circle1.</param>
 /// <param name="Radius1">The radius of circle1.</param>
 /// <returns>bool (as int)- true if colliding, false (0) if not colliding.</returns>
-inline int StaticCircleToStaticCircle(Vector2 *pCenter0, float Radius0, Vector2 *pCenter1, float Radius1)
+inline int StaticCircleToStaticCircle(Vector2 *pCenter0, float Radius0, Vector2 *pCenter1, float Radius1, Contact& c)
 {
-    float radiusSumSq= (Radius0 + Radius1);
-    radiusSumSq *= radiusSumSq;
-    return Vector2::DistanceSquared(*pCenter0, *pCenter1) <= radiusSumSq;
+    float radiusSum= (Radius0 + Radius1);
+    Vector2 delta = *pCenter0 - *pCenter1;
+
+    if( delta.LengthSquared() <= radiusSum*radiusSum)
+    {
+        c.ContactNormal = *pCenter0 - *pCenter1;//A to B
+        c.Penetration = radiusSum - delta.Length();
+        return true;
+    }
+    return false;
 }
 
 /// <summary>
@@ -61,10 +68,32 @@ inline int StaticCircleToStaticCircle(Vector2 *pCenter0, float Radius0, Vector2 
 /// <param name="Width1">The width of rectangle1.</param>
 /// <param name="Height1">The height of rectangle1.</param>
 /// <returns>bool (as int)- true if colliding, false (0) if not colliding.</returns>
-inline int StaticRectToStaticRect(Vector2 *pRect0, float Width0, float Height0, Vector2 *pRect1, float Width1, float Height1)
+inline int StaticRectToStaticRect(Vector2 *pRect0, float Width0, float Height0, Vector2 *pRect1, float Width1, float Height1, Contact& c)
 {
-    return (fabs(pRect0->x - pRect1->x) * 2.0f <= (Width0 + Width1)) &&
-           (fabs(pRect0->y - pRect1->y) * 2.0f <= (Height0 + Height1));
+    float xdiff = (Width0 + Width1) - (fabs(pRect0->x - (pRect1->x + Width1)));
+    float ydiff = (Height0 + Height1) - (fabs(pRect0->y - (pRect1->y + Height1)));
+
+    if( xdiff > 0 || ydiff > 0)
+    {
+        Vector2 delta = *pRect0 - *pRect1;
+        if(xdiff < ydiff)
+        {
+            Vector2 normal = delta.x < 0 ? Vector2(-1,0) : Vector2(1,0);
+            c.ContactNormal = normal;
+            c.Penetration = xdiff;
+            
+        }
+        else
+        {
+            Vector2 normal = delta.y < 0 ? Vector2(0,-1) : Vector2(0,1);
+            c.ContactNormal = normal;
+            c.Penetration = ydiff;
+        }
+        return true;
+    }
+
+    return false;
+
 }
 
 
@@ -73,42 +102,46 @@ inline int StaticRectToStaticRect(Vector2 *pRect0, float Width0, float Height0, 
 /// </summary>
 /// <param name="pCenter">The center of the circle.</param>
 /// <param name="Radius">The radius of the circle.</param>
-/// <param name="pRect">The center of the rectangle.</param>
+/// <param name="pRect">The corner of the rectangle.</param>
 /// <param name="Width">The width of the rectangle.</param>
 /// <param name="Height">The height of the rectangle.</param>
-/// <returns>bool (as int)- true if colliding, false (0) if not colliding.</returns>
-inline int StaticCircleToStaticRectangle(Vector2 *pCenter, float Radius, Vector2 *pRect, float Width, float Height)
+/// <returns>bool (as int), true for collision</returns>
+inline int StaticCircleToStaticRectangle(Vector2 *pCenter, float Radius, Vector2 *pRect, float Width, float Height, Contact& c)
 {
-    float s, distance = 0;
+    Vector2 point;
+    Vector2& center = *pCenter;
+    Vector2 rectMin = *pRect;
+    Vector2 rectMax = Vector2(pRect->x + Width, pRect->y + Height);
 
-    float center[] = {pCenter->x, pCenter->y};
-
-    float bminX = (pRect->x - Width/2);
-    float bminY = (pRect->y - Height/2);
-    float bMin[] = {bminX, bminY};
-    
-    float bmaxX = (pRect->x + Width/2);
-    float bmaxY = (pRect->y + Height/2);
-    float bMax[] = {bmaxX, bmaxY};
-
-    //find the square of the distance from the circle to the rectangle
-    //i represents the dimension (0=x, 1=y, 2 could be z)
-    for( long i=0 ; i<2 ; i++ ) 
+    //X
+    if( center.x < rectMin.x )
     {
-        if( center[i] < bMin[i] )
-        {
-            s = center[i] - bMin[i];
-            distance += s*s;
-        }
-
-        else if( center[i] > bMax[i] )
-        {
-            s = center[i] - bMax[i];;
-            distance += s*s;
-        }
+        point.x = rectMin.x;
+    }
+    else if( center.x > rectMax.x )
+    {
+        point.x = rectMax.x;
     }
 
-    return distance <= Radius*Radius;    
+    //Y
+    if( center.y < rectMin.y )
+    {
+        point.y = rectMin.y;
+    }
+    else if( center.y > rectMax.y )
+    {
+        point.y = rectMax.y;
+    }
+
+    Vector2 delta = center - point;
+    if(delta.LengthSquared() <= Radius*Radius)
+    {
+        c.ContactNormal = delta.Normal();
+        c.Penetration = delta.Length() - Radius;
+
+        return 1; 
+    }
+    return 0;
 }
 
 /// <summary>
@@ -305,7 +338,7 @@ inline float AnimatedPointToStaticCircle(Vector2 *Ps, Vector2 *Pe, Vector2 *Cent
 
     //NonCollision 1: If m < 0 && Ps outside circle => circle behind ray origin
     float m = Ps_C.Dot(V_Norm);
-    if(m < 0 && Ps->DistanceSquared(*Center) > RadiusSquared)
+    if(m < 0 && Vector2::DistanceSquared(*Ps, *Center) > RadiusSquared)
     {
         return noCollision;
     }

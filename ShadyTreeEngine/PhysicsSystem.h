@@ -19,4 +19,8 @@ public:
 
 private:
     float gravity;
+
+    void Integrate(float deltaTime);
+
+    void DetectCollisions();
 };

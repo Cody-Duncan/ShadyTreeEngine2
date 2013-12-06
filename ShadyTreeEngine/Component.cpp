@@ -1,5 +1,5 @@
 #include "Component.h"
-
+#include "GameObjectCache.h"
 
 Component::Component(void) : id(-1), active(false)
 {
@@ -14,4 +14,9 @@ Component::Component(int _id,  bool _active)
 
 Component::~Component(void)
 {
+}
+
+GameObject* Component::parent()
+{
+    return GameObjectCache::Instance().Get(parentID);
 }
