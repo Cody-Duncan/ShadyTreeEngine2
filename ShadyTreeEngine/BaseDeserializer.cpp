@@ -2,7 +2,7 @@
 #include "Resources.h"
 #include "PhysicsComponent.h"
 
-#define sameKey(k, t) strcmp(k, t) == 0
+
 
 void parseGraphics(json_t* root, GraphicsComponent* gc)
 {
@@ -136,39 +136,29 @@ void parsePrimitiveGraphics(json_t* root, PrimitiveGraphicsComponent* pgc)
 
 void parsePhysics(json_t* root, PhysicsComponent* phys)
 {
- /*   "Physics"
-        {
-            "static": false,
-            "mass": 0.0,
-
-            "velocity": [0,0],
-            "acceleration":[0,0],
-
-            "body": 
-            { 
-                "circle":
-                {
-                    "radius": 147.2,
-                }
-            }
-            
-        }
-*/
     const char *key;
     json_t *value;
     json_object_foreach(root, key, value) 
     {
         if(sameKey(key, "static"))
         {
+            phys->IsStatic = json_is_true(json_object_get(root, "static"));
         }
         else if(sameKey(key, "mass"))
         {
+            phys->Mass = (float)json_real_value(json_object_get(root, "mass"));
         }
         else if(sameKey(key, "velocity"))
         {
+            double x, y;
+            json_unpack(json_object_get(root, key), "[F,F]", &x, &y);
+            phys->velocity = Vector2((float)x,(float)y);
         }
         else if(sameKey(key, "acceleration"))
         {
+            double x, y;
+            json_unpack(json_object_get(root, key), "[F,F]", &x, &y);
+            phys->acceleration = Vector2((float)x,(float)y);
         }
         else if(sameKey(key, "body"))
         {

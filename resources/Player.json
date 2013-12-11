@@ -13,19 +13,19 @@
 			"scale": 0.2,
 			"rotationCentered": true
 		},
-		"Physics"
+		"Physics":
 		{
 			"static": false,
 			"mass": 0.0,
 
-			"velocity": [0,0],
+			"velocity": [0.0,0.0],
 			"acceleration":[0,0],
 
 			"body": 
 			{ 
 				"circle":
 				{
-					"radius": 147.2,
+					"radius": 147.2
 				}
 			}
 			

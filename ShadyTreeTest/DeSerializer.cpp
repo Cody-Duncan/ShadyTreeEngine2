@@ -2,6 +2,7 @@
 #include "BaseDeserializer.h"
 #include <jansson.h>
 #include "GraphicsResourceHandles.h"
+#include "PhysicsComponent.h"
 
 DeSerializer::DeSerializer(void)
 {
@@ -35,17 +36,23 @@ GameObject* ParsePlayer(json_t* player)
     json_object_foreach(player, key, value) 
     {
         json_t* component = json_object_get(player, key);
-        if( strcmp(key, "Graphics") == 0)
+        if( sameKey(key, "Graphics") )
         {
             GraphicsComponent* gc = CF.createComponent<GraphicsComponent>();
             parseGraphics(component, gc);
             go->attachComponent(gc);
         }
-        else if( strcmp(key, "Position") == 0)
+        else if( sameKey(key, "Position") )
         {
             PositionalComponent* pc = CF.createComponent<PositionalComponent>();
             parsePosition(component, pc);
             go->attachComponent(pc);
+        }
+        else if( sameKey(key, "Physics") )
+        {
+            PhysicsComponent* phys_c = CF.createComponent<PhysicsComponent>();
+            parsePhysics(component, phys_c);
+            go->attachComponent(phys_c);
         }
         else
         {

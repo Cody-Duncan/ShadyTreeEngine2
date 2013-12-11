@@ -5,6 +5,7 @@
 #include "WindowSystem.h"
 #include "GraphicsSystem.h"
 #include "GameLogic.h"
+#include "PhysicsSystem.h"
 
 ST_API HWND ghMainWnd;
 ST_API HINSTANCE ghInstance;
@@ -21,6 +22,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     engine.AttachSystem(new WindowSystem("ShadyTreeTest", 1280, 720));
     GraphicsSystem* gs = new GraphicsSystem();
     engine.AttachSystem(gs);
+    engine.AttachSystem(new PhysicsSystem());
     engine.AttachSystem(new GameLogic());
 
     engine.Initialize();
