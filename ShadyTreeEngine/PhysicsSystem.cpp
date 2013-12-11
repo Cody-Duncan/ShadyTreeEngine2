@@ -32,8 +32,9 @@ void PhysicsSystem::Update(float deltaTime)
 {
     Integrate(deltaTime);
     DetectCollisions();
+    ResolveContacts(deltaTime);
 
-
+    contacts.clear();
 }
 
 void PhysicsSystem::Unload()
@@ -102,14 +103,14 @@ void PhysicsSystem::DetectCollisions()
         return;
 
     //grab the caches
-    std::vector<PhysicsComponent>& phys         = CF.getCache<PhysicsComponent>()->storage;      //Static Physics components
+    std::vector<PhysicsComponent>& phys         = CF.getCache<PhysicsComponent>()->storage;      //Physics components
     std::vector<PositionalComponent>& positions = CF.getCache<PositionalComponent>()->storage;   //Position Components
     GameObjectCache& GOC                        = GameObjectCache::Instance();
 
     std::vector<PhysicsComponent>::iterator A_iter;
     std::vector<PhysicsComponent>::iterator B_iter;
 
-    std::vector<Contact> contacts;
+    
 
     for(A_iter = phys.begin(); A_iter != phys.end(); ++A_iter)
     {
@@ -138,9 +139,99 @@ void PhysicsSystem::DetectCollisions()
                     c.ObjIDs[1]     = B.parentID;
                     c.Velocities[0] = A.velocity;
                     c.Velocities[1] = B.velocity;
+                    c.Restitution = min(A.Restitution,B.Restitution);
                     contacts.push_back(c);
                 }
             }
         }// End B loop
     }//End A loop
 }// End Function
+
+void ResolvePosition(Contact& c, 
+    PhysicsComponent& APhys, PositionalComponent& APos,
+    PhysicsComponent& BPhys, PositionalComponent& BPos)
+{
+    //calculate the penetration resolution, weighted by inverse mass
+    // (higher mass == lower movement)
+    float totalInverseMass = APhys.InvMass + BPhys.InvMass;
+    Vector2 movePerInvMass = c.ContactNormal * (c.Penetration / totalInverseMass);
+    c.Movement[0] =  movePerInvMass * APhys.InvMass;
+    c.Movement[1] =  movePerInvMass * -BPhys.InvMass;
+
+    //update the bodies' positions
+    if(!APhys.IsStatic) APos.position += c.Movement[0];
+    if(!BPhys.IsStatic) BPos.position += c.Movement[1];
+}
+
+inline float calcSeparatingVelocity(Vector2& AVel, Vector2& BVel, Vector2& ContactNormal)
+{
+    return (AVel- BVel).Dot( ContactNormal );
+}
+
+void ResolveVelocities(Contact& c, 
+    PhysicsComponent& APhys, PositionalComponent& APos,
+    PhysicsComponent& BPhys, PositionalComponent& BPos,
+    float deltaTime)
+{
+    float SeparatingVelocity = calcSeparatingVelocity(APhys.velocity, BPhys.velocity, c.ContactNormal);
+
+    if(SeparatingVelocity > 0) //not moving towards eachother
+    {
+        c.ContactImpulse = 0;
+        return;
+    }
+
+    //reduce velocity by restitution
+    float newSepVelocity = -SeparatingVelocity * c.Restitution;
+
+    //determine what portion of separating velocity was caused by acceleration
+    float AccelerationCausedSepVel = calcSeparatingVelocity(APhys.acceleration, BPhys.acceleration, c.ContactNormal) * deltaTime;
+
+    if(AccelerationCausedSepVel < 0)
+    {
+        //remove closing velocity caused by acceleration buildup
+        newSepVelocity += c.Restitution * AccelerationCausedSepVel;
+        if(newSepVelocity < 0) newSepVelocity = 0;
+    }
+
+    //calculate:
+    //change in velocity/(aMass + bMass) == impulse (force)
+    float deltaV = newSepVelocity - SeparatingVelocity;
+    float totalInverseMass = APhys.InvMass + BPhys.InvMass;
+    float impulse = deltaV / totalInverseMass;
+
+    c.ContactImpulse = impulse;
+
+    Vector2 impulsePerInvMass = c.ContactNormal * impulse;
+
+    //Apply impulse in direction of contact
+    APhys.velocity = APhys.velocity + impulsePerInvMass * APhys.InvMass;
+    BPhys.velocity = BPhys.velocity + impulsePerInvMass * -BPhys.InvMass;
+}
+
+void  PhysicsSystem::ResolveContacts(float deltaTime)
+{
+     if(contacts.size() == 0)
+        return;
+
+    ComponentFactory& CF = ComponentFactory::Instance();
+    if(!CF.hasComponentCache<PhysicsComponent>() || !CF.hasComponentCache<PositionalComponent>() ) //check for any graphicsComponents
+        return;
+    GameObjectCache& GOC = GameObjectCache::Instance();
+
+    for (unsigned i=0; i < contacts.size(); i++)
+    {
+        Contact& c = contacts[i];
+
+        GameObject* A = GOC.Get(c.ObjIDs[0]);
+        GameObject* B = GOC.Get(c.ObjIDs[1]);
+
+        PhysicsComponent& APhys = *A->getComponent<PhysicsComponent>();
+        PositionalComponent& APos = *A->getComponent<PositionalComponent>();
+        PhysicsComponent& BPhys = *B->getComponent<PhysicsComponent>();
+        PositionalComponent& BPos = *B->getComponent<PositionalComponent>();
+
+        ResolvePosition(c, APhys, APos, BPhys, BPos);
+        ResolveVelocities(c, APhys, APos, BPhys, BPos, deltaTime);
+    }
+}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ISystem.h"
+#include "Contact.h"
 
 class PhysicsSystem : public ISystem
 {
@@ -19,8 +20,11 @@ public:
 
 private:
     float gravity;
+    std::vector<Contact> contacts;
 
     void Integrate(float deltaTime);
 
     void DetectCollisions();
+
+    void ResolveContacts(float deltaTime);
 };

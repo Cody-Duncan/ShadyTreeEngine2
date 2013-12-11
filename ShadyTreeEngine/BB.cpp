@@ -86,17 +86,22 @@ bool CollisionCheck(BB* a, Vector2 posA, BB* b, Vector2 posB, Contact& contactRe
 
 bool collideCircle_Box(BB* c1, Vector2& cPos, BB* b2, Vector2& bPos, Contact& contactResult)
 {
-    return collideBox_Circle(b2, bPos, c1, cPos, contactResult);
-}
-
-bool collideBox_Circle(BB* b1, Vector2& bPos, BB* c2, Vector2& cPos, Contact& contactResult)
-{
-    BB_Rectangle* rect = static_cast<BB_Rectangle*>(b1);
-    BB_Circle* circ = static_cast<BB_Circle*>(c2);
+    BB_Circle* circ = static_cast<BB_Circle*>(c1);
+    BB_Rectangle* rect = static_cast<BB_Rectangle*>(b2);
 
     if(StaticCircleToStaticRectangle(&cPos, circ->radius, &bPos, rect->extents.x, rect->extents.y, contactResult))
         return true;
     return false;
+}
+
+bool collideBox_Circle(BB* b1, Vector2& bPos, BB* c2, Vector2& cPos, Contact& contactResult)
+{
+    //collideBox_Circle always takes Circle as object A, Box as Object B
+    //flip the contact normal for this function because
+    //the ordering of the object collision is reversed.
+    bool result = collideCircle_Box(c2, cPos, b1, bPos, contactResult);
+    contactResult.ContactNormal = -contactResult.ContactNormal;
+    return result;
 }
 
 

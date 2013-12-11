@@ -138,7 +138,7 @@ inline int StaticCircleToStaticRectangle(Vector2 *pCenter, float Radius, Vector2
     if(delta.LengthSquared() <= Radius*Radius)
     {
         c.ContactNormal = delta.Normal();
-        c.Penetration = delta.Length() - Radius;
+        c.Penetration = -(delta.Length() - Radius);
 
         return 1; 
     }

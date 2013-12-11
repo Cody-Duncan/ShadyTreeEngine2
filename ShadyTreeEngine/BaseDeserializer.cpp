@@ -142,11 +142,11 @@ void parsePhysics(json_t* root, PhysicsComponent* phys)
     {
         if(sameKey(key, "static"))
         {
-            phys->IsStatic = json_is_true(json_object_get(root, "static"));
+            phys->IsStatic = json_is_true(json_object_get(root, key));
         }
         else if(sameKey(key, "mass"))
         {
-            phys->Mass = (float)json_real_value(json_object_get(root, "mass"));
+            phys->Mass = (float)json_real_value(json_object_get(root, key));
             phys->InvMass = floatCompare(phys->Mass, 0.0f) ? 0.0f : 1.0f/phys->Mass;
         }
         else if(sameKey(key, "velocity"))
@@ -160,6 +160,10 @@ void parsePhysics(json_t* root, PhysicsComponent* phys)
             double x, y;
             json_unpack(json_object_get(root, key), "[F,F]", &x, &y);
             phys->acceleration = Vector2((float)x,(float)y);
+        }
+        else if(sameKey(key, "restitution"))
+        {
+            phys->Restitution = (float)json_real_value(json_object_get(root, key));
         }
         else if(sameKey(key, "body"))
         {
