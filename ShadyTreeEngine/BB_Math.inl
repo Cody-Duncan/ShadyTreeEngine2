@@ -70,10 +70,11 @@ inline int StaticCircleToStaticCircle(Vector2 *pCenter0, float Radius0, Vector2 
 /// <returns>bool (as int)- true if colliding, false (0) if not colliding.</returns>
 inline int StaticRectToStaticRect(Vector2 *pRect0, float Width0, float Height0, Vector2 *pRect1, float Width1, float Height1, Contact& c)
 {
-    float xdiff = (Width0 + Width1) - (fabs(pRect0->x - (pRect1->x + Width1)));
-    float ydiff = (Height0 + Height1) - (fabs(pRect0->y - (pRect1->y + Height1)));
+    //Separating Axis Theorem
+    float xdiff = (Width0 + Width1) - fabs( (pRect0->x + Width0/2) - (pRect1->x + Width1/2) )*2;
+    float ydiff = (Height0 + Height1) - fabs( (pRect0->y + Height0/2) - (pRect1->y + Height1/2) )*2;
 
-    if( xdiff > 0 || ydiff > 0)
+    if( xdiff > 0 && ydiff > 0)
     {
         Vector2 delta = *pRect0 - *pRect1;
         if(xdiff < ydiff)

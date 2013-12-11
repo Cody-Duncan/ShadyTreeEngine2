@@ -25,7 +25,7 @@ void PhysicsComponent::CloneFrom(Component* _oldGC)
     InvMass      = oldGC->InvMass;
     velocity     = oldGC->velocity;
     acceleration = oldGC->acceleration;
-    body         = oldGC->body->clone();
+    body         = oldGC->body ? oldGC->body->clone() : nullptr;
 }
 
 void PhysicsComponent::InitialValues()

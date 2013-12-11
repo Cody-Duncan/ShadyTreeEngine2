@@ -47,6 +47,8 @@ void ShadyTreeEngine::Run()
     while( Running )
     {
         deltaTime = timer.GetDeltaTime();
+        if (deltaTime > 1.0f/60.0f) 
+            deltaTime = 1.0f/60.0f;
         timer.Update();
 
         Update(deltaTime);
