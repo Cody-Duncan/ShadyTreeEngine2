@@ -108,8 +108,9 @@ inline int StaticRectToStaticRect(Vector2 *pRect0, float Width0, float Height0, 
 /// <returns>bool (as int), true for collision</returns>
 inline int StaticCircleToStaticRectangle(Vector2 *pCenter, float Radius, Vector2 *pRect, float Width, float Height, Contact& c)
 {
-    Vector2 point;
+    
     Vector2& center = *pCenter;
+    Vector2 point = center;
     Vector2 rectMin = *pRect;
     Vector2 rectMax = Vector2(pRect->x + Width, pRect->y + Height);
 

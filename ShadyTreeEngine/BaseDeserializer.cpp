@@ -67,7 +67,7 @@ void parsePrimitiveGraphics(json_t* root, PrimitiveGraphicsComponent* pgc)
         else if(sameKey(key, "color"))
         {
             double r,g,b,a;
-            json_unpack(json_object_get(root, key), "[f,f,f,f]", &r, &g, &b, &a);
+            json_unpack(json_object_get(root, key), "[F,F,F,F]", &r, &g, &b, &a);
             pgc->color = Color((float)r,(float)g,(float)b,(float)a);
         }
         else if(sameKey(key, "center"))
@@ -147,6 +147,7 @@ void parsePhysics(json_t* root, PhysicsComponent* phys)
         else if(sameKey(key, "mass"))
         {
             phys->Mass = (float)json_real_value(json_object_get(root, "mass"));
+            phys->InvMass = floatCompare(phys->Mass, 0.0f) ? 0.0f : 1.0f/phys->Mass;
         }
         else if(sameKey(key, "velocity"))
         {
@@ -178,9 +179,10 @@ void parsePhysics(json_t* root, PhysicsComponent* phys)
                 {
                     BB_Rectangle* rect = new BB_Rectangle();
 
-                    float x, y;
-                    json_unpack(extent, "[f,f]", &x, &y);
+                    double x, y;
+                    json_unpack(extent, "[F,F]", &x, &y);
                     rect->extents = Vector2((float)x,(float)y);
+                    phys->body = rect;
                 }
             }
         }

@@ -34,6 +34,10 @@ BB_Circle& BB_Circle::operator=(BB_Circle& rhs)
     radius = rhs.radius;
     return *this;
 }
+BB* BB_Circle::clone()
+{
+    return new BB_Circle(*this);
+}
 
 ////////// BB_Rectangle ///////////////
 BB_Rectangle::BB_Rectangle() : BB(Rect)
@@ -53,6 +57,11 @@ BB_Rectangle& BB_Rectangle::operator=(BB_Rectangle& rhs)
     
     extents = rhs.extents;
     return *this;
+}
+
+BB* BB_Rectangle::clone()
+{
+    return new BB_Rectangle(*this);
 }
 
 bool collideBox_Circle   (BB*, Vector2&, BB*, Vector2&, Contact& c);

@@ -677,6 +677,10 @@ public:
     bool Intersects( const Plane& plane, _Out_ float& Dist ) const;
 };
 
+
+//Math functions
+bool floatCompare(float a, float b, float epsilon = 0.00001f);
+
 #include "SimpleMath.inl"
 
 //------------------------------------------------------------------------------

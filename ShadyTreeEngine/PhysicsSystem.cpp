@@ -107,28 +107,40 @@ void PhysicsSystem::DetectCollisions()
     GameObjectCache& GOC                        = GameObjectCache::Instance();
 
     std::vector<PhysicsComponent>::iterator A_iter;
-    std::vector<PhysicsComponent>::iterator B_iter = A_iter = phys.begin();
+    std::vector<PhysicsComponent>::iterator B_iter;
 
     std::vector<Contact> contacts;
-    Contact c;
 
-    for(; A_iter != phys.end(); ++A_iter)
+    for(A_iter = phys.begin(); A_iter != phys.end(); ++A_iter)
     {
+        PhysicsComponent& A = *A_iter;
         PositionalComponent& posA = *A_iter->parent()->getComponent<PositionalComponent>();
-        for(; B_iter != phys.end(); ++B_iter)
+
+        if(!A.active)
+            continue;
+
+        B_iter = A_iter;
+        ++B_iter;
+        for( ; B_iter != phys.end(); ++B_iter)
         {
+            PhysicsComponent& B = *B_iter;
             PositionalComponent& posB = *B_iter->parent()->getComponent<PositionalComponent>();
-            if( !A_iter->IsStatic || !B_iter->IsStatic )
+
+            if(!B.active)
+            continue;
+
+            if( !A.IsStatic || !B.IsStatic )
             {
+                Contact c;
                 if(CollisionCheck(A_iter->body, posA.position, B_iter->body, posB.position, c))
                 {
-                    c.ObjIDs[0]     = A_iter->parentID;
-                    c.ObjIDs[1]     = B_iter->parentID;
-                    c.Velocities[0] = A_iter->velocity;
-                    c.Velocities[1] = B_iter->velocity;
+                    c.ObjIDs[0]     = A.parentID;
+                    c.ObjIDs[1]     = B.parentID;
+                    c.Velocities[0] = A.velocity;
+                    c.Velocities[1] = B.velocity;
                     contacts.push_back(c);
                 }
             }
-        }
-    }
-}
+        }// End B loop
+    }//End A loop
+}// End Function

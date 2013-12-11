@@ -16,7 +16,7 @@
 		"Physics":
 		{
 			"static": false,
-			"mass": 0.0,
+			"mass": 1.0,
 
 			"velocity": [0.0,0.0],
 			"acceleration":[0,0],
@@ -25,10 +25,9 @@
 			{ 
 				"circle":
 				{
-					"radius": 147.2
+					"radius": 73.6
 				}
 			}
-			
 		}
     },
 	"Herp":

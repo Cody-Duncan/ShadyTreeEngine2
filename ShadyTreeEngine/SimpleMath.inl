@@ -3311,3 +3311,9 @@ inline bool Ray::Intersects( const Plane& plane, _Out_ float& Dist ) const
         }
     }
 }
+
+//Math functions
+inline bool floatCompare(float a, float b, float epsilon)
+{
+    return fabs(a-b) < epsilon;
+}

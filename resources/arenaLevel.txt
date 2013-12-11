@@ -13,6 +13,17 @@
 			{
 				"position": [64,620],
 				"rotation": 0.0
+			},
+			"Physics":
+			{
+				"static": true,
+				"body": 
+				{
+					"rectangle":
+					{
+						"dimension": [1152,40]
+					}
+				}
 			}
 		},
 		
@@ -28,6 +39,17 @@
 			{
 				"position": [164,440],
 				"rotation": 0.0
+			},
+			"Physics":
+			{
+				"static": true,
+				"body": 
+				{
+					"rectangle":
+					{
+						"dimension": [288,40]
+					}
+				}
 			}
 		},
 		
@@ -43,6 +65,17 @@
 			{
 				"position": [828,440],
 				"rotation": 0.0
+			},
+			"Physics":
+			{
+				"static": true,
+				"body": 
+				{
+					"rectangle":
+					{
+						"dimension": [288,40]
+					}
+				}
 			}
 		}
 	]

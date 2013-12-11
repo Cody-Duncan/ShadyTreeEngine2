@@ -86,6 +86,12 @@ GameObject* ParsePlatform(json_t* platform)
             parsePosition(component, pc);
             go->attachComponent(pc);
         }
+        else if( sameKey(key, "Physics") )
+        {
+            PhysicsComponent* phys_c = CF.createComponent<PhysicsComponent>();
+            parsePhysics(component, phys_c);
+            go->attachComponent(phys_c);
+        }
         else
         {
             DebugPrintf("Error: Tried to parse json object %s\n" , key);
