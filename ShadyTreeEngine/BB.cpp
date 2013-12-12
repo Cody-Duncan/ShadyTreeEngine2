@@ -20,6 +20,11 @@ void BB::generateGeometry(std::vector<Vector2>& fillList)
     return;
 }
 
+Vector2 BB::centerOffset()
+{
+    return Vector2();
+}
+
 ////////// BB_Circle ///////////////
 BB_Circle::BB_Circle() : BB(Circle)
 {
@@ -55,6 +60,11 @@ void BB_Circle::generateGeometry(std::vector<Vector2>& fillList)
     }
 }
 
+Vector2 BB_Circle::centerOffset()
+{
+    return Vector2();
+}
+
 ////////// BB_Rectangle ///////////////
 BB_Rectangle::BB_Rectangle() : BB(Rect)
 {
@@ -82,15 +92,24 @@ BB* BB_Rectangle::clone()
 
 void BB_Rectangle::generateGeometry(std::vector<Vector2>& fillList)
 {
-    fillList.push_back(Vector2(0,0));
-    fillList.push_back(Vector2(extents.x, 0));
+    fillList.push_back(Vector2(-extents.x, -extents.y));
+    fillList.push_back(Vector2(extents.x, -extents.y));
     fillList.push_back(Vector2(extents.x, extents.y));
 
-    fillList.push_back(Vector2(0,0));
+    fillList.push_back(Vector2(-extents.x, -extents.y));
     fillList.push_back(Vector2(extents.x, extents.y));
-    fillList.push_back(Vector2(0, extents.y));
-
+    fillList.push_back(Vector2(-extents.x, extents.y));
 }
+
+Vector2 BB_Rectangle::centerOffset()
+{
+    return Vector2();
+}
+
+
+
+
+
 
 bool collideBox_Circle   (BB*, Vector2&, BB*, Vector2&, Contact& c);
 bool collideCircle_Circle(BB*, Vector2&, BB*, Vector2&, Contact& c);

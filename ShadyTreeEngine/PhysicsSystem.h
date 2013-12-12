@@ -28,4 +28,7 @@ private:
     void DetectCollisions();
 
     void ResolveContacts(float deltaTime);
+
+    void UpdateDebugDraw();
+    
 };

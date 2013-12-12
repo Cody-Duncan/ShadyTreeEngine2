@@ -46,11 +46,9 @@ void GameLogic::Update(float deltaTime)
     if(!CF.hasComponentCache<PositionalComponent>())
         return;
 
-    std::vector<PositionalComponent>& posCache = CF.getCache<PositionalComponent>()->storage;
-    for(unsigned int i = 0; i < posCache.size(); ++i)
+    if(gINPUTSTATE->keyDown(VK_LEFT))
     {
-        PositionalComponent& p = posCache[i];
-
+        oneobject->getComponent<PositionalComponent>()->rotation += 0.01f;
     }
 }
 

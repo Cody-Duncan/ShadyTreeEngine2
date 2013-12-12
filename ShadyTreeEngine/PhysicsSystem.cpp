@@ -38,6 +38,7 @@ void PhysicsSystem::Update(float deltaTime)
     ResolveContacts(deltaTime);
 
     contacts.clear();
+    UpdateDebugDraw();
 }
 
 void PhysicsSystem::Unload()
@@ -266,6 +267,28 @@ void PhysicsSystem::generateDebugDraw()
         newDDC->active = go.active;
 
         go.attachComponent(newDDC);
+    }
+}
 
+void PhysicsSystem::UpdateDebugDraw()
+{
+    ComponentFactory& CF = ComponentFactory::Instance();
+    if( ! CF.hasComponentCache<DebugDrawComponent>() || 
+        ! CF.hasComponentCache<PhysicsComponent>()   || 
+        ! CF.hasComponentCache<PositionalComponent>()    ) 
+        return;
+
+    //grab the caches
+    std::vector<DebugDrawComponent>& dds = CF.getCache<DebugDrawComponent>()->storage;
+
+    for(unsigned int i = 0; i < dds.size(); ++i)
+    {
+        DebugDrawComponent& dd = dds[i];
+        GameObject& go = *dd.parent();
+
+        if(!go.active || !go.getComponent<PhysicsComponent>() )
+            continue;
+        PhysicsComponent* phys = go.getComponent<PhysicsComponent>();
+        dd.lines[1] = dd.lines[0] + phys->velocity;
     }
 }

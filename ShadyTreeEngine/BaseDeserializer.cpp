@@ -72,9 +72,11 @@ void parsePrimitiveGraphics(json_t* root, PrimitiveGraphicsComponent* pgc)
         }
         else if(sameKey(key, "center"))
         {
-            int x, y;
-            json_unpack(json_object_get(root, key), "[i,i]", &x, &y);
-            pgc->center = Vector2((float)x,(float)y);
+            //int x, y;
+            //json_unpack(json_object_get(root, key), "[i,i]", &x, &y);
+            //pgc->center = Vector2((float)x,(float)y);
+
+            
         }
         else if(sameKey(key, "triangle"))
         {
@@ -129,6 +131,7 @@ void parsePrimitiveGraphics(json_t* root, PrimitiveGraphicsComponent* pgc)
 
             #endif
             
+            pgc->center = Vector2(pointCoords[2]/2, pointCoords[3]/2);
 
         }
     }

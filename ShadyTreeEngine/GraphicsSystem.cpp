@@ -85,9 +85,7 @@ void GraphicsSystem::Update(float deltaTime)
             DebugAssert(posC->active, "Trying to draw active graphicsComponent, with nonactive positionalComponent.");
 
             //center the transform?
-            Matrix transform = posC->rotationCentered ?
-                Matrix::CreateTranslation(-pg.center.x/2, -pg.center.y/2, 0) * posC->Transform() :
-                posC->Transform();
+            Matrix transform = Matrix::CreateTranslation(-pg.center.x, -pg.center.y, 0) * posC->Transform();
 
             primitiveBatch->DrawTriangles(pg.layer,pg.triangleListPoints.data(), pg.triangleListPoints.size(), transform, pg.color);
         }
@@ -110,10 +108,24 @@ void GraphicsSystem::Update(float deltaTime)
                 DebugAssert(posC->active, "Trying to draw active graphicsComponent, with nonactive positionalComponent.");
 
                 //center the transform?
-                Matrix transform = posC->rotationCentered ?
-                    Matrix::CreateTranslation(-g.textureArea.dimensions.x/2, -g.textureArea.dimensions.y/2, 0) * posC->Transform() :
-                    posC->Transform();
+                Matrix transform;
+                if( posC->rotationCentered  )
+                {
+                    float xCenter = g.textureArea.dimensions.x/2;
+                    float yCenter = g.textureArea.dimensions.y/2;
 
+                    Matrix offset = Matrix::CreateTranslation(-xCenter, -yCenter, 0);
+
+                    transform = 
+                        offset * Matrix::CreateRotationZ(posC->rotation) *      //centered rotation.
+                        Matrix::CreateScale(posC->scale) * 
+                        Matrix::CreateTranslation(posC->position.x,posC->position.y, 0 );
+                }
+                else
+                {
+                    transform = posC->Transform();
+                }
+                
                 spriteBatch->Draw(g.texture, transform, g.textureArea);
             }
         }
@@ -152,9 +164,12 @@ void GraphicsSystem::Update(float deltaTime)
                 DebugAssert(posC->active, "Trying to draw active graphicsComponent, with nonactive positionalComponent.");
 
                 //center the transform?
-                Matrix transform = posC->rotationCentered ?
+                Matrix transform = Matrix::CreateTranslation(posC->position.x, posC->position.y, 0);
+                
+                    
+                    /*posC->rotationCentered ?
                     Matrix::CreateTranslation(-g->textureArea.dimensions.x/2, -g->textureArea.dimensions.y/2, 0) * posC->Transform() :
-                    posC->Transform();
+                    posC->Transform();*/
 
                 primitiveBatch->DrawTriangles(10, pg.geometry.data(), pg.geometry.size(), transform, pg.color);
                 primitiveBatch->DrawLines(11, pg.lines.data(), pg.lines.size(), transform, pg.color);

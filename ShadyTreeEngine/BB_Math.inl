@@ -71,8 +71,8 @@ inline int StaticCircleToStaticCircle(Vector2 *pCenter0, float Radius0, Vector2 
 inline int StaticRectToStaticRect(Vector2 *pRect0, float Width0, float Height0, Vector2 *pRect1, float Width1, float Height1, Contact& c)
 {
     //Separating Axis Theorem
-    float xdiff = (Width0 + Width1) - fabs( (pRect0->x + Width0/2) - (pRect1->x + Width1/2) )*2;
-    float ydiff = (Height0 + Height1) - fabs( (pRect0->y + Height0/2) - (pRect1->y + Height1/2) )*2;
+    float xdiff = (Width0 + Width1) - fabs(pRect0->x - pRect1->x)*2;
+    float ydiff = (Height0 + Height1) - fabs(pRect0->y - pRect1->y)*2;
 
     if( xdiff > 0 && ydiff > 0)
     {
@@ -112,7 +112,7 @@ inline int StaticCircleToStaticRectangle(Vector2 *pCenter, float Radius, Vector2
     
     Vector2& center = *pCenter;
     Vector2 point = center;
-    Vector2 rectMin = *pRect;
+    Vector2 rectMin = Vector2(pRect->x - Width, pRect->y - Height);
     Vector2 rectMax = Vector2(pRect->x + Width, pRect->y + Height);
 
     //X

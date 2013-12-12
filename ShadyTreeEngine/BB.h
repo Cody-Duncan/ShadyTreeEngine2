@@ -15,6 +15,7 @@ public:
 
     BB_Type type;
     virtual void generateGeometry(std::vector<Vector2>& fillList);
+    virtual Vector2 centerOffset();
 
 protected:
      BB(BB_Type t);
@@ -30,6 +31,7 @@ public:
 
     float radius;
     virtual void generateGeometry(std::vector<Vector2>& fillList);
+    virtual Vector2 centerOffset();
 };
 
 class BB_Rectangle : public BB
@@ -42,6 +44,7 @@ public:
 
     Vector2 extents;
     virtual void generateGeometry(std::vector<Vector2>& fillList);
+    virtual Vector2 centerOffset();
 };
 
 
