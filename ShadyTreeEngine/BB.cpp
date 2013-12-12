@@ -15,6 +15,11 @@ BB::~BB(void)
 {
 }
 
+void BB::generateGeometry(std::vector<Vector2>& fillList)
+{
+    return;
+}
+
 ////////// BB_Circle ///////////////
 BB_Circle::BB_Circle() : BB(Circle)
 {
@@ -37,6 +42,17 @@ BB_Circle& BB_Circle::operator=(BB_Circle& rhs)
 BB* BB_Circle::clone()
 {
     return new BB_Circle(*this);
+}
+
+void BB_Circle::generateGeometry(std::vector<Vector2>& fillList)
+{
+    float step = PI/8;
+    for(float angle = 0.0f; angle < 360.0f; angle += step)
+    {
+        fillList.push_back(Vector2(0,0));
+        fillList.push_back(Vector2(sin(angle+step), cos(angle+step))*radius);
+        fillList.push_back(Vector2(sin(angle), cos(angle))*radius);
+    }
 }
 
 ////////// BB_Rectangle ///////////////
@@ -62,6 +78,18 @@ BB_Rectangle& BB_Rectangle::operator=(BB_Rectangle& rhs)
 BB* BB_Rectangle::clone()
 {
     return new BB_Rectangle(*this);
+}
+
+void BB_Rectangle::generateGeometry(std::vector<Vector2>& fillList)
+{
+    fillList.push_back(Vector2(0,0));
+    fillList.push_back(Vector2(extents.x, 0));
+    fillList.push_back(Vector2(extents.x, extents.y));
+
+    fillList.push_back(Vector2(0,0));
+    fillList.push_back(Vector2(extents.x, extents.y));
+    fillList.push_back(Vector2(0, extents.y));
+
 }
 
 bool collideBox_Circle   (BB*, Vector2&, BB*, Vector2&, Contact& c);

@@ -22,6 +22,7 @@
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="Contact.h" />
     <ClInclude Include="DDSTextureLoader.h" />
+    <ClInclude Include="DebugDrawComponent.h" />
     <ClInclude Include="DebugOutput.h" />
     <ClInclude Include="Debug_Graphics.h" />
     <ClInclude Include="DeviceAPI.h" />
@@ -76,6 +77,7 @@
     <ClCompile Include="ComponentFactory.cpp" />
     <ClCompile Include="ComponentTypeID.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
+    <ClCompile Include="DebugDrawComponent.cpp" />
     <ClCompile Include="DebugOutput.cpp" />
     <ClCompile Include="DirectX_GraphicsDevice.cpp" />
     <ClCompile Include="DirectX_PrimitiveBatch.cpp" />

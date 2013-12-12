@@ -14,6 +14,7 @@ public:
     virtual BB* clone() = 0;
 
     BB_Type type;
+    virtual void generateGeometry(std::vector<Vector2>& fillList);
 
 protected:
      BB(BB_Type t);
@@ -28,6 +29,7 @@ public:
     virtual BB* clone();
 
     float radius;
+    virtual void generateGeometry(std::vector<Vector2>& fillList);
 };
 
 class BB_Rectangle : public BB
@@ -39,6 +41,7 @@ public:
     virtual BB* clone();
 
     Vector2 extents;
+    virtual void generateGeometry(std::vector<Vector2>& fillList);
 };
 
 

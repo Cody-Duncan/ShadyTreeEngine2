@@ -5,7 +5,7 @@ int GameObjectCache::genID = 0;
 
 
 #define DEFAULT_NUM_OBJECTS 200
-#define INACTIVE_GAMEOBJECT_ID -1;
+#define INACTIVE_GAMEOBJECT_ID -1
 
 
 GameObjectCache& GameObjectCache::Instance()
@@ -16,11 +16,7 @@ GameObjectCache& GameObjectCache::Instance()
 
 GameObjectCache::GameObjectCache(void)
 {
-    entities.resize(DEFAULT_NUM_OBJECTS);
-    for(int i = 0; i < DEFAULT_NUM_OBJECTS; ++i)
-    {
-        freeSlots.push_back(i);
-    }
+    Reserve(DEFAULT_NUM_OBJECTS);
 }
 
 
@@ -38,6 +34,8 @@ void GameObjectCache::Reserve(int newSize)
     for(int i = currentSize; i < newSize; ++i)
     {
         freeSlots.push_back(i);
+        entities[i].active = false;
+        entities[i].id = INACTIVE_GAMEOBJECT_ID;
     }
 }
 

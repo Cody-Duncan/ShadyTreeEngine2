@@ -3,6 +3,12 @@
 #include "DeviceAPI.h"
 #include "GraphicsResourceHandles.h"
 
+enum PrimitiveType
+{
+    Prim_Triangle,
+    Prim_Line
+};
+
 class ST_API PrimitiveBatch
 {
 public:
@@ -16,9 +22,10 @@ public:
 
     virtual void Begin(bool AlphaBlend = false) = 0;
     virtual void DrawTriangles(unsigned int layer, Vector2* points, int pointLength, Matrix transform, Color c) = 0;
+    virtual void DrawLines(unsigned int layer, Vector2* points, int pointLength, Matrix transform, Color c) = 0;
     virtual void End() = 0;
    
     virtual void Dispose() = 0;
 
-    virtual void DrawBatch(int layer) = 0;
+    virtual void DrawBatch(int layer, PrimitiveType topology) = 0;
 };

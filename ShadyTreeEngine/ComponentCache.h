@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include "Component.h"
 
-#define INACTIVE_ID -1;
+#define INACTIVE_ID -1
 
 class AbstractComponentCache
 {
@@ -77,10 +77,10 @@ public:
         {
             unsigned int lastIndex = storage.size();
             
-            for(unsigned int i = lastIndex; i < storage.size(); ++i)
+            for(unsigned int i = lastIndex; i < size; ++i)
             {
                 freeSlots.push_back(i);
-                storage.emplace_back();
+                storage.emplace_back(INACTIVE_ID, false);
             }
         }
     }

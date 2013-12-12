@@ -9,7 +9,7 @@ class PrimitiveBatch;
 class GraphicsSystem : public ISystem
 {
 public:
-    ST_API GraphicsSystem() : device(0), spriteBatch(0) {};
+    ST_API GraphicsSystem() : device(0), spriteBatch(0), debugDraw(false) {};
     ~GraphicsSystem(void) {};
 
     virtual void Init();
@@ -21,9 +21,13 @@ public:
 
     ST_API void setClearColor(Color color);
 
+    virtual bool IsDebugDrawOn();
+    virtual bool ToggleDebugDraw();
 
 private: 
     GraphicsDevice* device;
     SpriteBatch* spriteBatch;
     PrimitiveBatch* primitiveBatch;
+
+    bool debugDraw;
 };

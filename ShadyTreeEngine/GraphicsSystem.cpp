@@ -11,6 +11,17 @@
 #include "PositionalComponent.h"
 #include "GameObject.h"
 #include "GameObjectCache.h"
+#include "DebugDrawComponent.h"
+
+bool GraphicsSystem::IsDebugDrawOn()
+{
+    return debugDraw;
+}
+
+bool GraphicsSystem::ToggleDebugDraw()
+{
+    return debugDraw = !debugDraw;
+}
 
 void GraphicsSystem::Init()
 {
@@ -61,7 +72,7 @@ void GraphicsSystem::Update(float deltaTime)
     //BEGIN DRAWING
     device->clearRenderTarget();
 
-
+    
     primitiveBatch->Begin();
     for(unsigned int i = 0; i < primitivCompLength; i++)
     {
@@ -121,9 +132,37 @@ void GraphicsSystem::Update(float deltaTime)
             totalTime = 0;
         }
     
-    //END DRAWING
+    //END SPRITE DRAWING
     spriteBatch->End();
     
+    //DEBUG DRAWING
+    if(debugDraw && CF.hasComponentCache<DebugDrawComponent>())
+    {
+        std::vector<DebugDrawComponent>& debugCache = CF.getCache<DebugDrawComponent>()->storage;  //graphics components
+        primitiveBatch->Begin(true);
+        for(unsigned int i = 0; i < debugCache.size(); i++)
+        {
+            DebugDrawComponent& pg= debugCache[i];
+            if(pg.active)
+            {
+                GameObject& go            = *pg.parent();
+                PositionalComponent* posC = go.getComponent<PositionalComponent>();
+                GraphicsComponent* g      = go.getComponent<GraphicsComponent>();
+                DebugAssert(posC, "Positional Component not found or null.");
+                DebugAssert(posC->active, "Trying to draw active graphicsComponent, with nonactive positionalComponent.");
+
+                //center the transform?
+                Matrix transform = posC->rotationCentered ?
+                    Matrix::CreateTranslation(-g->textureArea.dimensions.x/2, -g->textureArea.dimensions.y/2, 0) * posC->Transform() :
+                    posC->Transform();
+
+                primitiveBatch->DrawTriangles(10, pg.geometry.data(), pg.geometry.size(), transform, pg.color);
+                primitiveBatch->DrawLines(11, pg.lines.data(), pg.lines.size(), transform, pg.color);
+            }
+        }
+        primitiveBatch->End();
+    }//END DEBUG DRAWING
+
     
     device->SwapBuffer();
 }

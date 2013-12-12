@@ -4,6 +4,7 @@
 #include "DirectX_GraphicsDevice.h"
 
 #define BatchSize 2000
+#define Invalid_Buffer_ID -1
 
 DirectX_PrimitiveBatch::DirectX_PrimitiveBatch(GraphicsDevice* deviceIn) : PrimitiveBatch(DeviceAPI::DirectX11)
 {
@@ -75,12 +76,12 @@ void DirectX_PrimitiveBatch::Dispose()
 
 }
 
-bool DirectX_PrimitiveBatch::hasTriBatchBuffer(unsigned int layer)
+bool DirectX_PrimitiveBatch::hasBatchBuffer(unsigned int layer)
 {
     return layer < triBatchVBuffers.size();
 }
 
-void DirectX_PrimitiveBatch::addTriBatchBuffer(unsigned int layer)
+void DirectX_PrimitiveBatch::addBatchBuffer(unsigned int layer)
 {
     if(layer >= triBatchVBuffers.size())
     {
@@ -91,7 +92,8 @@ void DirectX_PrimitiveBatch::addTriBatchBuffer(unsigned int layer)
         BufferResourcer::Instance().getVBuffer(quadBuffer).stride = sizeof(VertexCol);
 
         //assign vBuffer
-        triBatchVBuffers.resize(layer+1);
+        VertexBufferHandle invalidHandle = {-1};
+        triBatchVBuffers.resize(layer+1, invalidHandle);
         triBatchVBuffers[layer] = quadBuffer;
 
         //create a batch
@@ -99,26 +101,29 @@ void DirectX_PrimitiveBatch::addTriBatchBuffer(unsigned int layer)
         triBatch[layer].reserve(BatchSize*4);
     }
 }
-void DirectX_PrimitiveBatch::resetTriBatchBuffer(unsigned int layer)
+void DirectX_PrimitiveBatch::resetBatchBuffer(unsigned int layer)
 {
+    if(triBatchVBuffers[layer].VbufferID == Invalid_Buffer_ID) //do not draw invalid buffers
+        return;
+
     VertexBufferData& triBufferData = BufferResourcer::Instance().getVBuffer(triBatchVBuffers[layer]);
     triBufferData.startVertex = 0;
 
     triBatch[layer].clear();
 }
-void DirectX_PrimitiveBatch::resetAllTriBatchBuffers()
+void DirectX_PrimitiveBatch::resetAllBatchBuffers()
 {
     for(unsigned int i = 0; i < triBatch.size(); ++i)
     {
-        resetTriBatchBuffer(i);
+        resetBatchBuffer(i);
     }
 }
 
 
 void DirectX_PrimitiveBatch::DrawTriangles(unsigned int layer, Vector2* points, int pointLength, Matrix transform, Color c)
 {
-    if(!hasTriBatchBuffer(layer))
-        addTriBatchBuffer(layer);
+    if(!hasBatchBuffer(layer))
+        addBatchBuffer(layer);
 
     std::vector<VertexCol>& batchRef = triBatch[layer];
     for(int i = 0; i < pointLength; ++i)
@@ -131,9 +136,17 @@ void DirectX_PrimitiveBatch::DrawTriangles(unsigned int layer, Vector2* points, 
     triBufferData.startVertex += pointLength;
 }
 
-
-void DirectX_PrimitiveBatch::DrawBatch(int layer)
+void DirectX_PrimitiveBatch::DrawLines(unsigned int layer, Vector2* points, int pointLength, Matrix transform, Color c)
 {
+
+}
+
+
+void DirectX_PrimitiveBatch::DrawBatch(int layer, PrimitiveType topology)
+{
+    if(triBatchVBuffers[layer].VbufferID == Invalid_Buffer_ID) //do not draw invalid buffers
+        return;
+
     VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(triBatchVBuffers[layer]);
     if(quadBufferData.startVertex > 0) //don't draw empty buffers
     {
@@ -143,10 +156,15 @@ void DirectX_PrimitiveBatch::DrawBatch(int layer)
 }
 
 
-void DirectX_PrimitiveBatch::sendTriBatchToBuffers(unsigned int layer)
+void DirectX_PrimitiveBatch::sendBatchToBuffers(unsigned int layer)
 {
+    if(triBatchVBuffers[layer].VbufferID == Invalid_Buffer_ID) //do not draw invalid buffers
+        return;
+
     VertexBufferData& triBufferData = BufferResourcer::Instance().getVBuffer(triBatchVBuffers[layer]);
     std::vector<VertexCol>& currBatch = triBatch[layer];
+    if(triBufferData.startVertex == 0)
+        return;
 
     ID3D11DeviceContext* context = device->getContext();
     ID3D11Buffer* vertexBuffer = triBufferData.getVertexBuffer();
@@ -192,9 +210,9 @@ void DirectX_PrimitiveBatch::End()
 {
     for(unsigned int i = 0; i < triBatchVBuffers.size(); ++i)
     {
-        sendTriBatchToBuffers(i);
-        DrawBatch(i);
+        sendBatchToBuffers(i);
+        DrawBatch(i, Prim_Triangle);
     }
 
-    resetAllTriBatchBuffers();
+    resetAllBatchBuffers();
 }

@@ -53,7 +53,7 @@ void ShadyTreeEngine::Run()
 
         Update(deltaTime);
         gINPUTSTATE->shift();
-        Sleep(1);
+        //Sleep(1);
     }
 }
 

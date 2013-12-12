@@ -15,12 +15,13 @@ public:
 
     void Begin(bool AlphaBlend = false);
     void DrawTriangles(unsigned int layer, Vector2* points, int pointLength, Matrix transform, Color c);
+    void DrawLines(unsigned int layer, Vector2* points, int pointLength, Matrix transform, Color c);
     void End();
     
     void Dispose(); 
 
     //draw sprite batch
-    void DrawBatch(int layer);
+    void DrawBatch(int layer, PrimitiveType topology);
 
 private:
     DirectX_GraphicsDevice* device;
@@ -29,18 +30,15 @@ private:
     PixelShaderHandle colorPixSH;
 
     //triangle batch methods.
-    bool hasTriBatchBuffer(unsigned int layer);
-    void addTriBatchBuffer(unsigned int layer);
-    void resetTriBatchBuffer(unsigned int layer);
-    void resetAllTriBatchBuffers();
+    bool hasBatchBuffer(unsigned int layer);
+    void addBatchBuffer(unsigned int layer);
+    void resetBatchBuffer(unsigned int layer);
+    void resetAllBatchBuffers();
 
-    void sendTriBatchToBuffers(unsigned int layer);
+    void sendBatchToBuffers(unsigned int layer);
     
     //batch for primitive triangles
     std::vector<std::vector<VertexCol>> triBatch;       // int (layer) -> array of triangles
     std::vector<VertexBufferHandle> triBatchVBuffers;   // int (layer) -> VertexBuffer
     IndexBufferHandle triBatchIBuffer;
-
-    
-    
 };

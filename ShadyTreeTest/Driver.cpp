@@ -20,14 +20,20 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     ShadyTreeEngine engine;
 
     engine.AttachSystem(new WindowSystem("ShadyTreeTest", 1280, 720));
+
     GraphicsSystem* gs = new GraphicsSystem();
+    gs->ToggleDebugDraw();
     engine.AttachSystem(gs);
-    engine.AttachSystem(new PhysicsSystem());
+
+    PhysicsSystem* ps = new PhysicsSystem();
+    engine.AttachSystem(ps);
+
     engine.AttachSystem(new GameLogic());
 
     engine.Initialize();
     gs->setClearColor(Color(0,0,0,1.0f));
     engine.Load();
+    ps->generateDebugDraw();
     engine.Run();
     engine.Free();
 

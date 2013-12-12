@@ -9,6 +9,9 @@
 
 #include "Contact.h"
 
+
+#include "DebugDrawComponent.h"
+
 PhysicsSystem::PhysicsSystem(void)
 {
 }
@@ -209,7 +212,7 @@ void ResolveVelocities(Contact& c,
     BPhys.velocity = BPhys.velocity + impulsePerInvMass * -BPhys.InvMass;
 }
 
-void  PhysicsSystem::ResolveContacts(float deltaTime)
+void PhysicsSystem::ResolveContacts(float deltaTime)
 {
      if(contacts.size() == 0)
         return;
@@ -233,5 +236,36 @@ void  PhysicsSystem::ResolveContacts(float deltaTime)
 
         ResolvePosition(c, APhys, APos, BPhys, BPos);
         ResolveVelocities(c, APhys, APos, BPhys, BPos, deltaTime);
+    }
+}
+
+void PhysicsSystem::generateDebugDraw()
+{
+    ComponentFactory& CF = ComponentFactory::Instance();
+    if(!CF.hasComponentCache<PhysicsComponent>() || !CF.hasComponentCache<PositionalComponent>() ) //check for any graphicsComponents
+        return;
+    //grab the caches
+    std::vector<PhysicsComponent>& phys         = CF.getCache<PhysicsComponent>()->storage;      //Physics components
+    std::vector<PositionalComponent>& positions = CF.getCache<PositionalComponent>()->storage;   //Position Components
+    GameObjectCache& GOC                        = GameObjectCache::Instance();
+
+    for(unsigned int i = 0; i < GOC.entities.size(); ++i)
+    {
+        GameObject& go = GOC.entities[i];
+        if(!go.active || !go.getComponent<PhysicsComponent>() || go.hasComponent<DebugDrawComponent>())
+            continue;
+
+        DebugDrawComponent* newDDC = CF.createComponent<DebugDrawComponent>();
+        PhysicsComponent* phys = go.getComponent<PhysicsComponent>();
+
+        newDDC->lines.push_back(Vector2(0,0));
+        newDDC->lines.push_back(phys->velocity);
+
+        phys->body->generateGeometry(newDDC->geometry);
+
+        newDDC->active = go.active;
+
+        go.attachComponent(newDDC);
+
     }
 }
