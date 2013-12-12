@@ -21,7 +21,7 @@
 				{
 					"rectangle":
 					{
-						"dimension": [576,20]
+						"dimension": [1152,40]
 					}
 				}
 			}
@@ -47,7 +47,7 @@
 				{
 					"rectangle":
 					{
-						"dimension": [144,20]
+						"dimension": [288,40]
 					}
 				}
 			}
@@ -73,7 +73,7 @@
 				{
 					"rectangle":
 					{
-						"dimension": [144,20]
+						"dimension": [288,40]
 					}
 				}
 			}

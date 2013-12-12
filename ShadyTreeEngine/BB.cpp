@@ -92,13 +92,13 @@ BB* BB_Rectangle::clone()
 
 void BB_Rectangle::generateGeometry(std::vector<Vector2>& fillList)
 {
-    fillList.push_back(Vector2(-extents.x, -extents.y));
-    fillList.push_back(Vector2(extents.x, -extents.y));
-    fillList.push_back(Vector2(extents.x, extents.y));
+    fillList.push_back(Vector2(-extents.x, -extents.y)/2);
+    fillList.push_back(Vector2(extents.x, -extents.y)/2);
+    fillList.push_back(Vector2(extents.x, extents.y)/2);
 
-    fillList.push_back(Vector2(-extents.x, -extents.y));
-    fillList.push_back(Vector2(extents.x, extents.y));
-    fillList.push_back(Vector2(-extents.x, extents.y));
+    fillList.push_back(Vector2(-extents.x, -extents.y)/2);
+    fillList.push_back(Vector2(extents.x, extents.y)/2);
+    fillList.push_back(Vector2(-extents.x, extents.y)/2);
 }
 
 Vector2 BB_Rectangle::centerOffset()
