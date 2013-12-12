@@ -1,9 +1,13 @@
+#pragma once
+#define _ITERATOR_DEBUG_LEVEL 0
+
 #include <assert.h>
 #include <string>
 #include <sstream>
 #include <assert.h>
 
 #include <vector>
+#include <functional>
 #include <unordered_map>
 
 #include <Windows.h>
@@ -19,3 +23,4 @@
 #include "DebugOutput.h"
 
 #include "ST_API_Def.h"
+

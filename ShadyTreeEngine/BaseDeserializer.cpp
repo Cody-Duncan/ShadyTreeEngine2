@@ -75,8 +75,6 @@ void parsePrimitiveGraphics(json_t* root, PrimitiveGraphicsComponent* pgc)
             //int x, y;
             //json_unpack(json_object_get(root, key), "[i,i]", &x, &y);
             //pgc->center = Vector2((float)x,(float)y);
-
-            
         }
         else if(sameKey(key, "triangle"))
         {
@@ -173,24 +171,38 @@ void parsePhysics(json_t* root, PhysicsComponent* phys)
             json_t* body = json_object_get(root, key);
             if(json_t* circle = json_object_get(body, "circle"))
             {
+                BB_Circle* circ = new BB_Circle();
                 if(json_t* rad = json_object_get(circle, "radius"))
                 {
-                    BB_Circle* circ = new BB_Circle();
                     circ->radius = (float)json_real_value( rad );
-                    phys->body = circ;
                 }
+                else
+                {
+                    DebugPrintf("PARSING ERROR: Physics body circle did not contain \"radius\". \n");
+                }
+                phys->body = circ;
             }
             else if(json_t* rectangle = json_object_get(body, "rectangle"))
             {
-                if(json_t* extent = json_object_get(rectangle, "dimension"))
+                BB_Rectangle* rect = new BB_Rectangle();
+                json_t* extent;
+                if( extent = json_object_get(rectangle, "dimension") )
                 {
-                    BB_Rectangle* rect = new BB_Rectangle();
-
                     double x, y;
                     json_unpack(extent, "[F,F]", &x, &y);
                     rect->extents = Vector2((float)x,(float)y);
-                    phys->body = rect;
                 }
+                else if( extent = json_object_get(rectangle, "dimensions") )
+                {
+                    double x, y;
+                    json_unpack(extent, "[F,F]", &x, &y);
+                    rect->extents = Vector2((float)x,(float)y);
+                }
+                else
+                {
+                    DebugPrintf("PARSING ERROR: Physics body rectangle did not contain \"dimension\". \n");
+                }
+                phys->body = rect;
             }
         }
     }

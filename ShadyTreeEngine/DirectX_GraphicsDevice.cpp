@@ -23,7 +23,9 @@ DirectX_GraphicsDevice::DirectX_GraphicsDevice(void) :
     depthStencilView(NULL),
     depthStencilBuffer(NULL),
     Width(800), 
-    Height(600), 
+    Height(600),
+    frameRateDenom(60),
+    vsync_enabled(true),
     enable4xMsaa(false),
     samplerLinear(nullptr),
     samplerPoint(nullptr),
@@ -124,8 +126,8 @@ int DirectX_GraphicsDevice::Init()
     //describe backbuffer
     sd.BufferDesc.Width  = Width;
     sd.BufferDesc.Height = Height;
-    sd.BufferDesc.RefreshRate.Numerator = 60;
-    sd.BufferDesc.RefreshRate.Denominator = 1;
+    sd.BufferDesc.RefreshRate.Numerator = 1;
+    sd.BufferDesc.RefreshRate.Denominator = 60;
     sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;  //backbuffer pixel format
     sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
     sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
@@ -139,6 +141,17 @@ int DirectX_GraphicsDevice::Init()
 
     sd.SampleDesc.Count = enable4xMsaa ? 4 : 1;
     sd.SampleDesc.Quality = enable4xMsaa ? m4xMsaaQuality-1 : 0;
+
+    if(vsync_enabled)
+    {
+        sd.BufferDesc.RefreshRate.Numerator = 1;
+        sd.BufferDesc.RefreshRate.Denominator = frameRateDenom;
+    }
+    else
+    {
+        sd.BufferDesc.RefreshRate.Numerator = 0;
+        sd.BufferDesc.RefreshRate.Denominator = 1;
+    }
 
     //====== Create the Swap Chain ========
     {
@@ -163,6 +176,8 @@ int DirectX_GraphicsDevice::Init()
         dxgiAdapter->Release();
         dxgiFactory->Release();
     }
+
+    
 
 
     if( hr = OnResize() )
@@ -566,9 +581,19 @@ void DirectX_GraphicsDevice::setOrthographicProjection(float nearClip, float far
 
 void DirectX_GraphicsDevice::SwapBuffer()
 {
-    if(swapChain->Present(0, 0) < 0)
+    if(vsync_enabled)
     {
-        MessageBox(0, L"Swap Chain swapping broke.", 0, 0);
+        if(swapChain->Present(1, 0) < 0)
+        {
+            MessageBox(0, L"Swap Chain swapping broke.", 0, 0);
+        }
+    }
+    else
+    {
+        if(swapChain->Present(0, 0) < 0)
+        {
+            MessageBox(0, L"Swap Chain swapping broke.", 0, 0);
+        }
     }
 }
 

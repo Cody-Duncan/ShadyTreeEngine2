@@ -88,6 +88,8 @@ protected:
     int Height;
     float clearColor[4];
     DirectX::XMFLOAT4 s_vMeshColor;
+    int frameRateDenom;
+    bool vsync_enabled;
 
     VertexShaderHandle toDraw_vertexShader;
     PixelShaderHandle toDraw_pixelShader;
