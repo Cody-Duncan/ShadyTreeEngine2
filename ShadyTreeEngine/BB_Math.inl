@@ -112,8 +112,8 @@ inline int StaticCircleToStaticRectangle(Vector2 *pCenter, float Radius, Vector2
     
     Vector2& center = *pCenter;
     Vector2 point = center;
-    Vector2 rectMin = Vector2(pRect->x - Width, pRect->y - Height);
-    Vector2 rectMax = Vector2(pRect->x + Width, pRect->y + Height);
+    Vector2 rectMin = Vector2(pRect->x - Width/2, pRect->y - Height/2);
+    Vector2 rectMax = Vector2(pRect->x + Width/2, pRect->y + Height/2);
 
     //X
     if( center.x < rectMin.x )

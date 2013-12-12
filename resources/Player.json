@@ -23,9 +23,9 @@
 
 			"body": 
 			{ 
-				"rectangle":
+				"circle":
 				{
-					"dimension": [76.8,76.8]
+					"radius": 38.4
 				}
 			}
 		}

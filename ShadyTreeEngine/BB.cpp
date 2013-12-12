@@ -52,7 +52,7 @@ BB* BB_Circle::clone()
 void BB_Circle::generateGeometry(std::vector<Vector2>& fillList)
 {
     float step = PI/8;
-    for(float angle = 0.0f; angle < 360.0f; angle += step)
+    for(float angle = 0.0f; angle < 2*PI; angle += step)
     {
         fillList.push_back(Vector2(0,0));
         fillList.push_back(Vector2(sin(angle+step), cos(angle+step))*radius);
