@@ -5,8 +5,8 @@
 
 enum PrimitiveType
 {
-    Prim_Triangle,
-    Prim_Line
+    Tri,
+    Line
 };
 
 class ST_API PrimitiveBatch

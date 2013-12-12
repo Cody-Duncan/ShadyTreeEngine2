@@ -54,7 +54,7 @@ void DirectX_SpriteBatch::Init()
     }
 
     ID3D11DeviceContext* context = device->getContext();
-    ID3D11Buffer* indexBuffer  = BufferResourcer::Instance().getIBuffer(batchIBuffer).getIndexBuffer();
+    ID3D11Buffer* indexBuffer  = BufferResourcer::Instance().getIBufferData(batchIBuffer).getIndexBuffer();
 
     //update vertex buffer
     D3D11_MAPPED_SUBRESOURCE resource;
@@ -103,7 +103,7 @@ void DirectX_SpriteBatch::addBatchBuffer(TextureHandle t)
 
 void DirectX_SpriteBatch::resetBatchBuffer(TextureHandle t)
 {
-    VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(batchVBuffers[t]);
+    VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBufferData(batchVBuffers[t]);
     quadBufferData.startVertex = 0;
 
     batch[t].clear();
@@ -206,7 +206,7 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
     batchRef.push_back(vertices[2]);
     batchRef.push_back(vertices[3]);
 
-    VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(batchVBuffers[texH]);
+    VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBufferData(batchVBuffers[texH]);
     quadBufferData.startVertex += 4;
 }
 
@@ -240,7 +240,7 @@ void DirectX_SpriteBatch::End()
 
 void DirectX_SpriteBatch::DrawBatch(TextureHandle t)
 {
-    VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(batchVBuffers[t]);
+    VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBufferData(batchVBuffers[t]);
     if(quadBufferData.startVertex > 0) //don't draw empty buffers
     {
         DebugAssert(batchIBuffer.IbufferID >= 0, "Batch Index Buffer ID is invalid. Value: %d", batchIBuffer.IbufferID );
@@ -251,7 +251,7 @@ void DirectX_SpriteBatch::DrawBatch(TextureHandle t)
 
 void DirectX_SpriteBatch::sentBatchToBuffers(TextureHandle t)
 {
-    VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBuffer(batchVBuffers[t]);
+    VertexBufferData& quadBufferData = BufferResourcer::Instance().getVBufferData(batchVBuffers[t]);
     std::vector<Vertex>& currBatch = batch[t];
     
 
@@ -273,7 +273,7 @@ void DirectX_SpriteBatch::sentBatchToBuffers(TextureHandle t)
     context->Unmap(vertexBuffer, 0);                                                                //unmap to unlock resource
 
     //set index buffer
-    IndexBufferData& indexBufData = BufferResourcer::Instance().getIBuffer(batchIBuffer);
+    IndexBufferData& indexBufData = BufferResourcer::Instance().getIBufferData(batchIBuffer);
     indexBufData.startIndex = quadBufferData.startVertex * 3 / 2; //6 indices per 4 vertices
 }
 

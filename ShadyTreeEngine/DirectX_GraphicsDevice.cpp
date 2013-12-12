@@ -402,8 +402,8 @@ void DirectX_GraphicsDevice::Draw(MeshHandle& hMesh, TextureHandle& hTex)
     //get mesh data;
     Mesh& mesh = (* MeshResourcer::Instance().getMesh(hMesh));
 
-    IndexBufferData& IndexData = BufferResourcer::Instance().getIBuffer(mesh.hIBuffer);
-    VertexBufferData& VertexData = BufferResourcer::Instance().getVBuffer(mesh.hVBuffer);
+    IndexBufferData& IndexData = BufferResourcer::Instance().getIBufferData(mesh.hIBuffer);
+    VertexBufferData& VertexData = BufferResourcer::Instance().getVBufferData(mesh.hVBuffer);
 
     ID3D11Buffer* vertexBuffer = VertexData.getVertexBuffer();
     ID3D11Buffer* indexBuffer = IndexData.getIndexBuffer();
@@ -457,8 +457,8 @@ void DirectX_GraphicsDevice::Draw(VertexBufferHandle& hVBuf, IndexBufferHandle& 
     cb_Frame.vMeshColor = s_vMeshColor;
 
     //get mesh data;
-    IndexBufferData& IndexData = BufferResourcer::Instance().getIBuffer(hIBuf);
-    VertexBufferData& VertexData = BufferResourcer::Instance().getVBuffer(hVBuf);
+    IndexBufferData& IndexData = BufferResourcer::Instance().getIBufferData(hIBuf);
+    VertexBufferData& VertexData = BufferResourcer::Instance().getVBufferData(hVBuf);
     ID3D11Buffer* vertexBuffer = VertexData.getVertexBuffer();
     ID3D11Buffer* indexBuffer = IndexData.getIndexBuffer();
     unsigned int stride = VertexData.stride;

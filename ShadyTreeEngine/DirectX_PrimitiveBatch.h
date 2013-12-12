@@ -30,15 +30,16 @@ private:
     PixelShaderHandle colorPixSH;
 
     //triangle batch methods.
-    bool hasBatchBuffer(unsigned int layer);
-    void addBatchBuffer(unsigned int layer);
-    void resetBatchBuffer(unsigned int layer);
+    bool hasBatchBuffer(unsigned int layer, PrimitiveType type);
+    void addBatchBuffer(unsigned int layer, PrimitiveType type);
+    void resetBatchBuffer(unsigned int layer, PrimitiveType type);
     void resetAllBatchBuffers();
 
-    void sendBatchToBuffers(unsigned int layer);
+    void sendBatchToBuffers(unsigned int layer, PrimitiveType type);
+    void DrawPrimitive(unsigned int layer, Vector2* points, int pointLength, Matrix transform, Color c, PrimitiveType type);
     
     //batch for primitive triangles
-    std::vector<std::vector<VertexCol>> triBatch;       // int (layer) -> array of triangles
-    std::vector<VertexBufferHandle> triBatchVBuffers;   // int (layer) -> VertexBuffer
-    IndexBufferHandle triBatchIBuffer;
+    std::vector<std::vector<VertexCol>> triBatch[2];       // type(enum) -> int (layer) -> array of triangles
+    std::vector<VertexBufferHandle> triBatchVBuffers[2];   // type(enum) -> int (layer) -> VertexBuffer
+    IndexBufferHandle triBatchIBuffer[2];
 };

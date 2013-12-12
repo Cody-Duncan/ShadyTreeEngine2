@@ -37,12 +37,12 @@ BufferResourcer::~BufferResourcer(void)
 }
 
 
-VertexBufferData& BufferResourcer::getVBuffer(VertexBufferHandle h)
+VertexBufferData& BufferResourcer::getVBufferData(VertexBufferHandle h)
 {
    return VbufferData[h.VbufferID];
 }
 
-IndexBufferData&  BufferResourcer::getIBuffer(IndexBufferHandle h)
+IndexBufferData&  BufferResourcer::getIBufferData(IndexBufferHandle h)
 {
     return IbufferData[h.IbufferID];
 }

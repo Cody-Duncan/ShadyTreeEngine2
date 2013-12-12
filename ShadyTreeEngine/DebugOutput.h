@@ -27,7 +27,7 @@ ST_API void AssertPrintF(const char* format, char* file, int line, ...);
 #define DebugVerbosePrintf(verbosity,format, ...)
 #define DebugLogOpen() 
 #define DebugLogClose() 
-#define AssertPrintf(condition, format, ...) 
+#define DebugAssert(condition, format, ...) 
 #endif
 
 #define CHECKHR(hr, message) \

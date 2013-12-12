@@ -53,8 +53,8 @@ public:
     int addMeshToDynamicBuffer(Mesh& mesh, ID3D11DeviceContext* context, VertexBufferHandle* hVBuf, IndexBufferHandle* hIBuf);
 
 
-    VertexBufferData& getVBuffer(VertexBufferHandle h);
-    IndexBufferData&  getIBuffer(IndexBufferHandle h);
+    VertexBufferData& getVBufferData(VertexBufferHandle h);
+    IndexBufferData&  getIBufferData(IndexBufferHandle h);
 
     void Dispose();
 
