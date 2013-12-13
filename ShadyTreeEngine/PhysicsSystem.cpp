@@ -83,7 +83,7 @@ void PhysicsSystem::Integrate(float deltaTime)
         PositionalComponent& pos = *GOC.Get(phy.parentID)->getComponent<PositionalComponent>();
 
         //gravity
-        phy.acceleration.y += gravity;
+        phy.acceleration.y = gravity;
         
         //Integrate position
         pos.position = pos.position + phy.velocity * deltaTime;

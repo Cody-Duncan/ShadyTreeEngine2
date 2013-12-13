@@ -61,8 +61,6 @@ public:
 
 private:
 
-    ST_API static int typeIDGen;
-
     ST_API ComponentFactory(void);
     ST_API ~ComponentFactory(void);
     ComponentFactory(ComponentFactory const& copy);				//not implemented

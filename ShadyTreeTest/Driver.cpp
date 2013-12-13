@@ -28,7 +28,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     PhysicsSystem* ps = new PhysicsSystem();
     engine.AttachSystem(ps);
 
-    engine.AttachSystem(new GameLogic());
+    GameLogic* gl = new GameLogic();
+    gl->SetPhysics(ps);
+    engine.AttachSystem(gl);
 
     engine.Initialize();
     gs->setClearColor(Color(0,0,0,1.0f));

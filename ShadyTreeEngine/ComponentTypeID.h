@@ -2,7 +2,7 @@
 
 //why this has ST_API: make variable defined in cpp (so it can be set to 0), 
 //but visible outside dll so that getID can be instantiated when generated at compile time.
-extern int typeIDGen; 
+ST_API extern int typeIDGen; 
 
 /// <summary>
 /// Retrieves a unique int identifier for a type. 

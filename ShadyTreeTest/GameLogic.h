@@ -3,6 +3,7 @@
 #include "Level.h"
 
 class GameObject;
+class PhysicsSystem;
 
 class GameLogic : public ISystem
 {
@@ -17,7 +18,10 @@ public:
     virtual void Free();
     virtual void RecieveMessage(Message* msg);
 
-    GameObject* oneobject;
+    GameObject* playerObj;
     Level level;
+
+    void SetPhysics(PhysicsSystem* _ps);
+    PhysicsSystem* ps;
 };
 

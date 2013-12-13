@@ -125,6 +125,7 @@
     <ClCompile Include="GameLogic.cpp" />
     <ClCompile Include="GameObjectFactory.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="PlayerStateComponent.cpp" />
     <ClCompile Include="StdAfx2.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdAfx2.h</PrecompiledHeaderFile>
@@ -137,6 +138,7 @@
     <ClInclude Include="GameLogic.h" />
     <ClInclude Include="GameObjectFactory.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="PlayerStateComponent.h" />
     <ClInclude Include="StdAfx2.h" />
   </ItemGroup>
   <ItemGroup>

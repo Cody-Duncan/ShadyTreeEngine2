@@ -13,6 +13,7 @@
     <ClCompile Include="Level.cpp">
       <Filter>GameLogic</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerStateComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObjectFactory.h">
@@ -26,6 +27,7 @@
     <ClInclude Include="Level.h">
       <Filter>GameLogic</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerStateComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameLogic">

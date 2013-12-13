@@ -16,7 +16,7 @@ public:
     virtual void Free();
     virtual void RecieveMessage(Message* msg);
 
-    void setGravity(float g);
+    ST_API void setGravity(float g);
     ST_API void generateDebugDraw();
 
 private:

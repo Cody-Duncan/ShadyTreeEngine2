@@ -9,15 +9,12 @@ ComponentFactory& ComponentFactory::Instance()
 
 ComponentFactory::ComponentFactory(void)
 {
-    typeIDGen = 0;
 }
 
 
 ComponentFactory::~ComponentFactory(void)
 {
 }
-
-int ComponentFactory::typeIDGen = 0;
 
 Component* ComponentFactory::getComponent(int type, int id)
 {
