@@ -51,5 +51,6 @@ public:
 struct Contact;
 
 bool CollisionCheck(BB* a, Vector2 posA, BB* b, Vector2 posB, Contact& contactResult);
+ST_API bool PointCollisionCheck(Vector2 point, BB* a, Vector2 posA);
 
 extern bool (*collideTable[2][2]) (BB*, Vector2&, BB*, Vector2&, Contact& contactResult);

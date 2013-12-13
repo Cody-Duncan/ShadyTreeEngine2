@@ -10,6 +10,7 @@
 #include "DeSerializer.h"
 #include "Messenger.h"
 #include "ContactMessage.h"
+#include "Timer.h"
 
 GameLogic::GameLogic(void)
 {
@@ -46,7 +47,7 @@ void GameLogic::Load()
     
     playerObj->registerCollideHandler<GameLogic, &GameLogic::CollideEvent>(this);
 
-    ps->setGravity(7000.0f);
+    ps->setGravity(6000.0f);
 }
 
 float scale = 0;
@@ -65,8 +66,10 @@ void GameLogic::Update(float deltaTime)
 
     if(!state.knocked)
     {
-        if(state.airborne && !state.knocked)
+        if(state.airborne)
         {
+            state.jumpTimer.Tick(deltaTime);
+
             if(gINPUTSTATE->keyDown('A'))
             {
                 phys.velocity.x -= state.airborneAccel;
@@ -75,23 +78,25 @@ void GameLogic::Update(float deltaTime)
             {
                 phys.velocity.x += state.airborneAccel;
             }
-            if(gINPUTSTATE->keyDown(VK_BACK))
-            {
-                DebugPrintf("BACKSPACE\n");
-            }
             if(gINPUTSTATE->mouseDown(MouseButton::Left))
             {
-                DebugPrintf("LEFT MOUSE 2\n");
+                
             }
             if(gINPUTSTATE->mouseDown(MouseButton::Right))
             {
-                DebugPrintf("RIGHT MOUSE 2\n");
+                
+            }
+            if(gINPUTSTATE->keyPressed(VK_SPACE) && state.jumpCount < 2 && state.jumpTimer.IsDone())
+            {
+                phys.velocity.y = -state.jumpVelocity;
+                ++state.jumpCount;
             }
         }
         else
         {
             phys.velocity.x = 0;
             float lastXPos = pos.position.x;
+
             if(gINPUTSTATE->keyDown('A'))
             {
                 pos.position.x -= state.movementSpeed;
@@ -100,15 +105,38 @@ void GameLogic::Update(float deltaTime)
             {
                 pos.position.x += state.movementSpeed;
             }
+            if(!level.IsOnPlatform(pos.position, phys.body))
+            {
+                state.airborne = true;
+                phys.velocity.x = (pos.position.x - lastXPos)/deltaTime;
+                state.jumpTimer.Start(0.1f);
+                ++state.jumpCount;
+            }
             if(gINPUTSTATE->keyDown(VK_SPACE))
             {
                 phys.velocity.y -= state.jumpVelocity;
                 phys.velocity.x = (pos.position.x - lastXPos)/deltaTime;
                 state.airborne = true;
+                state.jumpTimer.Start(0.1f);
+                ++state.jumpCount;
             }
         }
         absClamp(phys.velocity.x, state.maxVelX);
         absClamp(phys.velocity.y, state.maxVelY);
+
+        if(gINPUTSTATE->keyDown(VK_BACK))
+        {
+            state.knocked = true;
+            state.knockedTimer.Start(1.0f);
+            phys.velocity = Vector2(10000,-10000);
+        }
+    }
+    else
+    {
+        if(state.knockedTimer.Tick(deltaTime))
+        {
+            state.knocked = false;
+        }
     }
 }
 
@@ -139,8 +167,9 @@ void GameLogic::CollideEvent(Message* msg)
     {
         PlayerStateComponent& state = *playerObj->getComponent<PlayerStateComponent>();
         state.airborne = false;
+        state.jumpCount = 0;
+        state.jumpTimer.hardEnd();
         PhysicsComponent& phys = *playerObj->getComponent<PhysicsComponent>();
-     
     }
     
 }

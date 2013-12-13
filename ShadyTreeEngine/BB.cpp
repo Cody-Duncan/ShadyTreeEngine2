@@ -25,7 +25,9 @@ Vector2 BB::centerOffset()
     return Vector2();
 }
 
-////////// BB_Circle ///////////////
+//============== BB_Circle ==============
+//============== BB_Circle ==============
+//============== BB_Circle ==============
 BB_Circle::BB_Circle() : BB(Circle)
 {
 
@@ -65,7 +67,9 @@ Vector2 BB_Circle::centerOffset()
     return Vector2();
 }
 
-////////// BB_Rectangle ///////////////
+//============== BB_Rectangle ==============
+//============== BB_Rectangle ==============
+//============== BB_Rectangle ==============
 BB_Rectangle::BB_Rectangle() : BB(Rect)
 {
 
@@ -107,8 +111,29 @@ Vector2 BB_Rectangle::centerOffset()
 }
 
 
+//============== BB Collision ==============
+//============== BB Collision ==============
+//============== BB Collision ==============
 
 
+bool PointCollisionCheck(Vector2 point, BB* a, Vector2 posA)
+{
+    BB_Circle* circ;
+    BB_Rectangle* rect;
+    switch(a->type)
+    {
+    case(Circle):
+        circ = static_cast<BB_Circle*>(a);
+        return StaticPointToStaticCircle(&point, &posA, circ->radius) > 0;
+        break;
+    case(Rect):
+        rect = static_cast<BB_Rectangle*>(a);
+        return StaticPointToStaticRect(&point, &posA, rect->extents.x, rect->extents.y) > 0;
+        break;
+    }
+
+    return false;
+}
 
 
 bool collideBox_Circle   (BB*, Vector2&, BB*, Vector2&, Contact& c);
@@ -128,7 +153,6 @@ bool CollisionCheck(BB* a, Vector2 posA, BB* b, Vector2 posB, Contact& contactRe
 {
     return collideTable[a->type][b->type](a, posA, b, posB, contactResult);
 }
-
 
 
 bool collideCircle_Box(BB* c1, Vector2& cPos, BB* b2, Vector2& bPos, Contact& contactResult)

@@ -125,6 +125,9 @@
     <ClCompile Include="Messenger.cpp">
       <Filter>Message</Filter>
     </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX_GraphicsDevice.h">
@@ -301,6 +304,9 @@
     </ClInclude>
     <ClInclude Include="ContactMessage.h">
       <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
