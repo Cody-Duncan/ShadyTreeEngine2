@@ -3,7 +3,8 @@
 enum MessageType
 {
     None,
-    Quit
+    Quit,
+    Collision
 };
 
 class Message

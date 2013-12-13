@@ -30,5 +30,7 @@ private:
     void ResolveContacts(float deltaTime);
 
     void UpdateDebugDraw();
+
+    void SendCollisionMessages();
     
 };

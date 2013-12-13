@@ -17,6 +17,7 @@ public:
     virtual void Unload();
     virtual void Free();
     virtual void RecieveMessage(Message* msg);
+    void CollideEvent(Message* msg);
 
     GameObject* playerObj;
     Level level;

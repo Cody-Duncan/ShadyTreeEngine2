@@ -122,6 +122,9 @@
     <ClCompile Include="DebugDrawComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Messenger.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectX_GraphicsDevice.h">
@@ -289,6 +292,15 @@
     </ClInclude>
     <ClInclude Include="DebugDrawComponent.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="DelegateFunc.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="Messenger.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="ContactMessage.h">
+      <Filter>Message</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,8 @@ public:
 
     float movementSpeed;
     float airborneAccel;
+    float maxVelX;
+    float maxVelY;
     float jumpVelocity;
 
 };

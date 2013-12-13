@@ -17,7 +17,9 @@ void PlayerStateComponent::Initialize()
     knocked = false;
     damage = 0;
 
-    movementSpeed = 20.0f;
-    airborneAccel = 40.0f;
-    jumpVelocity = 350.0f;
+    movementSpeed = 15.0f;
+    airborneAccel = 150.0;
+    maxVelX = 900.0f;
+    maxVelY = 4000.0f;
+    jumpVelocity = 2000.0f;
 }

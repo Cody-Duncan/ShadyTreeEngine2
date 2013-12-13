@@ -81,14 +81,14 @@ inline int StaticRectToStaticRect(Vector2 *pRect0, float Width0, float Height0, 
         {
             Vector2 normal = delta.x < 0 ? Vector2(-1,0) : Vector2(1,0);
             c.ContactNormal = normal;
-            c.Penetration = xdiff;
+            c.Penetration = xdiff/2;
             
         }
         else
         {
             Vector2 normal = delta.y < 0 ? Vector2(0,-1) : Vector2(0,1);
             c.ContactNormal = normal;
-            c.Penetration = ydiff;
+            c.Penetration = ydiff/2;
         }
         return true;
     }

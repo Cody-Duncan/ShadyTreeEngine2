@@ -9,8 +9,10 @@
 
 #include "Contact.h"
 
-
 #include "DebugDrawComponent.h"
+#include "Messenger.h"
+
+#include "ContactMessage.h"
 
 PhysicsSystem::PhysicsSystem(void)
 {
@@ -36,6 +38,7 @@ void PhysicsSystem::Update(float deltaTime)
     Integrate(deltaTime);
     DetectCollisions();
     ResolveContacts(deltaTime);
+    SendCollisionMessages();
 
     contacts.clear();
     UpdateDebugDraw();
@@ -290,5 +293,24 @@ void PhysicsSystem::UpdateDebugDraw()
             continue;
         PhysicsComponent* phys = go.getComponent<PhysicsComponent>();
         dd.lines[1] = dd.lines[0] + phys->velocity;
+    }
+}
+
+void PhysicsSystem::SendCollisionMessages()
+{
+    GameObjectCache& GOC = GameObjectCache::Instance();
+
+    for(unsigned int i = 0; i < contacts.size(); ++i)
+    {
+        Contact& c1 = contacts[i];
+
+        ContactMessage msg(c1, 0);
+        GameObject* obj1 = GOC.Get(c1.ObjIDs[msg.recieverIndex]);
+        obj1->CollideEvent(&msg);
+
+        ContactMessage msg1(c1, 1);
+        GameObject* obj2 = GOC.Get(c1.ObjIDs[(msg.recieverIndex+1)%2]);
+        obj2->CollideEvent(&msg1);
+        
     }
 }

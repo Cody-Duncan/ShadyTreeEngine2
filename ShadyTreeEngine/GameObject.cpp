@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameObject.h"
 #include "GameObjectCache.h"
+#include "Message.h"
 
 
 GameObject::GameObject(void)
@@ -32,4 +33,10 @@ void  GameObject::CloneFrom(int ObjectID)
         components[iter->first] = c->id;
         c->parentID = id;
     }
+}
+
+void GameObject::CollideEvent(ContactMessage* m)
+{
+    if(collisionDelegate.IsValid())
+        collisionDelegate(m);
 }

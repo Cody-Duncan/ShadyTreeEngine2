@@ -15,6 +15,7 @@
     <ClInclude Include="BB.h" />
     <ClInclude Include="BB_Math.h" />
     <ClInclude Include="BufferResourcer.h" />
+    <ClInclude Include="ContactMessage.h" />
     <ClInclude Include="ComponentCache.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
@@ -25,6 +26,7 @@
     <ClInclude Include="DebugDrawComponent.h" />
     <ClInclude Include="DebugOutput.h" />
     <ClInclude Include="Debug_Graphics.h" />
+    <ClInclude Include="DelegateFunc.h" />
     <ClInclude Include="DeviceAPI.h" />
     <ClInclude Include="DirectX_GraphicsDevice.h" />
     <ClInclude Include="DirectX_PrimitiveBatch.h" />
@@ -46,6 +48,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshResourcer.h" />
     <ClInclude Include="Message.h" />
+    <ClInclude Include="Messenger.h" />
     <ClInclude Include="OSHighResTimer.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="PhysicsSystem.h" />
@@ -95,6 +98,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshResourcer.cpp" />
     <ClCompile Include="Message.cpp" />
+    <ClCompile Include="Messenger.cpp" />
     <ClCompile Include="OSHighResTimer.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />

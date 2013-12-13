@@ -4,6 +4,9 @@
 #include "ComponentFactory.h"
 #include "ComponentTypeID.h"
 
+#include "DelegateFunc.h"
+#include "ContactMessage.h"
+
 class GameObject
 {
 public:
@@ -31,6 +34,14 @@ public:
     bool active;
 
     ST_API void CloneFrom(int ObjectID);
+
+    template <class T, void (T::*TMethod)(Message*)>
+    void registerCollideHandler(T* object);
+
+    void CollideEvent(ContactMessage* m);
+
+private: 
+    DelegateFunc collisionDelegate;
 };
 
 
@@ -68,3 +79,8 @@ void GameObject::removeComponent()
     ComponentFactory::Instance().deleteComponent<T>(id);
 }
 
+template <class T, void (T::*TMethod)(Message*)>
+void GameObject::registerCollideHandler(T* object)
+{
+    collisionDelegate = DelegateFunc::from_method<T, TMethod>(object);
+}

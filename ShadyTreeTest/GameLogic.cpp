@@ -8,8 +8,8 @@
 #include "PlayerStateComponent.h"
 
 #include "DeSerializer.h"
-
-#define MAX_VELOCITY 2000
+#include "Messenger.h"
+#include "ContactMessage.h"
 
 GameLogic::GameLogic(void)
 {
@@ -22,7 +22,6 @@ GameLogic::~GameLogic(void)
 
 void GameLogic::Init()
 {
-    
 }
 
 void GameLogic::Load()
@@ -44,10 +43,19 @@ void GameLogic::Load()
     state->airborne = false;
     playerObj->attachComponent(state);
 
-    ps->setGravity(10000.0f);
+    
+    playerObj->registerCollideHandler<GameLogic, &GameLogic::CollideEvent>(this);
+
+    ps->setGravity(7000.0f);
 }
 
-
+inline void clampVel(float& v, float clamp)
+{
+    if( v < -clamp)
+        v = -clamp;
+    if( v > clamp)
+        v = clamp;
+}
 
 float scale = 0;
 void GameLogic::Update(float deltaTime)
@@ -79,7 +87,6 @@ void GameLogic::Update(float deltaTime)
         else
         {
             phys.velocity.x = 0;
-
             if(gINPUTSTATE->keyDown(VK_LEFT))
             {
                 pos.position.x -= state.movementSpeed;
@@ -91,13 +98,11 @@ void GameLogic::Update(float deltaTime)
             if(gINPUTSTATE->keyDown(VK_SPACE))
             {
                 phys.velocity.y -= state.jumpVelocity;
-            }
-
-            if(phys.velocity.LengthSquared() > MAX_VELOCITY * MAX_VELOCITY)
-            {
-                phys.velocity = phys.velocity.Normal() * MAX_VELOCITY;
+                state.airborne = true;
             }
         }
+        clampVel(phys.velocity.x, state.maxVelX);
+        clampVel(phys.velocity.y, state.maxVelY);
     }
 }
 
@@ -114,6 +119,24 @@ void GameLogic::Free()
 void GameLogic::RecieveMessage(Message* msg)
 {
 
+}
+
+
+void GameLogic::CollideEvent(Message* msg)
+{
+    ContactMessage cmsg = *(static_cast<ContactMessage*> (msg));
+
+    GameObject* collideThing = GameObjectCache::Instance().Get(cmsg.contact.ObjIDs[(cmsg.recieverIndex + 1) % 2]);
+
+    if(collideThing->getComponent<PhysicsComponent>()->IsStatic &&      //hit a static object
+        cmsg.contact.ContactNormal.Dot(Vector2(0,1)) > 0.8)                  //hit the top of it.
+    {
+        PlayerStateComponent& state = *playerObj->getComponent<PlayerStateComponent>();
+        state.airborne = false;
+        PhysicsComponent& phys = *playerObj->getComponent<PhysicsComponent>();
+     
+    }
+    
 }
 
 void GameLogic::SetPhysics(PhysicsSystem* _ps)
