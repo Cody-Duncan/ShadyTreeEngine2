@@ -11,7 +11,7 @@
 			},
 			"Position":
 			{
-				"position": [64,620],
+				"position": [640,620],
 				"rotation": 0.0
 			},
 			"Physics":
@@ -37,7 +37,7 @@
 			},
 			"Position":
 			{
-				"position": [164,440],
+				"position": [308,440],
 				"rotation": 0.0
 			},
 			"Physics":
@@ -63,7 +63,7 @@
 			},
 			"Position":
 			{
-				"position": [828,440],
+				"position": [972,440],
 				"rotation": 0.0
 			},
 			"Physics":
