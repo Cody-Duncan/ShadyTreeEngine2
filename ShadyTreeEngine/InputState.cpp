@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "InputState.h"
 
+#include<windowsx.h>
+
 double intput;
 InputState* gINPUTSTATE;
 
@@ -52,9 +54,29 @@ void InputState::updateKey(UINT msg, WPARAM wParam, LPARAM lParam)
                 KeyboardStateNow[wParam] = false;
                 //DebugPrintf("KeyNum: %d ; KeyState:%s \n", (unsigned int)wParam, "false" );
             break;
-    }
+        case WM_LBUTTONDOWN:
+            MouseStateNow[Left] = true;
+            break;
+        case WM_RBUTTONDOWN:
+            MouseStateNow[Right] = true;
+            break;
 
-    
+        case WM_LBUTTONUP:
+            MouseStateNow[Left] = false;
+            break;
+        case WM_RBUTTONUP:
+            MouseStateNow[Right] = false;
+            break;
+        case WM_MOUSEMOVE:
+            UpdateMousePos(lParam);
+            break;
+    }
+}
+
+void InputState::UpdateMousePos(LPARAM lParam)
+{
+    MousePositionNow.x = (float)GET_X_LPARAM(lParam); 
+    MousePositionNow.y = (float)GET_Y_LPARAM(lParam);
 }
 
 /// <summary>
@@ -79,10 +101,27 @@ bool InputState::keyHeld(WPARAM wParam)
 
 bool InputState::keyPressed(WPARAM wParam)
 {
-    return !KeyboardStatePrev[wParam] && KeyboardStateNow[wParam];
+    return ! KeyboardStatePrev[wParam] && KeyboardStateNow[wParam];
 }
 
 bool InputState::keyUp(WPARAM wParam)
 {
-    return KeyboardStatePrev[wParam] && !KeyboardStateNow[wParam];
+    return KeyboardStatePrev[wParam] && ! KeyboardStateNow[wParam];
+}
+
+bool InputState::mouseDown(MouseButton button)
+{
+    return MouseStateNow[button];
+}
+bool InputState::mouseHeld(MouseButton button)
+{
+    return MouseStatePrev[button] && MouseStateNow[button];
+}
+bool InputState::mousePressed(MouseButton button)
+{
+    return ! MouseStatePrev[button] && MouseStateNow[button];
+}
+bool InputState::mouseUp(MouseButton button)
+{
+    return MouseStatePrev[button] && ! MouseStateNow[button];
 }

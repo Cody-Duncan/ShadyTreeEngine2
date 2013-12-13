@@ -131,8 +131,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
    
     switch(msg)
     {
+        case WM_MOUSEMOVE:
         case WM_LBUTTONDOWN:
-            MessageBox(0, L"Hello, World", L"Hello", MB_OK);
+        case WM_RBUTTONDOWN:
+        case WM_LBUTTONUP:
+        case WM_RBUTTONUP:
+            gINPUTSTATE->updateKey(msg, wParam, lParam);
             break;
 
         case WM_KEYDOWN:

@@ -3317,3 +3317,11 @@ inline bool floatCompare(float a, float b, float epsilon)
 {
     return fabs(a-b) < epsilon;
 }
+
+inline void absClamp(float& v, float clamp)
+{
+    if( v < -clamp)
+        v = -clamp;
+    if( v > clamp)
+        v = clamp;
+}

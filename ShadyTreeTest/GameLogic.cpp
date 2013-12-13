@@ -49,14 +49,6 @@ void GameLogic::Load()
     ps->setGravity(7000.0f);
 }
 
-inline void clampVel(float& v, float clamp)
-{
-    if( v < -clamp)
-        v = -clamp;
-    if( v > clamp)
-        v = clamp;
-}
-
 float scale = 0;
 void GameLogic::Update(float deltaTime)
 {
@@ -75,34 +67,48 @@ void GameLogic::Update(float deltaTime)
     {
         if(state.airborne && !state.knocked)
         {
-            if(gINPUTSTATE->keyDown(VK_LEFT))
+            if(gINPUTSTATE->keyDown('A'))
             {
                 phys.velocity.x -= state.airborneAccel;
             }
-            if(gINPUTSTATE->keyDown(VK_RIGHT))
+            if(gINPUTSTATE->keyDown('D'))
             {
                 phys.velocity.x += state.airborneAccel;
+            }
+            if(gINPUTSTATE->keyDown(VK_BACK))
+            {
+                DebugPrintf("BACKSPACE\n");
+            }
+            if(gINPUTSTATE->mouseDown(MouseButton::Left))
+            {
+                DebugPrintf("LEFT MOUSE 2\n");
+            }
+            if(gINPUTSTATE->mouseDown(MouseButton::Right))
+            {
+                DebugPrintf("RIGHT MOUSE 2\n");
             }
         }
         else
         {
             phys.velocity.x = 0;
-            if(gINPUTSTATE->keyDown(VK_LEFT))
+            float lastXPos = pos.position.x;
+            if(gINPUTSTATE->keyDown('A'))
             {
                 pos.position.x -= state.movementSpeed;
             }
-            if(gINPUTSTATE->keyDown(VK_RIGHT))
+            if(gINPUTSTATE->keyDown('D'))
             {
                 pos.position.x += state.movementSpeed;
             }
             if(gINPUTSTATE->keyDown(VK_SPACE))
             {
                 phys.velocity.y -= state.jumpVelocity;
+                phys.velocity.x = (pos.position.x - lastXPos)/deltaTime;
                 state.airborne = true;
             }
         }
-        clampVel(phys.velocity.x, state.maxVelX);
-        clampVel(phys.velocity.y, state.maxVelY);
+        absClamp(phys.velocity.x, state.maxVelX);
+        absClamp(phys.velocity.y, state.maxVelY);
     }
 }
 

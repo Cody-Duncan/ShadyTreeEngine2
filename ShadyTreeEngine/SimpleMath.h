@@ -680,6 +680,7 @@ public:
 
 //Math functions
 bool floatCompare(float a, float b, float epsilon = 0.00001f);
+void absClamp(float& v, float clamp);
 
 #include "SimpleMath.inl"
 
