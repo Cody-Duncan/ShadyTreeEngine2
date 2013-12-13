@@ -292,7 +292,7 @@ void PhysicsSystem::UpdateDebugDraw()
         if(!go.active || !go.getComponent<PhysicsComponent>() )
             continue;
         PhysicsComponent* phys = go.getComponent<PhysicsComponent>();
-        dd.lines[1] = dd.lines[0] + phys->velocity;
+        dd.lines[1] = (dd.lines[0] + phys->velocity)/4;
     }
 }
 
