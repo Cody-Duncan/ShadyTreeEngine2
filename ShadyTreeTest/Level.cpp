@@ -5,6 +5,7 @@
 #include "PhysicsComponent.h"
 #include "PositionalComponent.h"
 
+
 Level::Level(void)
 {
 }
@@ -14,9 +15,16 @@ Level::~Level(void)
 {
 }
 
-void Level::Initialize(std::string resID, DeSerializer& s)
+void Level::Initialize(std::string resID, DeSerializer& s, int _Height, int _Width, float _BorderRatio)
 {
-    s.BuildLevel(resID, levelStuff);
+    s.BuildLevel(resID, levelStuff, playerStart);
+
+    float borderHeight = _Height *_BorderRatio - _Height;
+    float borderWidth  = _Width * _BorderRatio - _Width;
+
+    LevelSpace.extents = Vector2( _Width+borderWidth*2, _Height+borderHeight*2);
+    LevelPos = Vector2( LevelSpace.extents.x/2 - borderWidth, LevelSpace.extents.y/2 - borderHeight);
+
 }
 
 /// <summary>
@@ -50,4 +58,9 @@ bool Level::IsOnPlatform(Vector2 position, BB* body)
             return true;
     }
     return false;
+}
+
+bool Level::IsOutsideLevel(Vector2 position)
+{
+    return !PointCollisionCheck(position, &LevelSpace, LevelPos);
 }

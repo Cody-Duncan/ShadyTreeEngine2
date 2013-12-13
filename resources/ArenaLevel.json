@@ -7,7 +7,7 @@
 				"layer": 0,
 				"color": [1.0,1.0,1.0,1.0],
 				"center": [0,0],
-				"square": [0,0,1152,40]
+				"square": [0,0,864,40]
 			},
 			"Position":
 			{
@@ -21,7 +21,7 @@
 				{
 					"rectangle":
 					{
-						"dimension": [1152,40]
+						"dimension": [864,40]
 					}
 				}
 			}
@@ -33,11 +33,11 @@
 				"layer": 0,
 				"color": [1.0,1.0,1.0,1.0],
 				"center": [0,0],
-				"square": [0,0,288,40]
+				"square": [0,0,216,40]
 			},
 			"Position":
 			{
-				"position": [308,480],
+				"position": [408,480],
 				"rotation": 0.0
 			},
 			"Physics":
@@ -47,7 +47,7 @@
 				{
 					"rectangle":
 					{
-						"dimension": [288,40]
+						"dimension": [216,40]
 					}
 				}
 			}
@@ -59,11 +59,11 @@
 				"layer": 0,
 				"color": [1.0,1.0,1.0,1.0],
 				"center": [0,0],
-				"square": [0,0,288,40]
+				"square": [0,0,216,40]
 			},
 			"Position":
 			{
-				"position": [972,480],
+				"position": [872,480],
 				"rotation": 0.0
 			},
 			"Physics":
@@ -73,10 +73,11 @@
 				{
 					"rectangle":
 					{
-						"dimension": [288,40]
+						"dimension": [216,40]
 					}
 				}
 			}
 		}
-	]
+	],
+	"StartPosition" : [640,400]
 }

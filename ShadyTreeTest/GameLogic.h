@@ -19,10 +19,15 @@ public:
     virtual void RecieveMessage(Message* msg);
     void CollideEvent(Message* msg);
 
+
     GameObject* playerObj;
     Level level;
 
     void SetPhysics(PhysicsSystem* _ps);
     PhysicsSystem* ps;
+    
+    void SetWorldDimension(int height, int width);
+    int Height;
+    int Width;
 };
 

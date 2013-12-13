@@ -166,7 +166,7 @@ void DeSerializer::BuildArchetypes(std::string resID)
 
 }
 
-void DeSerializer::BuildLevel(std::string resID, std::vector<GameObject*>& levelObjects)
+void DeSerializer::BuildLevel(std::string resID, std::vector<GameObject*>& levelObjects, Vector2& start)
 {
     DebugPrintf("GAME: Building Level from resource: %s  File: %s\n", resID.c_str(), Resources::Instance().getFileSourceOfRes(resID).c_str());
     
@@ -189,6 +189,12 @@ void DeSerializer::BuildLevel(std::string resID, std::vector<GameObject*>& level
                 {
                     levelObjects.push_back( ParsePlatform(value) );
                 }
+            }
+            if(sameKey(key, "StartPosition" ))
+            {
+                double x, y;
+                json_unpack(json_object_get(root, key), "[F,F]", &x, &y);
+                start = Vector2((float)x,(float)y);
             }
         }
     }

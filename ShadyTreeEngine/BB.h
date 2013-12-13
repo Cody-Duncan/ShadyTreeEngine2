@@ -9,8 +9,8 @@ enum BB_Type
 class BB
 {
 public:
-    BB(void);
-    virtual ~BB(void);
+    ST_API BB(void);
+    ST_API virtual ~BB(void);
     virtual BB* clone() = 0;
 
     BB_Type type;
@@ -24,9 +24,9 @@ protected:
 class BB_Circle : public BB
 {
 public: 
-    BB_Circle();
-    ~BB_Circle();
-    BB_Circle& operator=(BB_Circle& rhs);
+    ST_API BB_Circle();
+    ST_API ~BB_Circle();
+    ST_API BB_Circle& operator=(BB_Circle& rhs);
     virtual BB* clone();
 
     float radius;
@@ -37,9 +37,9 @@ public:
 class BB_Rectangle : public BB
 {
 public:
-    BB_Rectangle();
-    ~BB_Rectangle();
-    BB_Rectangle& operator=(BB_Rectangle& rhs);
+    ST_API BB_Rectangle();
+    ST_API ~BB_Rectangle();
+    ST_API BB_Rectangle& operator=(BB_Rectangle& rhs);
     virtual BB* clone();
 
     Vector2 extents;

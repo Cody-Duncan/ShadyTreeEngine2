@@ -1,7 +1,8 @@
 #pragma once
 
+#include "BB.h"
+
 class DeSerializer;
-class BB;
 
 class Level
 {
@@ -9,9 +10,15 @@ public:
     Level(void);
     ~Level(void);
 
-    void Initialize(std::string resID, DeSerializer& s);
+    void Initialize(std::string resID, DeSerializer& s, int _Height, int _Width, float _BorderRatio);
     bool IsOnPlatform(Vector2 position, BB* body);
+    bool IsOutsideLevel(Vector2 position);
 
     std::vector<GameObject*> levelStuff;
+
+    BB_Rectangle LevelSpace;
+    Vector2 LevelPos;
+
+    Vector2 playerStart;
 };
 

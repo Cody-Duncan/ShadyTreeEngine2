@@ -23,6 +23,8 @@ GameLogic::~GameLogic(void)
 
 void GameLogic::Init()
 {
+    DebugAssert(Height > 0, "GAME LOGIC: World Height is 0.");
+    DebugAssert(Width > 0, "GAME LOGIC: World Height is 0.");
 }
 
 void GameLogic::Load()
@@ -37,17 +39,19 @@ void GameLogic::Load()
 
     DeSerializer s;
     s.BuildArchetypes("Archetypes");
-    level.Initialize("ArenaLevel", s);
+    level.Initialize("ArenaLevel", s, Height, Width, 1.5f);
 
     playerObj = GOF.cloneArchetype("Player");
     PlayerStateComponent* state = ComponentFactory::Instance().createComponent<PlayerStateComponent>();
     state->airborne = false;
     playerObj->attachComponent(state);
 
+    PositionalComponent& pos = *playerObj->getComponent<PositionalComponent>();
+    pos.position = level.playerStart;
     
     playerObj->registerCollideHandler<GameLogic, &GameLogic::CollideEvent>(this);
 
-    ps->setGravity(6000.0f);
+    ps->setGravity(3000.0f);
 }
 
 float scale = 0;
@@ -64,27 +68,25 @@ void GameLogic::Update(float deltaTime)
     PhysicsComponent& phys = *playerObj->getComponent<PhysicsComponent>();
     PlayerStateComponent& state = *playerObj->getComponent<PlayerStateComponent>();
 
+    if(level.IsOutsideLevel(pos.position))
+    {
+        pos.position = level.playerStart;
+        phys.velocity = Vector2(0,0);
+    }
+
     if(!state.knocked)
     {
         if(state.airborne)
         {
             state.jumpTimer.Tick(deltaTime);
 
-            if(gINPUTSTATE->keyDown('A'))
+            if(gINPUTSTATE->keyDown(VK_LEFT))
             {
                 phys.velocity.x -= state.airborneAccel;
             }
-            if(gINPUTSTATE->keyDown('D'))
+            if(gINPUTSTATE->keyDown(VK_RIGHT))
             {
                 phys.velocity.x += state.airborneAccel;
-            }
-            if(gINPUTSTATE->mouseDown(MouseButton::Left))
-            {
-                
-            }
-            if(gINPUTSTATE->mouseDown(MouseButton::Right))
-            {
-                
             }
             if(gINPUTSTATE->keyPressed(VK_SPACE) && state.jumpCount < 2 && state.jumpTimer.IsDone())
             {
@@ -97,11 +99,11 @@ void GameLogic::Update(float deltaTime)
             phys.velocity.x = 0;
             float lastXPos = pos.position.x;
 
-            if(gINPUTSTATE->keyDown('A'))
+            if(gINPUTSTATE->keyDown(VK_LEFT))
             {
                 pos.position.x -= state.movementSpeed;
             }
-            if(gINPUTSTATE->keyDown('D'))
+            if(gINPUTSTATE->keyDown(VK_RIGHT))
             {
                 pos.position.x += state.movementSpeed;
             }
@@ -112,7 +114,7 @@ void GameLogic::Update(float deltaTime)
                 state.jumpTimer.Start(0.1f);
                 ++state.jumpCount;
             }
-            if(gINPUTSTATE->keyDown(VK_SPACE))
+            if(gINPUTSTATE->keyPressed(VK_SPACE))
             {
                 phys.velocity.y -= state.jumpVelocity;
                 phys.velocity.x = (pos.position.x - lastXPos)/deltaTime;
@@ -177,4 +179,10 @@ void GameLogic::CollideEvent(Message* msg)
 void GameLogic::SetPhysics(PhysicsSystem* _ps)
 {
     ps = _ps;
+}
+
+void GameLogic::SetWorldDimension(int height, int width)
+{
+    Height = height;
+    Width = width;
 }
