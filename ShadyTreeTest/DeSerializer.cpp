@@ -166,7 +166,7 @@ void DeSerializer::BuildArchetypes(std::string resID)
 
 }
 
-void DeSerializer::BuildLevel(std::string resID)
+void DeSerializer::BuildLevel(std::string resID, std::vector<GameObject*>& levelObjects)
 {
     DebugPrintf("GAME: Building Level from resource: %s  File: %s\n", resID.c_str(), Resources::Instance().getFileSourceOfRes(resID).c_str());
     
@@ -187,7 +187,7 @@ void DeSerializer::BuildLevel(std::string resID)
 
                 json_array_foreach(jarray, index, value)
                 {
-                    ParsePlatform(value);
+                    levelObjects.push_back( ParsePlatform(value) );
                 }
             }
         }

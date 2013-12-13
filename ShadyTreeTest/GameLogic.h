@@ -1,5 +1,6 @@
 #pragma once
 #include "ISystem.h"
+#include "Level.h"
 
 class GameObject;
 
@@ -17,5 +18,6 @@ public:
     virtual void RecieveMessage(Message* msg);
 
     GameObject* oneobject;
+    Level level;
 };
 

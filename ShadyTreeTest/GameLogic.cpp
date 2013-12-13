@@ -29,9 +29,10 @@ void GameLogic::Load()
     IResources& res = Resources::Instance();
 
     res.parseResourceIDs("resources");
+
     DeSerializer s;
-    s.BuildArchetypes("Player");
-    s.BuildLevel("arenaLevel");
+    s.BuildArchetypes("Archetypes");
+    level.Initialize("ArenaLevel", s);
 
     oneobject = GF.cloneArchetype("Player");
     
