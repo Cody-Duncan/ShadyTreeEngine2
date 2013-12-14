@@ -3,14 +3,14 @@
     {
         "Graphics": 
         {
-          "texture": "test",
-          "textureArea": [0,0,736,736]
+          "texture": "fighters",
+          "textureArea": [0,0,1,1]
         },
 		"Position":
 		{
 			"position": [250,250],
 			"rotation": 0.0,
-			"scale": 0.075,
+			"scale": 55.0,
 			"rotationCentered": true
 		},
 		"Physics":
