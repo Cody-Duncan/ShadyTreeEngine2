@@ -30,5 +30,12 @@ public:
     void SetWorldDimension(int height, int width);
     int Height;
     int Width;
+
+    void ChaseAI(float deltaTime, int id);
+    void PunchAI(float deltaTime, int id);
+    void FlyAI(float deltaTime, int id);
+    void LaserAI(float deltaTime, int id);
+    void ExplodingAI(float deltaTime, int id);
+    std::unordered_map<std::string, void (GameLogic::*)(float, int)> aiMap;
 };
 

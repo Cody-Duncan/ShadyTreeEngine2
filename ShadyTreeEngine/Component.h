@@ -11,7 +11,7 @@ public:
     Component(int _id, bool _active);
     ~Component(void);
 
-    virtual void CloneFrom(Component* c) {};
+    virtual void CloneFrom(Component* c) = 0;
 
     int id;
     bool active;

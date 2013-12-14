@@ -58,6 +58,8 @@
 					"dimension": [55,55]
 				}
 			}
-		}
+		},
+		"PlayerStateComponent":
+		{}
     }
 }

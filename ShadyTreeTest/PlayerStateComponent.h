@@ -8,6 +8,7 @@ public:
     PlayerStateComponent(void);
     PlayerStateComponent(int _id, bool _active);
     void Initialize();
+    virtual void CloneFrom(Component* c);
 
     bool airborne;
     bool knocked;

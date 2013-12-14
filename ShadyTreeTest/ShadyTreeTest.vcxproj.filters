@@ -13,7 +13,12 @@
     <ClCompile Include="Level.cpp">
       <Filter>GameLogic</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerStateComponent.cpp" />
+    <ClCompile Include="PlayerStateComponent.cpp">
+      <Filter>GameLogic\Custom Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AIComponent.cpp">
+      <Filter>GameLogic\Custom Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObjectFactory.h">
@@ -27,11 +32,19 @@
     <ClInclude Include="Level.h">
       <Filter>GameLogic</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerStateComponent.h" />
+    <ClInclude Include="PlayerStateComponent.h">
+      <Filter>GameLogic\Custom Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AIComponent.h">
+      <Filter>GameLogic\Custom Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameLogic">
       <UniqueIdentifier>{27c06357-7bba-4234-af22-c5f5fccecfe3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameLogic\Custom Components">
+      <UniqueIdentifier>{eeac01c2-0711-4aef-a078-662ced522ee1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

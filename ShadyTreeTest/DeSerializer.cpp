@@ -3,6 +3,8 @@
 #include <jansson.h>
 #include "GraphicsResourceHandles.h"
 #include "PhysicsComponent.h"
+#include "PlayerStateComponent.h"
+#include "AIComponent.h"
 
 DeSerializer::DeSerializer(void)
 {
@@ -92,6 +94,11 @@ GameObject* ParseEnemy(json_t* player)
             parsePhysics(component, phys_c);
             go->attachComponent(phys_c);
         }
+        else if (sameKey(key, "PlayerStateComponent"))
+        {
+            PlayerStateComponent* state = CF.createComponent<PlayerStateComponent>();
+            go->attachComponent(state);
+        }
         else
         {
             DebugPrintf("Error: Tried to parse json object %s\n" , key);
@@ -123,7 +130,9 @@ GameObject* ParseSubtype(json_t* subtypeObj)
         }
         else if( sameKey(key, "AI") )
         {
-            const char* AItype = json_string_value( json_object_get(element, key) );
+            AIComponent* ai_c =  CF.createComponent<AIComponent>();
+            ai_c->aiType = json_string_value( element );
+            go->attachComponent(ai_c);
         }
     }
 

@@ -1,6 +1,6 @@
 #include "Timer.h"
 
-Timer::Timer()
+Timer::Timer() : wait(0.0f), passed(0.0f)
 {
 
 }
@@ -24,7 +24,7 @@ bool Timer::Tick(float deltaTime)
 
 bool Timer::IsDone()
 {
-    return passed > wait;
+    return passed >= wait;
 }
 
 void Timer::hardEnd()

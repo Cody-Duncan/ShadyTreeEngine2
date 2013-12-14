@@ -24,3 +24,19 @@ void PlayerStateComponent::Initialize()
     maxVelY = 4000.0f;
     jumpVelocity = 1000.0f;
 }
+
+void PlayerStateComponent::CloneFrom(Component* _c)
+{
+    PlayerStateComponent* c = dynamic_cast<PlayerStateComponent*>(_c);
+
+    airborne = c->airborne;
+    knocked = c->knocked;
+    jumpCount = c->jumpCount;
+    damage = c->damage;
+
+    movementSpeed = c->movementSpeed;
+    airborneAccel = c->airborneAccel;
+    maxVelX = c->maxVelX;
+    maxVelY = c->maxVelY;
+    jumpVelocity = c->jumpVelocity;
+}

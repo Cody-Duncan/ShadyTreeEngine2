@@ -36,7 +36,7 @@
         {
           "textureArea": [48,0,15,15]
         },
-		"AI": "FlyAI"
+		"AI": "LaserAI"
     },
 	
 	"Exploding Enemy": 
@@ -46,6 +46,6 @@
         {
           "textureArea": [16,16,15,15]
         },
-		"AI": "FlyAI"
+		"AI": "ExplodingAI"
     }
 }

@@ -6,6 +6,7 @@
 #include "PositionalComponent.h"
 #include "PhysicsComponent.h"
 #include "PlayerStateComponent.h"
+#include "AIComponent.h"
 
 #include "DeSerializer.h"
 #include "Messenger.h"
@@ -25,6 +26,12 @@ void GameLogic::Init()
 {
     DebugAssert(Height > 0, "GAME LOGIC: World Height is 0.");
     DebugAssert(Width > 0, "GAME LOGIC: World Height is 0.");
+
+    aiMap["ChaseAI"] = &GameLogic::ChaseAI;
+    aiMap["PunchAI"] = &GameLogic::PunchAI;
+    aiMap["FlyAI"] = &GameLogic::FlyAI;
+    aiMap["LaserAI"] = &GameLogic::LaserAI;
+    aiMap["ExplodingAI"] = &GameLogic::ExplodingAI;
 }
 
 void GameLogic::Load()
@@ -56,14 +63,12 @@ void GameLogic::Load()
     playerObj->registerCollideHandler<GameLogic, &GameLogic::CollideEvent>(this);
 
     //build an enemy
-    
     for(unsigned int i = 0; i < GOF.enemyTypes.size(); ++i)
     {
         GameObject* enemy = GOF.cloneArchetype(GOF.enemyTypes[i]);
         enemy->getComponent<PositionalComponent>()->position = level.enemyStartPositions[i];
         enemies.push_back(enemy);
     }
-    
     
 
     //set environment parameters
@@ -78,7 +83,6 @@ void GameLogic::Update(float deltaTime)
 
     if(!CF.hasComponentCache<PositionalComponent>())
         return;
-
 
     PositionalComponent& pos = *playerObj->getComponent<PositionalComponent>();
     PhysicsComponent& phys = *playerObj->getComponent<PhysicsComponent>();
@@ -157,6 +161,15 @@ void GameLogic::Update(float deltaTime)
             state.knocked = false;
         }
     }
+
+    for(int i = 0; i < enemies.size(); ++i)
+    {
+        if(enemies[i]->hasComponent<AIComponent>())
+        {
+            std::string& aiType = enemies[i]->getComponent<AIComponent>()->aiType;
+            //(this->*aiMap[aiType])(deltaTime, enemies[i]->id);
+        }
+    }
 }
 
 void GameLogic::Unload()
@@ -190,7 +203,6 @@ void GameLogic::CollideEvent(Message* msg)
         state.jumpTimer.hardEnd();
         PhysicsComponent& phys = *playerObj->getComponent<PhysicsComponent>();
     }
-    
 }
 
 void GameLogic::SetPhysics(PhysicsSystem* _ps)
@@ -202,4 +214,56 @@ void GameLogic::SetWorldDimension(int height, int width)
 {
     Height = height;
     Width = width;
+}
+
+
+void GameLogic::ChaseAI(float deltaTime, int id)
+{
+    GameObjectCache& GOC = GameObjectCache::Instance();
+    GameObject* enemy = GOC.Get(id);
+    PositionalComponent& pos    = *enemy->getComponent<PositionalComponent>();
+    PhysicsComponent& phys      = *enemy->getComponent<PhysicsComponent>();
+    PlayerStateComponent& state = *enemy->getComponent<PlayerStateComponent>();
+
+    phys.velocity.x = 0;
+}
+void GameLogic::PunchAI(float deltaTime, int id)
+{
+    GameObjectCache& GOC = GameObjectCache::Instance();
+    GameObject* enemy = GOC.Get(id);
+    PositionalComponent& pos    = *enemy->getComponent<PositionalComponent>();
+    PhysicsComponent& phys      = *enemy->getComponent<PhysicsComponent>();
+    PlayerStateComponent& state = *enemy->getComponent<PlayerStateComponent>();
+
+    phys.velocity.x = 0;
+}
+void GameLogic::FlyAI(float deltaTime, int id)
+{
+    GameObjectCache& GOC = GameObjectCache::Instance();
+    GameObject* enemy = GOC.Get(id);
+    PositionalComponent& pos    = *enemy->getComponent<PositionalComponent>();
+    PhysicsComponent& phys      = *enemy->getComponent<PhysicsComponent>();
+    PlayerStateComponent& state = *enemy->getComponent<PlayerStateComponent>();
+
+    phys.velocity.x = 0;
+}
+void GameLogic::LaserAI(float deltaTime, int id)
+{
+    GameObjectCache& GOC = GameObjectCache::Instance();
+    GameObject* enemy = GOC.Get(id);
+    PositionalComponent& pos    = *enemy->getComponent<PositionalComponent>();
+    PhysicsComponent& phys      = *enemy->getComponent<PhysicsComponent>();
+    PlayerStateComponent& state = *enemy->getComponent<PlayerStateComponent>();
+
+    phys.velocity.x = 0;
+}
+void GameLogic::ExplodingAI(float deltaTime, int id)
+{
+    GameObjectCache& GOC = GameObjectCache::Instance();
+    GameObject* enemy = GOC.Get(id);
+    PositionalComponent& pos    = *enemy->getComponent<PositionalComponent>();
+    PhysicsComponent& phys      = *enemy->getComponent<PhysicsComponent>();
+    PlayerStateComponent& state = *enemy->getComponent<PlayerStateComponent>();
+
+    phys.velocity.x = 0;
 }
