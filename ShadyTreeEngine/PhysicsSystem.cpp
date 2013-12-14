@@ -319,11 +319,13 @@ void PhysicsSystem::SendCollisionMessages()
 
         ContactMessage msg(c1, 0);
         GameObject* obj1 = GOC.Get(c1.ObjIDs[msg.recieverIndex]);
-        obj1->CollideEvent(&msg);
+        PhysicsComponent& phys = *obj1->getComponent<PhysicsComponent>();
+        phys.CollideEvent(&msg);
 
         ContactMessage msg1(c1, 1);
         GameObject* obj2 = GOC.Get(c1.ObjIDs[(msg.recieverIndex+1)%2]);
-        obj2->CollideEvent(&msg1);
+        PhysicsComponent& phys2 = *obj2->getComponent<PhysicsComponent>();
+        phys2.CollideEvent(&msg1);
         
     }
 }

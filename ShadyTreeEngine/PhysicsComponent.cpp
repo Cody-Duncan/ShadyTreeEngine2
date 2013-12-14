@@ -38,3 +38,10 @@ void PhysicsComponent::InitialValues()
     acceleration = Vector2(0,0);
     body = nullptr;
 }
+
+
+void PhysicsComponent::CollideEvent(ContactMessage* m)
+{
+    if(collisionDelegate.IsValid())
+        collisionDelegate(m);
+}

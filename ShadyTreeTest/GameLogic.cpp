@@ -60,7 +60,8 @@ void GameLogic::Load()
     PositionalComponent& pos = *playerObj->getComponent<PositionalComponent>();
     pos.position = level.playerStart;
     
-    playerObj->registerCollideHandler<GameLogic, &GameLogic::CollideEvent>(this);
+    PhysicsComponent& phys = *playerObj->getComponent<PhysicsComponent>();
+    phys.registerCollideHandler<GameLogic, &GameLogic::CollideEvent>(this);
 
     //build an enemy
     for(unsigned int i = 0; i < GOF.enemyTypes.size(); ++i)
@@ -227,6 +228,18 @@ void GameLogic::ChaseAI(float deltaTime, int id)
     PlayerStateComponent& state = *enemy->getComponent<PlayerStateComponent>();
 
     phys.velocity.x = 0;
+
+     if(!state.knocked)
+    {
+        if(state.airborne)
+        {
+
+        }
+        else
+        {
+
+        }
+    }
 }
 void GameLogic::PunchAI(float deltaTime, int id)
 {

@@ -35,13 +35,9 @@ public:
 
     ST_API void CloneFrom(int ObjectID);
 
-    template <class T, void (T::*TMethod)(Message*)>
-    void registerCollideHandler(T* object);
-
-    void CollideEvent(ContactMessage* m);
 
 private: 
-    DelegateFunc collisionDelegate;
+    
 };
 
 
@@ -77,10 +73,4 @@ void GameObject::removeComponent()
     components.erase( type );
 
     ComponentFactory::Instance().deleteComponent<T>(id);
-}
-
-template <class T, void (T::*TMethod)(Message*)>
-void GameObject::registerCollideHandler(T* object)
-{
-    collisionDelegate = DelegateFunc::from_method<T, TMethod>(object);
 }

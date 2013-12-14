@@ -34,9 +34,3 @@ void  GameObject::CloneFrom(int ObjectID)
         c->parentID = id;
     }
 }
-
-void GameObject::CollideEvent(ContactMessage* m)
-{
-    if(collisionDelegate.IsValid())
-        collisionDelegate(m);
-}
