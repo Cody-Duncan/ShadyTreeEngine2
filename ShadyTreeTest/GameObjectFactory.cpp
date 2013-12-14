@@ -69,3 +69,8 @@ bool GameObjectFactory::hasArchetype(std::string name)
 {
     return archetypes.find(name) != archetypes.end();
 }
+
+void GameObjectFactory::addEnemyType(std::string archetypeName)
+{
+    enemyTypes.push_back(archetypeName);
+}

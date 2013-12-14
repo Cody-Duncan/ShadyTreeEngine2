@@ -30,7 +30,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
     GameLogic* gl = new GameLogic();
     gl->SetPhysics(ps);
-    gl->SetWorldDimension(1270, 720);
+    gl->SetWorldDimension(720, 1270);
     engine.AttachSystem(gl);
 
     engine.Initialize();

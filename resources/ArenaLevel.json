@@ -79,5 +79,6 @@
 			}
 		}
 	],
-	"StartPosition" : [640,400]
+	"StartPosition" : [640,400],
+	"EnemyStartPositions" : [ [408,400], [872,400], [408,570], [872,570], [822,400] ]
 }

@@ -37,9 +37,13 @@ void GameLogic::Load()
 
     res.parseResourceIDs("resources");
 
+    //Build Level
     DeSerializer s;
-    s.BuildArchetypes("Archetypes");
     level.Initialize("ArenaLevel", s, Height, Width, 1.5f);
+
+    //build player
+    s.BuildArchetypes("Archetypes");
+    s.BuildSubtypes("subtypes");
 
     playerObj = GOF.cloneArchetype("Player");
     PlayerStateComponent* state = ComponentFactory::Instance().createComponent<PlayerStateComponent>();
@@ -51,6 +55,18 @@ void GameLogic::Load()
     
     playerObj->registerCollideHandler<GameLogic, &GameLogic::CollideEvent>(this);
 
+    //build an enemy
+    
+    for(unsigned int i = 0; i < GOF.enemyTypes.size(); ++i)
+    {
+        GameObject* enemy = GOF.cloneArchetype(GOF.enemyTypes[i]);
+        enemy->getComponent<PositionalComponent>()->position = level.enemyStartPositions[i];
+        enemies.push_back(enemy);
+    }
+    
+    
+
+    //set environment parameters
     ps->setGravity(3000.0f);
 }
 
@@ -70,6 +86,7 @@ void GameLogic::Update(float deltaTime)
 
     if(level.IsOutsideLevel(pos.position))
     {
+        level.IsOutsideLevel(pos.position);
         pos.position = level.playerStart;
         phys.velocity = Vector2(0,0);
     }

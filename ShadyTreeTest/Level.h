@@ -20,5 +20,6 @@ public:
     Vector2 LevelPos;
 
     Vector2 playerStart;
+    std::vector<Vector2> enemyStartPositions;
 };
 

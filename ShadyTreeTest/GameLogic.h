@@ -21,6 +21,7 @@ public:
 
 
     GameObject* playerObj;
+    std::vector<GameObject*> enemies;
     Level level;
 
     void SetPhysics(PhysicsSystem* _ps);

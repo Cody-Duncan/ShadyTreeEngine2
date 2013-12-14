@@ -1,0 +1,51 @@
+{
+	"Chase Enemy": 
+    {
+		"Base": "Enemy",
+        "Graphics": 
+        {
+          "textureArea": [16,0,15,15]
+        },
+		"AI": "ChaseAI"
+    },
+	
+	"Punch Enemy": 
+    {
+		"Base": "Enemy",
+        "Graphics": 
+        {
+          "textureArea": [0,16,15,15]
+        },
+		"AI": "PunchAI"
+    },
+	
+	"Flying Enemy": 
+    {
+		"Base": "Enemy",
+        "Graphics": 
+        {
+          "textureArea": [32,0,15,15]
+        },
+		"AI": "FlyAI"
+    },
+	
+	"Laser Enemy": 
+    {
+		"Base": "Enemy",
+        "Graphics": 
+        {
+          "textureArea": [48,0,15,15]
+        },
+		"AI": "FlyAI"
+    },
+	
+	"Exploding Enemy": 
+    {
+		"Base": "Enemy",
+        "Graphics": 
+        {
+          "textureArea": [16,16,15,15]
+        },
+		"AI": "FlyAI"
+    }
+}

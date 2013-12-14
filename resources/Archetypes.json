@@ -4,19 +4,19 @@
         "Graphics": 
         {
           "texture": "fighters",
-          "textureArea": [0,0,1,1]
+          "textureArea": [0,0,15,15]
         },
 		"Position":
 		{
 			"position": [250,250],
 			"rotation": 0.0,
-			"scale": 55.0,
+			"scale": 3.4375,
 			"rotationCentered": true
 		},
 		"Physics":
 		{
 			"static": false,
-			"mass": 1.0,
+			"mass": 10.0,
 
 			"velocity": [0.0,0.0],
 			"acceleration":[0,0],
@@ -30,19 +30,34 @@
 			}
 		}
     },
-	"Herp":
-	{
-		"Graphics": 
+	"Enemy": 
+    {
+        "Graphics": 
         {
-          "texture": "seafloor2",
-          "textureArea": [0,0,256,256]
+          "texture": "fighters",
+          "textureArea": [16,0,15,15]
         },
 		"Position":
 		{
-			"position": [250,400],
 			"rotation": 0.0,
-			"scale": 0.7,
+			"scale": 3.4375,
 			"rotationCentered": true
+		},
+		"Physics":
+		{
+			"static": false,
+			"mass": 10.0,
+
+			"velocity": [0.0,0.0],
+			"acceleration":[0,0],
+
+			"body": 
+			{ 
+				"rectangle":
+				{
+					"dimension": [55,55]
+				}
+			}
 		}
-	}
+    }
 }

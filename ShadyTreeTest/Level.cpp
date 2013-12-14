@@ -17,7 +17,7 @@ Level::~Level(void)
 
 void Level::Initialize(std::string resID, DeSerializer& s, int _Height, int _Width, float _BorderRatio)
 {
-    s.BuildLevel(resID, levelStuff, playerStart);
+    s.BuildLevel(resID, levelStuff, playerStart, enemyStartPositions);
 
     float borderHeight = _Height *_BorderRatio - _Height;
     float borderWidth  = _Width * _BorderRatio - _Width;

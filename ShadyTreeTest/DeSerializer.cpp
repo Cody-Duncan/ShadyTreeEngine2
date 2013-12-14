@@ -63,6 +63,73 @@ GameObject* ParsePlayer(json_t* player)
     return go;
 }
 
+GameObject* ParseEnemy(json_t* player)
+{
+    GameObjectCache& GOC = GameObjectCache::Instance();
+    ComponentFactory& CF = ComponentFactory::Instance();
+    GameObject* go = GOC.Create();
+
+    const char *key;
+    json_t *value;
+    json_object_foreach(player, key, value) 
+    {
+        json_t* component = json_object_get(player, key);
+        if( sameKey(key, "Graphics") )
+        {
+            GraphicsComponent* gc = CF.createComponent<GraphicsComponent>();
+            parseGraphics(component, gc);
+            go->attachComponent(gc);
+        }
+        else if( sameKey(key, "Position") )
+        {
+            PositionalComponent* pc = CF.createComponent<PositionalComponent>();
+            parsePosition(component, pc);
+            go->attachComponent(pc);
+        }
+        else if( sameKey(key, "Physics") )
+        {
+            PhysicsComponent* phys_c = CF.createComponent<PhysicsComponent>();
+            parsePhysics(component, phys_c);
+            go->attachComponent(phys_c);
+        }
+        else
+        {
+            DebugPrintf("Error: Tried to parse json object %s\n" , key);
+        }
+    }
+
+    return go;
+}
+
+GameObject* ParseSubtype(json_t* subtypeObj)
+{
+    GameObjectCache& GOC = GameObjectCache::Instance();
+    ComponentFactory& CF = ComponentFactory::Instance();
+    
+    const char* basetype = json_string_value( json_object_get(subtypeObj, "Base") );
+    if(!basetype)
+        return nullptr;
+
+    GameObject* go = GameObjectFactory::Instance().cloneArchetype(basetype);
+
+    const char *key;
+    json_t *value;
+    json_object_foreach(subtypeObj, key, value) 
+    {
+        json_t* element = json_object_get(subtypeObj, key);
+        if( sameKey(key, "Graphics") )
+        {
+            parseGraphics(element, go->getComponent<GraphicsComponent>());
+        }
+        else if( sameKey(key, "AI") )
+        {
+            const char* AItype = json_string_value( json_object_get(element, key) );
+        }
+    }
+
+    return go;
+}
+
 GameObject* ParsePlatform(json_t* platform)
 {
     GameObjectCache& GOC = GameObjectCache::Instance();
@@ -137,13 +204,13 @@ void DeSerializer::BuildArchetypes(std::string resID)
             GameObject* newArch = nullptr;
             json_t* baseObject = json_object_get(root, key);
 
-            if(strcmp(key, "Player") == 0)
+            if(sameKey(key, "Player"))
             {
                 newArch = ParsePlayer(baseObject);
             }
-            if(strcmp(key, "Herp") == 0)
+            if(sameKey(key, "Enemy"))
             {
-                newArch = ParsePlayer(baseObject);
+                newArch = ParseEnemy(baseObject);
             }
 
             if(newArch != nullptr)
@@ -166,7 +233,46 @@ void DeSerializer::BuildArchetypes(std::string resID)
 
 }
 
-void DeSerializer::BuildLevel(std::string resID, std::vector<GameObject*>& levelObjects, Vector2& start)
+void DeSerializer::BuildSubtypes(std::string resID)
+{
+    DebugPrintf("GAME: Building Subtypes from resource: %s  File: %s\n", resID.c_str(), Resources::Instance().getFileSourceOfRes(resID).c_str());
+
+    json_t* root;
+    OpenJson(resID, &root);
+
+    if(json_is_object(root))
+    {
+        const char *key;
+        json_t *value;
+        json_object_foreach(root, key, value) 
+        {
+            GameObject* newArch = nullptr;
+            json_t* baseObject = json_object_get(root, key);
+
+            newArch = ParseSubtype(baseObject);
+
+            if(newArch != nullptr)
+            {
+                //deactivate the archetype and its components
+                ComponentFactory& CF = ComponentFactory::Instance();
+                newArch->active = false;
+                for(auto iter = newArch->components.begin(); iter != newArch->components.end(); ++iter)
+                {
+                    CF.getComponent(iter->first, iter->second)->active = false;
+                }
+
+                //add to archetype list in factory
+                GameObjectFactory::Instance().addArchetype(key, newArch->id);
+                GameObjectFactory::Instance().addEnemyType(key);
+            }
+        }
+    }
+
+    CloseJson(root);
+
+}
+
+void DeSerializer::BuildLevel(std::string resID, std::vector<GameObject*>& levelObjects, Vector2& start, std::vector<Vector2>& startPositions)
 {
     DebugPrintf("GAME: Building Level from resource: %s  File: %s\n", resID.c_str(), Resources::Instance().getFileSourceOfRes(resID).c_str());
     
@@ -195,6 +301,19 @@ void DeSerializer::BuildLevel(std::string resID, std::vector<GameObject*>& level
                 double x, y;
                 json_unpack(json_object_get(root, key), "[F,F]", &x, &y);
                 start = Vector2((float)x,(float)y);
+            }
+            if(sameKey(key, "EnemyStartPositions" ))
+            {
+                json_t* jarray = json_object_get(root, key);
+                size_t index;
+                json_t *value;
+                json_array_foreach(jarray, index, value)
+                {
+                    double x, y;
+                    json_unpack(value, "[F,F]", &x, &y);
+                    startPositions.push_back(Vector2((float)x,(float)y));
+                }
+                
             }
         }
     }

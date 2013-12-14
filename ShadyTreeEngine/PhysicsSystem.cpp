@@ -243,6 +243,26 @@ void PhysicsSystem::ResolveContacts(float deltaTime)
     }
 }
 
+void attachDebugDraw(GameObject& go)
+{
+    ComponentFactory& CF = ComponentFactory::Instance();
+
+    if(!go.active || !go.getComponent<PhysicsComponent>() || go.hasComponent<DebugDrawComponent>())
+        return;
+
+    DebugDrawComponent* newDDC = CF.createComponent<DebugDrawComponent>();
+    PhysicsComponent* phys = go.getComponent<PhysicsComponent>();
+
+    newDDC->lines.push_back(Vector2(0,0));
+    newDDC->lines.push_back(phys->velocity);
+
+    phys->body->generateGeometry(newDDC->geometry);
+
+    newDDC->active = go.active;
+
+    go.attachComponent(newDDC);
+}
+
 void PhysicsSystem::generateDebugDraw()
 {
     ComponentFactory& CF = ComponentFactory::Instance();
@@ -259,17 +279,7 @@ void PhysicsSystem::generateDebugDraw()
         if(!go.active || !go.getComponent<PhysicsComponent>() || go.hasComponent<DebugDrawComponent>())
             continue;
 
-        DebugDrawComponent* newDDC = CF.createComponent<DebugDrawComponent>();
-        PhysicsComponent* phys = go.getComponent<PhysicsComponent>();
-
-        newDDC->lines.push_back(Vector2(0,0));
-        newDDC->lines.push_back(phys->velocity);
-
-        phys->body->generateGeometry(newDDC->geometry);
-
-        newDDC->active = go.active;
-
-        go.attachComponent(newDDC);
+        attachDebugDraw(go);
     }
 }
 
@@ -287,6 +297,9 @@ void PhysicsSystem::UpdateDebugDraw()
     for(unsigned int i = 0; i < dds.size(); ++i)
     {
         DebugDrawComponent& dd = dds[i];
+        if(!dd.active)
+            continue;
+
         GameObject& go = *dd.parent();
 
         if(!go.active || !go.getComponent<PhysicsComponent>() )
