@@ -170,7 +170,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>ITERATOR_DEBUG_LEVEL=0; WIN32;_WINDOWS;_WIN32_WINNT=0x0600;_DEBUG;_USRDLL;SHADYTREE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0; WIN32;_WINDOWS;_WIN32_WINNT=0x0600;_DEBUG;_USRDLL;SHADYTREE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>StdAfx.h</ForcedIncludeFiles>
       <AdditionalIncludeDirectories>$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <UndefinePreprocessorDefinitions>

@@ -162,12 +162,13 @@ void GameLogic::Update(float deltaTime)
         }
     }
 
-    for(int i = 0; i < enemies.size(); ++i)
+    for(unsigned int i = 0; i < enemies.size(); ++i)
     {
         if(enemies[i]->hasComponent<AIComponent>())
         {
-            std::string& aiType = enemies[i]->getComponent<AIComponent>()->aiType;
-            //(this->*aiMap[aiType])(deltaTime, enemies[i]->id);
+            AIComponent* ai = enemies[i]->getComponent<AIComponent>();
+            std::string& aiType = ai->aiType;
+            (this->*aiMap[aiType])(deltaTime, enemies[i]->id);
         }
     }
 }

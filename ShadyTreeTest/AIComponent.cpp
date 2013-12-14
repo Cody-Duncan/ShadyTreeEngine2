@@ -14,7 +14,8 @@ void AIComponent::Initialize()
 
 }
 
-void AIComponent::CloneFrom(Component* c)
+void AIComponent::CloneFrom(Component* _c)
 {
-
+    AIComponent* c = dynamic_cast<AIComponent*>(_c);
+    aiType = c->aiType;
 }
