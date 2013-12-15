@@ -5,9 +5,6 @@
     <ClCompile Include="GameObjectFactory.cpp">
       <Filter>GameLogic</Filter>
     </ClCompile>
-    <ClCompile Include="GameLogic.cpp">
-      <Filter>GameLogic</Filter>
-    </ClCompile>
     <ClCompile Include="DeSerializer.cpp" />
     <ClCompile Include="StdAfx2.cpp" />
     <ClCompile Include="Level.cpp">
@@ -28,12 +25,12 @@
     <ClCompile Include="IntroScreen.cpp">
       <Filter>GameLogic</Filter>
     </ClCompile>
+    <ClCompile Include="GameLogic.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObjectFactory.h">
-      <Filter>GameLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLogic.h">
       <Filter>GameLogic</Filter>
     </ClInclude>
     <ClInclude Include="DeSerializer.h" />
@@ -57,6 +54,9 @@
       <Filter>GameLogic</Filter>
     </ClInclude>
     <ClInclude Include="GameStateSystem.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic.h">
       <Filter>GameLogic</Filter>
     </ClInclude>
   </ItemGroup>

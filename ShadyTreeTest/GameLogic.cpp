@@ -89,7 +89,18 @@ void GameLogic::Load()
     GraphicsComponent& winG = *winImage->getComponent<GraphicsComponent>();
     winPos.position -= winG.textureArea.dimensions/2;
 
+    Resources::Instance().LoadTextureRes("LoseMessage");
+    loseImage = GOF.createGraphicalEntity("LoseMessage");
+    loseImage->getComponent<GraphicsComponent>()->active = false;
+    PositionalComponent& losePos = *loseImage->getComponent<PositionalComponent>();
+    losePos.position = level.LevelPos;
+    GraphicsComponent& loseG = *loseImage->getComponent<GraphicsComponent>();
+    losePos.position -= loseG.textureArea.dimensions/2;
+
     winState = false;
+    loseState = false;
+
+    PlayerLives = 3;
 }
 
 ////////////////////////////////
@@ -103,27 +114,41 @@ void GameLogic::Update(float deltaTime)
     GameObjectCache& GOC = GameObjectCache::Instance();
     ComponentFactory& CF = ComponentFactory::Instance();
 
-    if(!CF.hasComponentCache<PositionalComponent>())
-        return;
-
-    PositionalComponent& pos = *playerObj->getComponent<PositionalComponent>();
-    PhysicsComponent& phys = *playerObj->getComponent<PhysicsComponent>();
-    PlayerStateComponent& state = *playerObj->getComponent<PlayerStateComponent>();
-
-    if(enemies.size() == 0 && !winState)
+    //Check Win/Lose conditions
+    if(enemies.size() == 0 && !winState && !loseState)
     {
         winState = true;
-        winTimer.Start(10.0f);
+        winTimer.Start(3.0f);
         winImage->getComponent<GraphicsComponent>()->active = true;
     }
+    if(PlayerLives <= 0 && !winState && !loseState)
+    {
+        loseState = true;
+        winTimer.Start(3.0f);
+        loseImage->getComponent<GraphicsComponent>()->active = true;
 
-    if(winState)
+        //delete the enemies
+        auto enemyI = enemies.begin();
+        while( enemyI != enemies.end() )
+        {
+            GOC.DestroyNow((*enemyI)->id);
+            enemies.erase(enemyI++);
+        }
+    }
+
+    //Tick win/lose timer. When it finishes, go back to intro screen
+    if(winState || loseState)
     {
         if(winTimer.Tick(deltaTime))
         {
             CORE->BroadcastMessage(&ChangeStateMessage(State::IntroState));
         }
     }
+
+    //grab player components
+    PositionalComponent& pos = *playerObj->getComponent<PositionalComponent>();
+    PhysicsComponent& phys = *playerObj->getComponent<PhysicsComponent>();
+    PlayerStateComponent& state = *playerObj->getComponent<PlayerStateComponent>();
 
     //reset the player if they are outside the level.
     if(level.IsOutsideLevel(pos.position))
@@ -132,11 +157,15 @@ void GameLogic::Update(float deltaTime)
         pos.position = level.playerStart;
         phys.velocity = Vector2(0,0);
         state.damage= 0;
+        --PlayerLives;
     }
 
+   
     state.attackWait.Tick(deltaTime);
+    state.knockedTimer.Tick(deltaTime);
+    state.jumpTimer.Tick(deltaTime);
 
-    if(!state.knocked)
+    if(!state.knocked) //do nothing if knocked, just let em fly
     {
         //check for attack input
         if(gINPUTSTATE->keyPressed('Q'))
@@ -178,8 +207,6 @@ void GameLogic::Update(float deltaTime)
 
         if(state.airborne) //airborne
         {
-            state.jumpTimer.Tick(deltaTime);
-
             //input causes velocity change, not absolute.
             if(gINPUTSTATE->keyDown(VK_LEFT))
             {
@@ -243,7 +270,7 @@ void GameLogic::Update(float deltaTime)
     }
     else //do nothing if knocked, player loses control momentarily
     {
-        if(state.knockedTimer.Tick(deltaTime))
+        if(state.knockedTimer.IsDone())
         {
             state.knocked = false;
         }

@@ -26,6 +26,7 @@ private:
     std::list<GameObject*> enemies;
     std::list<GameObject*> attacks;
     Level level;
+    int PlayerLives;
     
     int Height;
     int Width;
@@ -45,7 +46,9 @@ private:
 
     Timer winTimer;
     bool winState;
+    bool loseState;
 
     GameObject* winImage;
+    GameObject* loseImage;
 };
 
