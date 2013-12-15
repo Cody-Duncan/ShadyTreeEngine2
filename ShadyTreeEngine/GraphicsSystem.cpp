@@ -164,7 +164,7 @@ void GraphicsSystem::Update(float deltaTime)
                 DebugAssert(posC->active, "Trying to draw active graphicsComponent, with nonactive positionalComponent.");
 
                 //center the transform?
-                Matrix transform = Matrix::CreateTranslation(posC->position.x, posC->position.y, 0);
+                Matrix transform = Matrix::CreateTranslation(posC->position.x + pg.offset.x, posC->position.y + pg.offset.y, 0);
                 
                     
                     /*posC->rotationCentered ?

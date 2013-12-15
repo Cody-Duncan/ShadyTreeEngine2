@@ -19,6 +19,9 @@
     <ClCompile Include="AIComponent.cpp">
       <Filter>GameLogic\Custom Components</Filter>
     </ClCompile>
+    <ClCompile Include="AttackComponent.cpp">
+      <Filter>GameLogic\Custom Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObjectFactory.h">
@@ -36,6 +39,9 @@
       <Filter>GameLogic\Custom Components</Filter>
     </ClInclude>
     <ClInclude Include="AIComponent.h">
+      <Filter>GameLogic\Custom Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackComponent.h">
       <Filter>GameLogic\Custom Components</Filter>
     </ClInclude>
   </ItemGroup>

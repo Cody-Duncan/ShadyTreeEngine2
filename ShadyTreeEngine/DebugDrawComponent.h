@@ -17,8 +17,11 @@ public:
     Color color;
     std::vector<Vector2> geometry;
     std::vector<Vector2> lines;
+    Vector2 offset;
 private:
     void Initialize();
 };
 
 RegisterType(DebugDrawComponent)
+
+   

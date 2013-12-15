@@ -63,7 +63,7 @@ public:
     {
         int index = ID_Index[id];
         T& component = storage[index];
-        ID_Index[id] = INACTIVE_ID;
+        ID_Index.erase(id);//[id] = INACTIVE_ID;
         freeSlots.push_back(index);
 
         component.active = false;
@@ -95,7 +95,7 @@ public:
     void Free()
     {
         Clear();
-        storage.swap(std::vector<T>());
+        //storage.swap(std::vector<T>());
         ID_Index.swap(std::unordered_map<int, int>());
         freeSlots.swap(std::list<int>());
     }

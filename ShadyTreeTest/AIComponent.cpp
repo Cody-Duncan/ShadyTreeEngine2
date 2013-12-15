@@ -11,7 +11,8 @@ AIComponent::AIComponent(int _id, bool _active)
 
 void AIComponent::Initialize()
 {
-
+    outerState = 0;
+    innerState = 0;
 }
 
 void AIComponent::CloneFrom(Component* _c)

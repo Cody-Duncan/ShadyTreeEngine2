@@ -52,7 +52,12 @@ void ComponentFactory::FreeAllCaches()
     for( std::vector<AbstractComponentCache*>::iterator iter = map.begin(); iter != map.end(); ++iter)
     {
         (**(iter)).Free();
+    }
+
+    for( std::vector<AbstractComponentCache*>::iterator iter = map.begin(); iter != map.end(); ++iter)
+    {
         delete (*iter);
     }
+
     map.clear();
 }

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GameObjectCache.h"
+#include "ShadyTreeEngine.h"
 
 int GameObjectCache::genID = 0;
 
@@ -66,12 +67,16 @@ GameObject* GameObjectCache::Create()
 
 GameObject* GameObjectCache::Get(int id)
 {
+    DebugAssert(id >= 0, "ERROR: Tried to get nonexistent id.\n");
+    if(id < 0)
+        return nullptr;
     return &entities[ID_Index[id]];
 }
 
 
 void GameObjectCache::DestroyNow(int id)
 {
+    DebugAssert(id >= 0, "ERROR: Tried to delete nonexistent id.\n");
     deactivateGameObject(id);
 }
 
@@ -123,14 +128,15 @@ void GameObjectCache::deactivateGameObject(int id)
 void GameObjectCache::deactivateGameObject(GameObject& go)
 {
     //deactivate slot
+    int tempID = go.id;
     go.id = INACTIVE_GAMEOBJECT_ID;
     go.active = false;
     
     // add slot to free list
-    freeSlots.push_back(ID_Index[go.id]);
+    freeSlots.push_back(ID_Index[tempID]);
 
     //remove from ID index
-    ID_Index.erase(go.id);
+    ID_Index.erase(tempID);
 
     go.clearComponents();
 }

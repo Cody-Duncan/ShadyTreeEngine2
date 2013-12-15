@@ -17,6 +17,7 @@ public:
     ST_API virtual void CloneFrom(Component* c);
 
     bool IsStatic;
+    bool IsGhost;
 
     float Mass;
     float InvMass;
@@ -25,14 +26,15 @@ public:
     Vector2 velocity;
     Vector2 acceleration;
     Vector2 force;
+    Vector2 offset;
 
     BB* body;
 
-    DelegateFunc collisionDelegate;
+    std::list<DelegateFunc> collisionDelegates;
 
     template <class T, void (T::*TMethod)(Message*)>
     void registerCollideHandler(T* object);
-
+    void clearCollideHandlers();
     void CollideEvent(ContactMessage* m);
 
 private:
@@ -45,5 +47,5 @@ RegisterType(PhysicsComponent)
 template <class T, void (T::*TMethod)(Message*)>
 void PhysicsComponent::registerCollideHandler(T* object)
 {
-    collisionDelegate = DelegateFunc::from_method<T, TMethod>(object);
+    collisionDelegates.push_back(DelegateFunc::from_method<T, TMethod>(object));
 }

@@ -18,6 +18,7 @@ public:
 
     ST_API void setGravity(float g);
     ST_API void generateDebugDraw();
+    ST_API void AttachDebugDraw(int id);
 
 private:
     float gravity;
@@ -34,3 +35,4 @@ private:
     void SendCollisionMessages();
     
 };
+

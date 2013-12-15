@@ -15,6 +15,8 @@ public:
     void addEnemyType(std::string archetypeName);
     std::vector<std::string> enemyTypes;
 
+
+
 private:
     GameObjectFactory(void);
     ~GameObjectFactory(void);

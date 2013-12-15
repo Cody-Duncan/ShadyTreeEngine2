@@ -28,4 +28,5 @@ void DebugDrawComponent::CloneFrom(Component* _oldGC)
 void DebugDrawComponent::Initialize()
 {
     color = Color(1, 0, 0, 0.3f);
+    offset = Vector2(0,0);
 }

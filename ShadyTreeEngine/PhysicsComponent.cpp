@@ -14,6 +14,7 @@ PhysicsComponent::PhysicsComponent(int _id, bool _active) : Component(_id, _acti
 
 PhysicsComponent::~PhysicsComponent(void)
 {
+    delete body;
 }
 
 void PhysicsComponent::CloneFrom(Component* _oldGC)
@@ -31,17 +32,27 @@ void PhysicsComponent::CloneFrom(Component* _oldGC)
 void PhysicsComponent::InitialValues()
 {
     IsStatic = true;
+    IsGhost = false;
     Mass = 0.0f;
     InvMass = 0.0f;
     Restitution = 0.0f;
     velocity = Vector2(0,0);
     acceleration = Vector2(0,0);
+    offset = Vector2(0,0);
     body = nullptr;
 }
 
 
 void PhysicsComponent::CollideEvent(ContactMessage* m)
 {
-    if(collisionDelegate.IsValid())
-        collisionDelegate(m);
+    for(auto iter = collisionDelegates.begin(); iter != collisionDelegates.end(); ++iter)
+    {
+        if(iter->IsValid())
+            (*iter)(m);
+    }
+}
+
+void PhysicsComponent::clearCollideHandlers()
+{
+    collisionDelegates.clear();
 }

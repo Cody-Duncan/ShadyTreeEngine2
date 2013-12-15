@@ -121,6 +121,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AIComponent.cpp" />
+    <ClCompile Include="AttackComponent.cpp" />
     <ClCompile Include="DeSerializer.cpp" />
     <ClCompile Include="Driver.cpp" />
     <ClCompile Include="GameLogic.cpp" />
@@ -136,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIComponent.h" />
+    <ClInclude Include="AttackComponent.h" />
     <ClInclude Include="DeSerializer.h" />
     <ClInclude Include="GameLogic.h" />
     <ClInclude Include="GameObjectFactory.h" />

@@ -2,7 +2,6 @@
 #include "Component.h"
 #include "Timer.h"
 
-
 class AIComponent : public Component
 {
 public: 
@@ -12,4 +11,10 @@ public:
     virtual void CloneFrom(Component* c);
 
     std::string aiType;
+    int outerState;
+    int innerState;
+
+    Timer stateTimer;
+    Timer attackTimer;
+
 };

@@ -23,4 +23,5 @@ public:
 
     Timer knockedTimer;
     Timer jumpTimer;
+    Timer attackWait;
 };

@@ -80,13 +80,14 @@ void PhysicsSystem::Integrate(float deltaTime)
     for(unsigned int i = 0; i < phys.size(); ++i)
     {
         PhysicsComponent& phy  = phys[i];
-        if(phy.IsStatic)
+        if(phy.IsStatic || ! phy.active)
             continue;
 
         PositionalComponent& pos = *GOC.Get(phy.parentID)->getComponent<PositionalComponent>();
 
         //gravity
-        phy.acceleration.y = gravity;
+        if(!phy.IsGhost)
+            phy.acceleration.y = gravity;
         
         //Integrate position
         pos.position = pos.position + phy.velocity * deltaTime;
@@ -122,6 +123,8 @@ void PhysicsSystem::DetectCollisions()
     for(A_iter = phys.begin(); A_iter != phys.end(); ++A_iter)
     {
         PhysicsComponent& A = *A_iter;
+        if(!A.active)
+            continue;
         PositionalComponent& posA = *A_iter->parent()->getComponent<PositionalComponent>();
 
         if(!A.active)
@@ -132,6 +135,8 @@ void PhysicsSystem::DetectCollisions()
         for( ; B_iter != phys.end(); ++B_iter)
         {
             PhysicsComponent& B = *B_iter;
+            if(!B.active)
+                continue;
             PositionalComponent& posB = *B_iter->parent()->getComponent<PositionalComponent>();
 
             if(!B.active)
@@ -140,7 +145,7 @@ void PhysicsSystem::DetectCollisions()
             if( !A.IsStatic || !B.IsStatic )
             {
                 Contact c;
-                if(CollisionCheck(A_iter->body, posA.position, B_iter->body, posB.position, c))
+                if(CollisionCheck(A_iter->body, posA.position + A_iter->offset, B_iter->body, posB.position + B_iter->offset, c))
                 {
                     c.ObjIDs[0]     = A.parentID;
                     c.ObjIDs[1]     = B.parentID;
@@ -238,10 +243,14 @@ void PhysicsSystem::ResolveContacts(float deltaTime)
         PhysicsComponent& BPhys = *B->getComponent<PhysicsComponent>();
         PositionalComponent& BPos = *B->getComponent<PositionalComponent>();
 
+        if(APhys.IsGhost || BPhys.IsGhost) //do not move ghost objects
+            continue;
+
         ResolvePosition(c, APhys, APos, BPhys, BPos);
         ResolveVelocities(c, APhys, APos, BPhys, BPos, deltaTime);
     }
 }
+
 
 void attachDebugDraw(GameObject& go)
 {
@@ -257,11 +266,18 @@ void attachDebugDraw(GameObject& go)
     newDDC->lines.push_back(phys->velocity);
 
     phys->body->generateGeometry(newDDC->geometry);
-
+    
+    newDDC->offset = phys->offset;
     newDDC->active = go.active;
 
     go.attachComponent(newDDC);
 }
+
+void PhysicsSystem::AttachDebugDraw(int id)
+{
+    attachDebugDraw(*GameObjectCache::Instance().Get(id));
+}
+
 
 void PhysicsSystem::generateDebugDraw()
 {
@@ -302,7 +318,7 @@ void PhysicsSystem::UpdateDebugDraw()
 
         GameObject& go = *dd.parent();
 
-        if(!go.active || !go.getComponent<PhysicsComponent>() )
+        if(!go.active || !go.hasComponent<PhysicsComponent>() )
             continue;
         PhysicsComponent* phys = go.getComponent<PhysicsComponent>();
         dd.lines[1] = (dd.lines[0] + phys->velocity)/4;
