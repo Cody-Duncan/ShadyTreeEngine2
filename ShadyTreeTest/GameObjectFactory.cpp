@@ -12,7 +12,7 @@ GameObjectFactory::~GameObjectFactory(void)
 {
 }
 
-GameObject* GameObjectFactory::createGraphicalEntity(std::string textureResID)
+GameObject* GameObjectFactory::createGraphicalEntity(std::string textureResID, Vector2 centerPos)
 {
     GameObjectCache& GOC = GameObjectCache::Instance();
     ComponentFactory& CF = ComponentFactory::Instance();
@@ -28,6 +28,7 @@ GameObject* GameObjectFactory::createGraphicalEntity(std::string textureResID)
 
     PositionalComponent* posC = CF.createComponent<PositionalComponent>();
     posC->scale = 1.0f;
+    posC->position = centerPos - (graphics->textureArea.dimensions*(0.5f));
 
     e->attachComponent(graphics);
     e->attachComponent(posC);

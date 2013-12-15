@@ -82,20 +82,12 @@ void GameLogic::Load()
     CORE->BroadcastMessage(&DebugDrawAllMessage());
 
     Resources::Instance().LoadTextureRes("WinMessage");
-    winImage = GOF.createGraphicalEntity("WinMessage");
+    winImage = GOF.createGraphicalEntity("WinMessage", Vector2((float)Width/2, (float)Height/2));
     winImage->getComponent<GraphicsComponent>()->active = false;
-    PositionalComponent& winPos = *winImage->getComponent<PositionalComponent>();
-    winPos.position = level.LevelPos;
-    GraphicsComponent& winG = *winImage->getComponent<GraphicsComponent>();
-    winPos.position -= winG.textureArea.dimensions/2;
 
     Resources::Instance().LoadTextureRes("LoseMessage");
-    loseImage = GOF.createGraphicalEntity("LoseMessage");
+    loseImage = GOF.createGraphicalEntity("LoseMessage", Vector2((float)Width/2, (float)Height/2));
     loseImage->getComponent<GraphicsComponent>()->active = false;
-    PositionalComponent& losePos = *loseImage->getComponent<PositionalComponent>();
-    losePos.position = level.LevelPos;
-    GraphicsComponent& loseG = *loseImage->getComponent<GraphicsComponent>();
-    losePos.position -= loseG.textureArea.dimensions/2;
 
     winState = false;
     loseState = false;

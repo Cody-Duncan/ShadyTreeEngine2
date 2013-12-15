@@ -36,15 +36,9 @@ void IntroScreen::Load()
     res.LoadTextureRes("IntroScreen");
     res.LoadTextureRes("selector");
 
-    introScreenObj = GOF.createGraphicalEntity("IntroScreen");
+    introScreenObj = GOF.createGraphicalEntity("IntroScreen", Vector2((float)screenWidth/2, (float)screenHeight/2) );
     PositionalComponent& introPos = *introScreenObj->getComponent<PositionalComponent>();
     GraphicsComponent& introGraphics = *introScreenObj->getComponent<GraphicsComponent>();
-
-    //set the intro screen to the center.
-    Vector2 textureSize = introGraphics.textureArea.dimensions;
-    introPos.position = Vector2(
-            screenWidth/2 - textureSize.x/2,
-            screenHeight/2 - textureSize.y/2 );
 
     //read the menu selection locations from file.
     std::iostream* selectorPosFile = res.GetFileData(res.LoadDataRes("menuSelectionPositions"));
@@ -60,7 +54,7 @@ void IntroScreen::Load()
     }
 
     //set the menu selector the location matching current selection.
-    selector = GOF.createGraphicalEntity("selector");
+    selector = GOF.createGraphicalEntity("selector", Vector2(0,0));
     PositionalComponent& selectorPos = *selector->getComponent<PositionalComponent>();
 
     selectorPos.position = introPos.position + menuSelectionPositions[currentSelection];
