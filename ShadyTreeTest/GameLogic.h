@@ -24,7 +24,7 @@ public:
 
 private:
     GameObject* playerObj;
-    std::vector<GameObject*> enemies;
+    std::list<GameObject*> enemies;
     std::list<GameObject*> attacks;
     Level level;
 

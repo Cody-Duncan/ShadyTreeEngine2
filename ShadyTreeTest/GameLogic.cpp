@@ -80,6 +80,11 @@ void GameLogic::Load()
     ps->setGravity(1000.0f);
 }
 
+////////////////////////////////
+//UPDATE METHOD
+//MOSTLY PLAYER LOGIC
+////////////////////////////////
+
 float scale = 0;
 void GameLogic::Update(float deltaTime)
 {
@@ -93,6 +98,7 @@ void GameLogic::Update(float deltaTime)
     PhysicsComponent& phys = *playerObj->getComponent<PhysicsComponent>();
     PlayerStateComponent& state = *playerObj->getComponent<PlayerStateComponent>();
 
+    //reset the player if they are outside the level.
     if(level.IsOutsideLevel(pos.position))
     {
         level.IsOutsideLevel(pos.position);
@@ -101,35 +107,43 @@ void GameLogic::Update(float deltaTime)
         state.damage= 0;
     }
 
+    state.attackWait.Tick(deltaTime);
+
     if(!state.knocked)
     {
+        //check for attack input
         if(gINPUTSTATE->keyPressed('Q'))
         {
-            if( gINPUTSTATE->keyDown(VK_LEFT))
+            DebugPrintf("Hit Q:%f/%f\n", state.attackWait.passed, state.attackWait.wait);
+            if(state.attackWait.IsDone()) //don't spam attacks
             {
-                generateAttack(playerObj->id, AttackDir::Attack_Left, AttackType::Regular);
-                state.attackWait.Start(0.1f);
-            }
+                if( gINPUTSTATE->keyDown(VK_LEFT) ) //left punch
+                {
+                    generateAttack(playerObj->id, AttackDir::Attack_Left, AttackType::Regular);
+                    state.attackWait.Start(0.1f); 
+                }
 
-            if(gINPUTSTATE->keyDown(VK_RIGHT))
-            {
-                generateAttack(playerObj->id, AttackDir::Attack_Right, AttackType::Regular);
-                state.attackWait.Start(0.1f);
-            }
+                if(gINPUTSTATE->keyDown(VK_RIGHT)) //right punch
+                {
+                    generateAttack(playerObj->id, AttackDir::Attack_Right, AttackType::Regular);
+                    state.attackWait.Start(0.1f);
+                }
 
-            if(gINPUTSTATE->keyDown(VK_UP))
-            {
-                generateAttack(playerObj->id, AttackDir::Attack_Up, AttackType::Regular);
-                state.attackWait.Start(0.1f);
-            }
+                if(gINPUTSTATE->keyDown(VK_UP)) //up punch
+                {
+                    generateAttack(playerObj->id, AttackDir::Attack_Up, AttackType::Regular);
+                    state.attackWait.Start(0.1f);
+                }
 
-            if(gINPUTSTATE->keyDown(VK_DOWN))
-            {
-                generateAttack(playerObj->id, AttackDir::Attack_Down, AttackType::Regular);
-                state.attackWait.Start(0.1f);
+                if(gINPUTSTATE->keyDown(VK_DOWN)) //down double-sided "kick"
+                {
+                    generateAttack(playerObj->id, AttackDir::Attack_Down, AttackType::Regular);
+                    state.attackWait.Start(0.1f);
+                }
             }
         }
 
+        //laser test
         if(gINPUTSTATE->keyPressed('E'))
         {
             generateAttack(playerObj->id, AttackDir::Attack_Right, AttackType::Laser);
@@ -160,7 +174,7 @@ void GameLogic::Update(float deltaTime)
             float lastXPos = pos.position.x;
 
             
-            if(state.attackWait.Tick(deltaTime))
+            if(state.attackWait.IsDone())
             {
                 if(gINPUTSTATE->keyDown(VK_LEFT))
                 {
@@ -205,13 +219,25 @@ void GameLogic::Update(float deltaTime)
         }
     }
 
-    for(unsigned int i = 0; i < enemies.size(); ++i)
+    //update enemy AI
+    auto enemyI = enemies.begin();
+    while( enemyI != enemies.end() )
     {
-        if(enemies[i]->hasComponent<AIComponent>())
+        if((*enemyI)->hasComponent<AIComponent>())
         {
-            AIComponent* ai = enemies[i]->getComponent<AIComponent>();
+            AIComponent* ai = (*enemyI)->getComponent<AIComponent>();
             std::string& aiType = ai->aiType;
-            (this->*aiMap[aiType])(deltaTime, enemies[i]->id);
+            (this->*aiMap[aiType])(deltaTime, (*enemyI)->id);
+        }
+
+        if(level.IsOutsideLevel((*enemyI)->getComponent<PositionalComponent>()->position))
+        {
+            GOC.DestroyNow((*enemyI)->id);
+            attacks.erase(enemyI++);
+        }
+        else
+        {
+            ++enemyI;
         }
     }
 
@@ -256,7 +282,11 @@ void GameLogic::RecieveMessage(Message* msg)
 
 }
 
+////////////////////////////////
+//Collision Response
+////////////////////////////////
 
+//handles collision with ground.
 void GameLogic::CollideEvent(Message* msg)
 {
     ContactMessage cmsg = *(static_cast<ContactMessage*> (msg));
@@ -300,6 +330,7 @@ void hitObject(GameObject* go, GameObject* attack)
     
 }
 
+//handles collision with a player owned attack object.
 void GameLogic::PlayerAttackCollision(Message* msg)
 {
     ContactMessage cmsg = *(static_cast<ContactMessage*> (msg));
@@ -315,6 +346,7 @@ void GameLogic::PlayerAttackCollision(Message* msg)
     }
 }
 
+//handles collision with an enemy owned attack object.
 void GameLogic::EnemyAttackCollision(Message* msg)
 {
     ContactMessage cmsg = *(static_cast<ContactMessage*> (msg));
@@ -340,6 +372,12 @@ void GameLogic::SetWorldDimension(int height, int width)
     Width = width;
 }
 
+
+////////////////////////////////
+//   AI
+////////////////////////////////
+
+//Just follows the player
 void GameLogic::ChaseAI(float deltaTime, int id)
 {
     GameObjectCache& GOC = GameObjectCache::Instance();
@@ -401,6 +439,7 @@ enum AIInnerState
     MoveRight,
 };
 
+//runs back and forth, punches the player if they get near.
 void GameLogic::PunchAI(float deltaTime, int id)
 {
     GameObjectCache& GOC = GameObjectCache::Instance();
@@ -500,6 +539,8 @@ void GameLogic::PunchAI(float deltaTime, int id)
         }
     }
 }
+
+//jumops at the player and does a spin attack!
 void GameLogic::FlyAI(float deltaTime, int id)
 {
     GameObjectCache& GOC = GameObjectCache::Instance();
@@ -568,6 +609,9 @@ void GameLogic::FlyAI(float deltaTime, int id)
         }
     }
 }
+
+//shoots at the player
+//tries to jump up to get a good shot.
 void GameLogic::LaserAI(float deltaTime, int id)
 {
     GameObjectCache& GOC = GameObjectCache::Instance();
@@ -621,6 +665,11 @@ void GameLogic::LaserAI(float deltaTime, int id)
     }
 
 }
+
+//runs back and forth.
+//When it stops, it spins for a bit, then explodes
+//will not explode unless on the ground.
+//has a tendency to fly around wildly when knocked
 void GameLogic::ExplodingAI(float deltaTime, int id)
 {
     GameObjectCache& GOC = GameObjectCache::Instance();
@@ -733,6 +782,10 @@ void GameLogic::ExplodingAI(float deltaTime, int id)
 
     
 }
+
+////////////////////////////////
+// Attack Object Generation
+////////////////////////////////
 
 void makePunch(PhysicsComponent* atkPhys)
 {
