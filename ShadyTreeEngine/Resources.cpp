@@ -103,6 +103,12 @@ void Resources::parseResourceIDs(std::string directory)
     }
 }
 
+
+/// <summary>
+/// Gets the filename that is the source of a resourceID
+/// </summary>
+/// <param name="resID">The resource identifier.</param>
+/// <returns>The filename that the resource came from.</returns>
 std::string Resources::getFileSourceOfRes(std::string resID)
 {
     return resID_to_filename[resID];
@@ -178,7 +184,7 @@ TextureHandle Resources::LoadTextureRes(std::string resID)
 
 TextureHandle Resources::GetTexture(std::string token)
 {
-    return tokenToTexH[token];
+    return tokenToTexH.at(token);
 }
 
 Vector2 Resources::GetTextureWidthHeight(std::string token)

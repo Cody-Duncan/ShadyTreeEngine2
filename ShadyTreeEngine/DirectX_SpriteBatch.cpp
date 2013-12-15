@@ -161,8 +161,8 @@ void DirectX_SpriteBatch::Draw(TextureHandle texH, Matrix transform, Rectangle2 
 
     //calculate normalized UV coordinates
     Rectangle2 textureArea;
-    textureArea.position = Vector2(rect.position.x / texData.width, rect.position.y / texData.width);
-    textureArea.dimensions = Vector2(rect.dimensions.x / texData.width, rect.dimensions.y / texData.width);
+    textureArea.position = Vector2(rect.position.x / texData.width, rect.position.y / texData.height);
+    textureArea.dimensions = Vector2(rect.dimensions.x / texData.width, rect.dimensions.y / texData.height);
 
     //calculate mesh vertex positions
     Vector2 topLeft  = Vector2::Transform( Vector2(0,0), transform);
