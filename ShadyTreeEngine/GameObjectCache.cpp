@@ -100,10 +100,8 @@ void GameObjectCache::Clear()
     int size = entities.size();
     entities.clear();
     freeSlots.clear();
-    for(int i = 0; i < size; ++i)
-    {
-        freeSlots.push_back(i);
-    }
+    ID_Index.clear();
+    Reserve(DEFAULT_NUM_OBJECTS);
 }
 
 void GameObjectCache::Free()

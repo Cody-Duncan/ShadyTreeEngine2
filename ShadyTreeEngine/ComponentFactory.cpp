@@ -44,6 +44,7 @@ void ComponentFactory::clearAllCaches()
     for( std::vector<AbstractComponentCache*>::iterator iter = map.begin(); iter != map.end(); ++iter)
     {
         (**(iter)).Clear();
+        (**(iter)).Reserve(DEFAULT_CACHE_LENGTH);
     }
 }
 
@@ -51,11 +52,8 @@ void ComponentFactory::FreeAllCaches()
 {
     for( std::vector<AbstractComponentCache*>::iterator iter = map.begin(); iter != map.end(); ++iter)
     {
-        (**(iter)).Free();
-    }
-
-    for( std::vector<AbstractComponentCache*>::iterator iter = map.begin(); iter != map.end(); ++iter)
-    {
+        if(*iter != nullptr)
+            (**(iter)).Free();
         delete (*iter);
     }
 

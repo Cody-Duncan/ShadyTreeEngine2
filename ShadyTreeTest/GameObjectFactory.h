@@ -9,13 +9,13 @@ public:
         return factory;
     }
 
-    GameObject* createGraphicalEntity();
+    GameObject* createGraphicalEntity(std::string textureResID);
     void addArchetype(std::string archetypeName, int id);
     GameObject* cloneArchetype(std::string archetypeName);
     void addEnemyType(std::string archetypeName);
     std::vector<std::string> enemyTypes;
 
-
+    void clearArchetypes();
 
 private:
     GameObjectFactory(void);

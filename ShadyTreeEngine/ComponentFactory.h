@@ -54,7 +54,7 @@ public:
     template<class T>
     ComponentCache<T>* getCache();
 
-    void clearAllCaches();
+    ST_API void clearAllCaches();
     void FreeAllCaches();
 
     std::vector<AbstractComponentCache*> map;
@@ -98,12 +98,14 @@ void ComponentFactory::deleteComponent(int id)
 template<class T>
 void ComponentFactory::createComponentCache()
 {
-    int index = getID<T>();
-    if(index == map.size()) //new indices are always by increment
+    unsigned int index = getID<T>();
+    if(!hasComponentCache<T>()) //new indices are always by increment
     {
         ComponentCache<T>* cc = new ComponentCache<T>();
         cc->Reserve(DEFAULT_CACHE_LENGTH);
-        map.push_back(cc);
+        if(index >= map.size())
+            map.resize(index+1, nullptr);
+        map[index] = cc;
     }
 }
 
@@ -111,7 +113,9 @@ template<class T>
 bool ComponentFactory::hasComponentCache()
 {
     unsigned int index = getID<T>();
-    return index < map.size() ;
+    if(index < map.size())
+        return map[index] != nullptr;
+    return false;
 }
 
 template<class T>

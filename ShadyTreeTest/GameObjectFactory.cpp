@@ -12,7 +12,7 @@ GameObjectFactory::~GameObjectFactory(void)
 {
 }
 
-GameObject* GameObjectFactory::createGraphicalEntity()
+GameObject* GameObjectFactory::createGraphicalEntity(std::string textureResID)
 {
     GameObjectCache& GOC = GameObjectCache::Instance();
     ComponentFactory& CF = ComponentFactory::Instance();
@@ -21,14 +21,12 @@ GameObject* GameObjectFactory::createGraphicalEntity()
     GameObject* e = GOC.Create();
     
     GraphicsComponent* graphics = CF.createComponent<GraphicsComponent>();
-    graphics->texture = RES.GetTexture("test");
+    graphics->texture = RES.GetTexture(textureResID);
 
     graphics->textureArea.position = Vector2(0,0);
-    graphics->textureArea.dimensions = RES.GetTextureWidthHeight("test");
+    graphics->textureArea.dimensions = RES.GetTextureWidthHeight(textureResID);
 
     PositionalComponent* posC = CF.createComponent<PositionalComponent>();
-    posC->position = Vector2(10,10);
-    posC->rotation = 0.2f;
     posC->scale = 1.0f;
 
     e->attachComponent(graphics);
@@ -45,7 +43,7 @@ void GameObjectFactory::addArchetype(std::string archetypeName, int id)
     }
     else
     {
-        DebugPrintf("Tried to overwrite an archetype: %s", archetypeName.c_str());
+        DebugPrintf("Tried to overwrite an archetype: %s\n", archetypeName.c_str());
     }
 }
 
@@ -73,4 +71,14 @@ bool GameObjectFactory::hasArchetype(std::string name)
 void GameObjectFactory::addEnemyType(std::string archetypeName)
 {
     enemyTypes.push_back(archetypeName);
+}
+
+void GameObjectFactory::clearArchetypes()
+{
+    DebugPrintf("GAMELOGIC: Destroying Archetypes\n");
+    for(auto iter = archetypes.begin(); iter != archetypes.end(); ++iter)
+    {
+        GameObjectCache::Instance().DestroyNow(iter->second);
+    }
+    archetypes.clear();
 }
