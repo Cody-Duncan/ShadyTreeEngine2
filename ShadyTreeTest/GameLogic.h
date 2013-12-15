@@ -1,12 +1,12 @@
 #pragma once
-#include "ISystem.h"
+#include "IGameState.h"
 #include "Level.h"
 #include "AttackComponent.h"
 
 class GameObject;
 class PhysicsSystem;
 
-class GameLogic : public ISystem
+class GameLogic : public IGameState
 {
 public:
     GameLogic(void);
@@ -19,16 +19,13 @@ public:
     virtual void Free();
     virtual void RecieveMessage(Message* msg);
     
-    void SetPhysics(PhysicsSystem* _ps);
-    void SetWorldDimension(int height, int width);
+    void SetScreenSize(int width, int height);
 
 private:
     GameObject* playerObj;
     std::list<GameObject*> enemies;
     std::list<GameObject*> attacks;
     Level level;
-
-    PhysicsSystem* ps;
     
     int Height;
     int Width;
@@ -45,5 +42,10 @@ private:
     void EnemyAttackCollision(Message* msg);
 
     void generateAttack(int owner, AttackDir, AttackType);
+
+    Timer winTimer;
+    bool winState;
+
+    GameObject* winImage;
 };
 

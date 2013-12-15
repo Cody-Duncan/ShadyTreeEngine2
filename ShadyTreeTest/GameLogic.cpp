@@ -8,11 +8,17 @@
 #include "PlayerStateComponent.h"
 #include "AIComponent.h"
 #include "AttackComponent.h"
+#include "GraphicsComponent.h"
 
 #include "DeSerializer.h"
 #include "Messenger.h"
 #include "ContactMessage.h"
 #include "Timer.h"
+#include "ShadyTreeEngine.h"
+#include "DebugDrawMessage.h"
+#include "ChangeGravityMessage.h"
+#include "ChangeStateMessage.h"
+
 
 GameLogic::GameLogic(void)
 {
@@ -41,10 +47,7 @@ void GameLogic::Load()
 
     GameObjectCache::Instance().Reserve(400);
     GameObjectFactory& GOF = GameObjectFactory::Instance();
-    IResources& res = Resources::Instance();
-
-    res.parseResourceIDs("resources");
-
+    
     //Build Level
     DeSerializer s;
     level.Initialize("ArenaLevel", s, Height, Width, 1.5f);
@@ -66,18 +69,27 @@ void GameLogic::Load()
 
     
     //build an enemy
-    for(unsigned int i = 0; i < 1; ++i) //GOF.enemyTypes.size()
+    for(unsigned int i = 0; i < GOF.enemyTypes.size(); ++i) 
     {
-        GameObject* enemy = GOF.cloneArchetype(GOF.enemyTypes[1]);
+        GameObject* enemy = GOF.cloneArchetype(GOF.enemyTypes[i]);
         enemy->getComponent<PositionalComponent>()->position = level.enemyStartPositions[i];
         enemies.push_back(enemy);
         enemy->getComponent<PhysicsComponent>()->registerCollideHandler<GameLogic, &GameLogic::CollideEvent>(this);
     }
     
-    
-
     //set environment parameters
-    ps->setGravity(1000.0f);
+    CORE->BroadcastMessage(&ChangeGravityMessage(1000.0f));
+    CORE->BroadcastMessage(&DebugDrawAllMessage());
+
+    Resources::Instance().LoadTextureRes("WinMessage");
+    winImage = GOF.createGraphicalEntity("WinMessage");
+    winImage->getComponent<GraphicsComponent>()->active = false;
+    PositionalComponent& winPos = *winImage->getComponent<PositionalComponent>();
+    winPos.position = level.LevelPos;
+    GraphicsComponent& winG = *winImage->getComponent<GraphicsComponent>();
+    winPos.position -= winG.textureArea.dimensions/2;
+
+    winState = false;
 }
 
 ////////////////////////////////
@@ -97,6 +109,21 @@ void GameLogic::Update(float deltaTime)
     PositionalComponent& pos = *playerObj->getComponent<PositionalComponent>();
     PhysicsComponent& phys = *playerObj->getComponent<PhysicsComponent>();
     PlayerStateComponent& state = *playerObj->getComponent<PlayerStateComponent>();
+
+    if(enemies.size() == 0 && !winState)
+    {
+        winState = true;
+        winTimer.Start(10.0f);
+        winImage->getComponent<GraphicsComponent>()->active = true;
+    }
+
+    if(winState)
+    {
+        if(winTimer.Tick(deltaTime))
+        {
+            CORE->BroadcastMessage(&ChangeStateMessage(State::IntroState));
+        }
+    }
 
     //reset the player if they are outside the level.
     if(level.IsOutsideLevel(pos.position))
@@ -149,10 +176,11 @@ void GameLogic::Update(float deltaTime)
             generateAttack(playerObj->id, AttackDir::Attack_Right, AttackType::Laser);
         }
 
-        if(state.airborne)
+        if(state.airborne) //airborne
         {
             state.jumpTimer.Tick(deltaTime);
 
+            //input causes velocity change, not absolute.
             if(gINPUTSTATE->keyDown(VK_LEFT))
             {
                 phys.velocity.x -= state.airborneAccel;
@@ -161,19 +189,18 @@ void GameLogic::Update(float deltaTime)
             {
                 phys.velocity.x += state.airborneAccel;
             }
-            if(gINPUTSTATE->keyPressed(VK_SPACE) && state.jumpCount < 2 && state.jumpTimer.IsDone())
+            if(gINPUTSTATE->keyPressed(VK_SPACE) && state.jumpCount < 2 && state.jumpTimer.IsDone()) //jump
             {
                 phys.velocity.y = -state.jumpVelocity;
                 ++state.jumpCount;
             }
 
         }
-        else
+        else // on ground
         {
             phys.velocity.x = 0;
             float lastXPos = pos.position.x;
 
-            
             if(state.attackWait.IsDone())
             {
                 if(gINPUTSTATE->keyDown(VK_LEFT))
@@ -184,14 +211,14 @@ void GameLogic::Update(float deltaTime)
                 {
                     pos.position.x += state.movementSpeed;
                 }
-                if(!level.IsOnPlatform(pos.position, phys.body))
+                if(!level.IsOnPlatform(pos.position, phys.body)) //switch to airborne if off platform
                 {
                     state.airborne = true;
                     phys.velocity.x = (pos.position.x - lastXPos)/deltaTime;
                     state.jumpTimer.Start(0.1f);
                     ++state.jumpCount;
                 }
-                if(gINPUTSTATE->keyPressed(VK_SPACE))
+                if(gINPUTSTATE->keyPressed(VK_SPACE)) //jump
                 {
                     phys.velocity.y -= state.jumpVelocity;
                     phys.velocity.x = (pos.position.x - lastXPos)/deltaTime;
@@ -201,17 +228,20 @@ void GameLogic::Update(float deltaTime)
                 }
             }
         }
+
+        //clamp movement speed
         absClamp(phys.velocity.x, state.maxVelX);
         absClamp(phys.velocity.y, state.maxVelY);
 
-        if(gINPUTSTATE->keyDown(VK_BACK)) //insta-death
+        if(gINPUTSTATE->keyPressed(VK_BACK)) //insta-death button
         {
             state.knocked = true;
             state.knockedTimer.Start(1.0f);
             phys.velocity = Vector2(10000,-10000);
+            CORE->BroadcastMessage(&ChangeStateMessage(State::IntroState));
         }
     }
-    else
+    else //do nothing if knocked, player loses control momentarily
     {
         if(state.knockedTimer.Tick(deltaTime))
         {
@@ -230,10 +260,11 @@ void GameLogic::Update(float deltaTime)
             (this->*aiMap[aiType])(deltaTime, (*enemyI)->id);
         }
 
+        //if enemy falls outside, delete it.
         if(level.IsOutsideLevel((*enemyI)->getComponent<PositionalComponent>()->position))
         {
             GOC.DestroyNow((*enemyI)->id);
-            attacks.erase(enemyI++);
+            enemies.erase(enemyI++);
         }
         else
         {
@@ -241,6 +272,7 @@ void GameLogic::Update(float deltaTime)
         }
     }
 
+    //update attack objects
     auto iter = attacks.begin();
     while( iter != attacks.end() )
     {
@@ -250,10 +282,12 @@ void GameLogic::Update(float deltaTime)
         GameObject* attackOwner = GOC.Get(atk->ownerID);
         PositionalComponent* attackPos = go->getComponent<PositionalComponent>();
         PositionalComponent* ownerPos = attackOwner->getComponent<PositionalComponent>();
-
+        
+        //if not a laser, attack moves with the owner
         if(atk->type != AttackType::Laser)
             attackPos->position = ownerPos->position;
 
+        //destroy attacks after a time to live.
         if(atk->attackTimer.Tick(deltaTime))
         {
             GOC.DestroyNow(atk->parent()->id);
@@ -265,11 +299,24 @@ void GameLogic::Update(float deltaTime)
         }
        
     }
+
+    
 }
 
 void GameLogic::Unload()
 {
+    playerObj = nullptr;
+    enemies.clear();
+    attacks.clear();
+    level.Dispose();
+
+    GameObjectFactory& GOF = GameObjectFactory::Instance();
+    GOF.enemyTypes.clear();
+    GOF.clearArchetypes();
     
+
+    GameObjectCache::Instance().Clear();
+    ComponentFactory::Instance().clearAllCaches();
 }
 
 void GameLogic::Free()
@@ -299,6 +346,7 @@ void GameLogic::CollideEvent(Message* msg)
     {
         if(reciever->hasComponent<PlayerStateComponent>() && reciever->hasComponent<PhysicsComponent>())
         {
+            //put the object in the "on ground" state
             PlayerStateComponent& state = *reciever->getComponent<PlayerStateComponent>();
             state.airborne = false;
             state.jumpCount = 0;
@@ -317,16 +365,18 @@ void hitObject(GameObject* go, GameObject* attack)
     AttackComponent& atkInfo    = *attack->getComponent<AttackComponent>();
     PositionalComponent& atkPos    = *attack->getComponent<PositionalComponent>();
 
+    //do damage, set state to "knocked"
     state.damage += atkInfo.damage;
     state.knocked = true;
     state.knockedTimer.Start(1.0f*state.damage/100.0f);
-    state.airborne = true;
-        
+    
+    //send em flyin'
     Vector2 hitDir = (pos.position - atkPos.position).Normal();
     hitDir.y -= 0.7f;
     phys.velocity += hitDir * (state.damage/100.0f) * 1500;
+    state.airborne = true;
 
-    GameObjectCache::Instance().DestroyNow(attack->id);
+    
     
 }
 
@@ -342,10 +392,11 @@ void GameLogic::PlayerAttackCollision(Message* msg)
         collideThing->id != playerObj->id)                             //wasn't the player
     {
         hitObject(collideThing, attack);
-        attacks.remove(attack);
+        GameObjectCache::Instance().DestroyNow(attack->id);     //get rid of the attack object
+        attacks.remove(attack);                                 //remove attack from attacks list.
     }
 }
-
+    
 //handles collision with an enemy owned attack object.
 void GameLogic::EnemyAttackCollision(Message* msg)
 {
@@ -357,16 +408,12 @@ void GameLogic::EnemyAttackCollision(Message* msg)
     if(collideThing->id == playerObj->id)      //hit the player
     {
         hitObject(collideThing, attack);
-        attacks.remove(attack);
+        GameObjectCache::Instance().DestroyNow(attack->id);     //get rid of the attack object
+        attacks.remove(attack);                                 //remove attack from attacks list.
     }
 }
 
-void GameLogic::SetPhysics(PhysicsSystem* _ps)
-{
-    ps = _ps;
-}
-
-void GameLogic::SetWorldDimension(int height, int width)
+void GameLogic::SetScreenSize(int width, int height)
 {
     Height = height;
     Width = width;
@@ -932,7 +979,7 @@ void GameLogic::generateAttack(int ownerID, AttackDir aDir, AttackType aType)
     attackObj->attachComponent(atkPos);
     attackObj->attachComponent(atkPhys);
     attackObj->attachComponent(atkC);
-    ps->AttachDebugDraw(attackObj->id);
+    CORE->BroadcastMessage(&AttachDebugDrawMessage(attackObj->id));
 
     attacks.push_back(attackObj);
 }

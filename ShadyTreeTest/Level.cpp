@@ -64,3 +64,10 @@ bool Level::IsOutsideLevel(Vector2 position)
 {
     return !PointCollisionCheck(position, &LevelSpace, LevelPos);
 }
+
+void Level::Dispose()
+{
+    levelStuff.clear();
+    enemyStartPositions.clear();
+    playerStart = Vector2(0,0);
+}

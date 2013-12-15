@@ -13,6 +13,7 @@ public:
     void Initialize(std::string resID, DeSerializer& s, int _Height, int _Width, float _BorderRatio);
     bool IsOnPlatform(Vector2 position, BB* body);
     bool IsOutsideLevel(Vector2 position);
+    void Dispose();
 
     std::vector<GameObject*> levelStuff;
 
