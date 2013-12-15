@@ -308,6 +308,15 @@
     <ClInclude Include="Timer.h">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\ShadyTreeTest\ChangeStateMessage.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangeGravityMessage.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugDrawMessage.h">
+      <Filter>Message</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">

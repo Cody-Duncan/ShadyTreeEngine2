@@ -4,7 +4,13 @@ enum MessageType
 {
     None,
     Quit,
-    Collision
+    Collision,
+    ChangeState,
+    DebugDrawGameObject,
+    DebugDrawAllObjects,
+    ToggleDebugDraw,
+    WorldSizeChange,
+    ChangeGravity
 };
 
 class Message

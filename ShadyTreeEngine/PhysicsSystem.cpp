@@ -13,6 +13,8 @@
 #include "Messenger.h"
 
 #include "ContactMessage.h"
+#include "ChangeGravityMessage.h"
+#include "DebugDrawMessage.h"
 
 PhysicsSystem::PhysicsSystem(void)
 {
@@ -56,7 +58,20 @@ void PhysicsSystem::Free()
 
 void PhysicsSystem::RecieveMessage(Message* msg)
 {
-    
+    if(msg->type == MessageType::DebugDrawGameObject)
+    {
+        int id = static_cast<AttachDebugDrawMessage*>(msg)->objectID;
+        AttachDebugDraw(id);
+    }
+    else if(msg->type == MessageType::ChangeGravity)
+    {
+        float gravity = static_cast<ChangeGravityMessage*>(msg)->newGravity;
+        setGravity(gravity);
+    }
+    else if(msg->type == MessageType::DebugDrawAllObjects)
+    {
+        generateDebugDraw();
+    }
 }
 
 void PhysicsSystem::setGravity(float g)
@@ -293,7 +308,7 @@ void PhysicsSystem::generateDebugDraw()
     {
         GameObject& go = GOC.entities[i];
         if(!go.active || !go.getComponent<PhysicsComponent>() || go.hasComponent<DebugDrawComponent>())
-            continue;
+            continue; //skip those without physics, or those wtih a debugdraw component already
 
         attachDebugDraw(go);
     }

@@ -13,6 +13,8 @@
 #include "GameObjectCache.h"
 #include "DebugDrawComponent.h"
 
+#include "DebugDrawMessage.h"
+
 bool GraphicsSystem::IsDebugDrawOn()
 {
     return debugDraw;
@@ -199,7 +201,10 @@ void GraphicsSystem::Free()
 
 void GraphicsSystem::RecieveMessage(Message* msg)
 {
-    
+    if(msg->type == MessageType::ToggleDebugDraw)
+    {
+        debugDraw = !debugDraw;
+    }
 }
 
 /// <summary>

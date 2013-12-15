@@ -56,7 +56,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0; WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)include; $(SolutionDir)ShadyTreeEngine;$(SolutionDir)include</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>StdAfx2.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>StdAfx2.h</ForcedIncludeFiles>
@@ -126,6 +126,8 @@
     <ClCompile Include="Driver.cpp" />
     <ClCompile Include="GameLogic.cpp" />
     <ClCompile Include="GameObjectFactory.cpp" />
+    <ClCompile Include="GameStateSystem.cpp" />
+    <ClCompile Include="IntroScreen.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="PlayerStateComponent.cpp" />
     <ClCompile Include="StdAfx2.cpp">
@@ -141,6 +143,9 @@
     <ClInclude Include="DeSerializer.h" />
     <ClInclude Include="GameLogic.h" />
     <ClInclude Include="GameObjectFactory.h" />
+    <ClInclude Include="GameStateSystem.h" />
+    <ClInclude Include="IGameState.h" />
+    <ClInclude Include="IntroScreen.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="PlayerStateComponent.h" />
     <ClInclude Include="StdAfx2.h" />

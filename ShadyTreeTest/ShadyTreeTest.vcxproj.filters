@@ -22,6 +22,12 @@
     <ClCompile Include="AttackComponent.cpp">
       <Filter>GameLogic\Custom Components</Filter>
     </ClCompile>
+    <ClCompile Include="GameStateSystem.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroScreen.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObjectFactory.h">
@@ -43,6 +49,15 @@
     </ClInclude>
     <ClInclude Include="AttackComponent.h">
       <Filter>GameLogic\Custom Components</Filter>
+    </ClInclude>
+    <ClInclude Include="IGameState.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroScreen.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateSystem.h">
+      <Filter>GameLogic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
