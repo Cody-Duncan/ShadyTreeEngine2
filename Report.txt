@@ -1,0 +1,322 @@
+
+Final Project
+CS529
+Fall 2013
+
+Instructors:
+	Antoine Rafik Abi Chacra
+	Chris Peters
+Author: Cody Duncan
+
+Name: Super Smash Box
+
+Description:
+	Box fighting arena.
+	Try to knock the other boxes off the screen.
+	
+	Move with arrow keys.
+	Attack by pressing Q and a direction.
+	
+	Pickup powerups for special abilties or effects.
+	
+	Knock the other boxes off to win.
+	Get knocked off 3 times to lose.
+
+Compilation Requirements
+	Visual Studio 2012 - C++
+	DirectX 11 compatible graphics card. Uses default version of DirectX that VS2012 provides.
+
+	Should just build and run
+		Note: ShadyTreeTest runs a postbuild script that copies dlls to the target directory, and the
+		resources folder to the target directory so the executable can find it.
+		
+		If there is an error running from visual studio, try checking that
+			ShadyTreeTest->Properties->Debuggging->WorkingDirectory field is set to $(TargetDir)
+
+Projects in VS Solution
+	ShadyTreeEngine - dll project that builds ShadyTreeEngine.dll in Release and ShadyTreeEngineD.dll in debug
+	ShadyTreeTest   - game specific code and de-serialization. Builds the executable SmashBox.exe
+
+	
+	
+	
+REQUIREMENTS OVERVIEW
+
+Debug Drawing
+	--Basic Debug Drawing: 
+		Draws bounding geometry in red over objects. Draws vector lines to show velocity.
+		Enter key toggles debug drawing.
+	
+		GraphicsSystem.cpp - Line 183 : draws DebugDrawComponents
+		PhysicsSystem.cpp - generateDebugDraw() generates DebugDrawComponents on gameobjects that don't have them
+		                attachDebugDraw() generates and attaches the component
+						RecieveMessage() responds to DebugDrawAllObjects and DebugDrawGameObject messages to 
+							generate DebugDrawComponents during runtime.
+	
+	--Advanced Debug Drawing – Text, duration, or other features
+		Draws game duration (seconds), frames per second, player position, and player damage in top 
+		left while debug draw is on.
+		
+		GraphicsSystem.cpp - responds to DebugDrawText messages to draw text
+		                 responds to ToggleDebugDraw to toggle on/off debug drawing.
+						 
+		Debug drawing is enabled by default.
+	
+Object Architecture
+	--Basic C++ Objects: 
+		See GameObject.h/cpp
+	--Component Based or Other Advanced Design AND
+	--Game Object Ids, Garbage Collection or some form of object management 
+		This engine uses a component based model, with components and game objects being stored in caches.
+		Components
+			Created by ComponentFactory
+			Stored in ComponentCache<ComponentType> that the ComponentFactory manages.
+		GameObjects
+			Created by and stored in GameObjectCache.
+			GameObjectFactory is written on the application side and really wraps the GameObjectCache,
+			so the game can define custom objects that need to be created, like archetypes, plain imagery for UI, etc.
+		
+		GameObjects are given an ID unique amongst all game objects.
+		Components are given an ID unique amongst components of that type.
+		GameObjects store a map of CompoentType to ID that determines what kind and which components are attached.
+			They are universally retrieved from the GameObjectCache and ComponentFactory, so the GameObject
+			does not control the lifetime of its components. Component lifetime and memory are managed by
+			the ComponentFactory/ComponentCaches.
+			
+			Note on component type: component types are stored as integers. See getID<T>() in ComponentTypeID.h. Uses a neat trick
+			with templates generating unique static integers by calls generating the method that stores it.
+			The advantage of the approach is that id's for new components can be generated on the fly, and don't need
+			to be predefined by the engine. This gives the game logic some freedom to define and attach custom components, and 
+			those components also become part of the component memory and lifetime management.
+			
+		The advantage of the caching approach overall is that it creates a nice blackboard pattern.
+		If a system requests a component type, it should pull the entire cache, which then helps prevent cache misses
+		on the same components, which are often called together / iterated over.
+			Example: the graphics system only really needs graphics components and position components. It
+			can just pull those to caches and the game object cache, and then it has good reference locality.
+		
+		No idea if this approach is more performance, but I wanted to experiment with it and see how things went.
+		The luxury of trying odd game object / component management may not be available in later classes.
+		
+		See
+			ComponentCache.h/cpp
+			ComponentFactory.h/cpp
+			GameObjectCache.h/cpp
+			GameObject.h/cpp
+			
+Communication
+	--Basic Events
+		Each System has a RecieveMessage(Message*) function that responds to message types systems are concerned with.
+		ShadyTreeEngine has a instance of itself, CORE, that can call BroadcastMessage(Message*) that will be received
+		by all systems. 
+		
+		See - ShadyTreeEngine.h
+		      ShadyTreeEngine.cpp Line 98
+			  
+	--Function Binding
+		PhysicsComponents have
+			registerCollideHandler() which attaches a function at a handler to a collision event.
+			CollideEvent() which fires all the functors  given from registerCollideHandler.
+			
+			This binds collision handling functions in game logic to the collision events called 
+			by the physics system.
+		
+Data Driven Design
+	--Basic Text Serializion
+		Reads data in JSON format from resource files.
+		See DeSerializer.h/cpp
+	--Creation of objects from data files
+		Level.Initialize() calls DeSerializer.BuildLevel to build platform objects from ArenaLevel.json
+			Level.cpp line 20		Initalize()
+			DeSerializer: line 332  BuildLevel()
+	--Level Files (resources)
+		ArenaLevel.json defines the environment of the game.
+	--Archetypes
+		Deserializer.BuildArchetypes reads Archetypes.json and uses that data to define archetypes for the Player, Enemy, and Powerup'
+		Deserializer.BuildSubtypes reads subtypes.json and builds enemy subtypes archetypes out of the given data.
+		Deserializer.BuildPowerupTypes reads powerupTypes.json and builds powerup subtypes archetypes out of the given data.
+		GameLogic then uses GameObjectFactory.enemyTypes and powerupTypes vectors to find the names of the subtypes to 
+		spawn into the game.
+			See Deserializer.cpp lines
+				294: BuildPowerupTypes
+				255: BuildSubtypes
+				213: BuildArchetypes
+				BaseDeserializer.h/cpp for methods used to deserialized engine defined components, like PhysicsComponent.
+			See resources:
+				subtypes.json
+				Archetypes.json
+				powerupTypes.json
+				
+Graphics
+	--Hardware accelerated sprite rendering (textured quads in OpenGL or DirectX)
+		GraphicsSystem uses DirectX_SpriteBatch to draw sprites. Underneath is the
+		DirectX_GraphicsDevice class which handles setting up the graphics state and wraps the calls.
+		
+		See
+			GraphicsSystem.h/cpp
+			DirectX_SpriteBatch.h/cpp
+			DirectX_GraphicsDevice.h/cpp
+		
+		Also see resources:
+			fighters.png for the spritesheet.
+			
+	--Basic Sprite transformation
+		GraphicsSystem.cpp line 121 creates a transfom from the PositionalComponent.transform(), with adjustments
+			to allow it to rotate around the center of the object.
+		DirectX_SpriteBatch.cpp line 168-171 applies the transform.
+		
+	--Sprite Batching
+		DirectX_SpriteBatch.Draw() (line 146) takes the texture handle, transform, and Rectangular area of texture coordinates, and
+			uses this information to generate and transform the vertices of a quad. The vertices are stored in 
+			batch by texture handle. When End() is called, the batches are drawn, one DrawIndexed call per texture that draws all
+			quads that use that texture.
+	
+	Other notes
+		DirectX_PrimitiveBatch uses a similar technique to the sprite batching, but the objects are drawn in groups by type (triangles and lines) and layer.
+		And it just draws primitive colored geometry, not sprites.
+		
+		DirectX_GraphicsDevice is wrapped by the GraphicsDevice interface (abstract class) to try and separate the underlying graphics implementation 
+		from the GraphicsSystem.
+		
+Physics
+	--Basic collision detection between circles 
+		PhysicsSystem.DetectCollisions() line 122 iterates over PhysicsComponents and calls CollisionCheck between thier collision bodies.
+		CollisionCheck is a wrapper for a jump table that determines collision between:
+			circle/circle
+			AABB/AABB
+			circle/AABB
+			AABB/circle
+		
+		When a collision is detected, a contact is stored in a list of contacts, to be later dealt with.
+		
+		See BB.h/cpp (stands for bounding body 
+			BB_MATH.h/inl for collision detection methods.
+				StaticCircleToStaticCircle()
+				StaticRectToStaticRect()
+				StaticCircleToStaticRectangle()
+			PhysicsSystem.h/cpp line 122
+	
+	--Basic Collision response
+		PhysicsSystem.ResolveContacts (line 239) takes the list of contacts and uses the information to:
+		ResolvePositions() line 177
+			calculates the penetration / (sum inverse mass) to get a value for how much movement to apply to
+			each object in opposite directs to get them to stop interpenetrating, adjusting for mass so that larger objects
+			move less.
+			Objects with 0 inverse mass don't move
+			
+		ResolveVelocities() line 198
+			Uses the separating velocity and restitution to determine the new velocities for the colliding objects.
+			The velocity/inverseMass = impulse, which is then used as an accelerating force on each object, in opposite
+			directions along the contact normal.
+			Has some adjustment for removing separating velocity caused by acceleration on the two objects,
+				helps with acceleration building up too much velocity
+		
+	--Collision between different bodies type
+		Talked about that in Basic Collision detection between circles, see above.
+			
+
+Game Requirements
+	--Human player control of a ship, avatar, or character.
+		Player has control of the Blue Box.
+		See GameLogic.cpp line 192 for the code handing the user inputs.
+	
+	--Game runs at 30 fps most of the time
+		Running on Carr lab machines, never dipped below 60.
+		I leave that to the grader's discretion.
+		
+	--At least two different types of enemies with different behaviors
+	--Additional enemy behavior +2
+		See resource subtypes.json for the mapping between enemy subtypes and their AI.
+		See GameLogic.cpp Lines 555 through 992 for AI code.
+			
+		Yellow Box - ChaseAI (line 555)
+			Runs at the player, tries to push them off the platform.
+			
+		Green Box - Punch AI (line 620)
+			Runs back and forth on the platform, stops, then punches.
+			When the player gets near, starts punching wildly.
+			Tries to move toward the center if airborne.
+			
+		Purple Box - Flying AI (line 730)
+			Periodically jumps at the player with a spin attack. Otherwise
+				just stays in one spot. For some reason often ends up in good spots
+				to knock the player away when it jumps.
+				
+		White Box - Laser AI (line 805)
+			Periodically shoots lasers at the player (Circle/Box collision)
+			If the player jumps higher than the enemy, it jumps to get a better shot.
+			Tries to move toward the center if it gets knocked too far away.
+	
+		Red Box - Exploding AI (line 870)
+			Moves back and forth on platforms.
+			when it stops at the edge, it spins up, then explodes!
+			If knocked away, it uses a quintuple jump to get back to the
+			center of the platform. If it was knocked while 
+			spinning up, it will explode when it lands.
+	
+	--Player has 2 different types of weapons or power ups.
+	--Addition weapon type +2
+		See GameLogic.Update() and after line 1200 for powerup code.
+		See resource powerupTypes.json for the archetypes and their mapping to powerup type
+		
+		Heart Item - Heal powerup
+			heals player damage
+			
+		Hurricane Symbol - Whirl Powerup
+			makes the player spin and attack in a contact radius. Run at enemies with it!
+			
+		Orange Up-Arrow - Jump powerup
+			increases player jump height temporarily
+			
+		Blue Box with speed lines - Speed powerup
+			increases player ground speed. Good for pushing things off.
+			
+		Red explosion symbol - Explosion power up
+			Creates an explosion at the player's location.
+			
+		The whirl, jump, and speed powerups last a few seconds
+		The heal and explosion powerups are instantaneous.
+	
+	
+	--Collision between projectiles, player, and enemies
+		In game
+	--Controls screen 
+		On the intro screen
+	--Menus
+		can select new game or quit at intro screeen, might count as a menu
+	--Win/Lose condition
+		Win - knock the other boxes out of the arena (which is off screen)
+		Lose - get knocked off 3 times.
+		
+Note on data structure usage:
+	Several places in code use a vector where a map would be more appropriate. Unfortunately
+	some areas receive a high volume of requests (like component retrieval), and MVC++ has checked
+	iterators in debug mode. This lead to some debug sessions running incredibly slow / intractable to work with. 
+	It's a known issue, and I got around it by using a vector for the time being, because the keys were int's anyway.
+			
+Additional things that might be noteworthy.
+
+	Resources.cpp line 82 has a function parseResourceIDs()
+	which reads a given directory, finds all the filenames, and stores the 
+	name (without extension) as a resourceID. This makes it so that methods 
+	with Res in the name, like LoadTextureRes(), can retrieve resources via name without
+	having to know the extension.
+		Uses TinyDir by Cong Xu for retrieving the filenames.
+		
+	The code has lots of calls to reporting functions in DebugOutput.h, like
+		DebugPrintf for printing to Visual Studio outpuit and an error log.
+		DebugAssert for assert statements that also report the assert message to the error log.
+	This is used, for example, to report the json reader finding format errors when parsing.
+	
+	Included Stopwatch.h/cpp and OSHighRestimer for timing using the high res clock. Good for figuring out
+	where something was running incredibly slow.
+	
+	InputState.cpp is updated by the WindowSystem.h/cpp and ShadyEngine.cpp
+	Keeps track of the current and previous keyboard/mouse state for input.
+	
+Outside code references
+	https://github.com/cxong/tinydir - TinyDir - for getting filenames in a directory
+	https://directxtk.codeplex.com/  - DirectXToolkit - used WICTextureLoader for loading textures, and 
+										SimpleMath for a robust math library that works with DirectX11's new 
+										math system that requires things be on 16 byte boundaries.
+	http://www.digip.org/jansson/    - Jannson - for parsing Json.

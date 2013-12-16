@@ -44,6 +44,7 @@
     <OutDir>$(SolutionDir)build\$(Configuration)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)build\obj\$(Configuration)\$(ProjectName)\</IntDir>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <TargetName>SmashBox</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

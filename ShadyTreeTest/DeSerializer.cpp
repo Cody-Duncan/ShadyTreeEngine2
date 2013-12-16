@@ -67,6 +67,7 @@ GameObject* ParseArchetype(json_t* player)
         else if( sameKey(key, "Physics") )
         {
             PhysicsComponent* phys_c = CF.createComponent<PhysicsComponent>();
+            phys_c->clearCollideHandlers();
             parsePhysics(component, phys_c);
             go->attachComponent(phys_c);
         }
@@ -176,6 +177,7 @@ GameObject* ParsePlatform(json_t* platform)
         else if( sameKey(key, "Physics") )
         {
             PhysicsComponent* phys_c = CF.createComponent<PhysicsComponent>();
+            phys_c->clearCollideHandlers();
             parsePhysics(component, phys_c);
             go->attachComponent(phys_c);
         }

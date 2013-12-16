@@ -710,6 +710,7 @@ void GameLogic::PunchAI(float deltaTime, int id)
     }
     else
     {
+        //moves toward the center if airborne
         float centerDir = level.LevelPos.x - pos.position.x;
         if(centerDir < 0)
         {
@@ -964,12 +965,16 @@ void GameLogic::ExplodingAI(float deltaTime, int id)
     }
     else
     {
+        //quintuple jump
         if(state.jumpCount < 5 && state.jumpTimer.Tick(deltaTime))
         {
             phys.velocity.y = -state.getJumpVelocity()/1.5f;
             ++state.jumpCount;
             state.jumpTimer.Start(EXPLODE_AI_JUMP_PERIOD);
         }
+
+        //moves toward the center if airborne
+        //added some static movement to make it floaty
         float centerDir = level.LevelPos.x - pos.position.x;
         if(centerDir < 0)
         {
@@ -1086,6 +1091,7 @@ void GameLogic::generateAttack(int ownerID, AttackDir aDir, AttackType aType)
     }
 
     PhysicsComponent* atkPhys = CF.createComponent<PhysicsComponent>();
+    atkPhys->clearCollideHandlers();
     PrimitiveGraphicsComponent* atkG = CF.createComponent<PrimitiveGraphicsComponent>();
     
     if(aType == AttackType::Regular)

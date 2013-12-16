@@ -34,7 +34,7 @@ public:
 
     template <class T, void (T::*TMethod)(Message*)>
     void registerCollideHandler(T* object);
-    void clearCollideHandlers();
+    ST_API void clearCollideHandlers();
     void CollideEvent(ContactMessage* m);
 
 private:
