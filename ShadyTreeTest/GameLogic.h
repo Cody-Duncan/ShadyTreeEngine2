@@ -50,5 +50,7 @@ private:
 
     GameObject* winImage;
     GameObject* loseImage;
+
+    double duration;
 };
 

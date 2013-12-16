@@ -9,6 +9,7 @@ enum MessageType
     DebugDrawGameObject,
     DebugDrawAllObjects,
     ToggleDebugDraw,
+    DebugDrawText,
     WorldSizeChange,
     ChangeGravity
 };

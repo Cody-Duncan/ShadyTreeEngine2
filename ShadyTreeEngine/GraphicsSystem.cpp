@@ -132,6 +132,8 @@ void GraphicsSystem::Update(float deltaTime)
             }
         }
 
+    if(debugDraw)
+    {
         //calculate and draw FPS
         ++count;
         totalTime += deltaTime;
@@ -145,6 +147,16 @@ void GraphicsSystem::Update(float deltaTime)
             count = 0;
             totalTime = 0;
         }
+
+        for(unsigned int i = 0; i < textDrawQueue.size(); ++i)
+        {
+            DrawTextMessage& msg = textDrawQueue[i];
+            spriteBatch->TextDraw(msg.pos, msg.text.c_str());
+        }
+    }
+
+
+    textDrawQueue.clear();
     
     //END SPRITE DRAWING
     spriteBatch->End();
@@ -218,6 +230,10 @@ void GraphicsSystem::RecieveMessage(Message* msg)
     if(msg->type == MessageType::ToggleDebugDraw)
     {
         debugDraw = !debugDraw;
+    }
+    if(msg->type == MessageType::DebugDrawText)
+    {
+        textDrawQueue.push_back(*static_cast<DrawTextMessage*>(msg));
     }
 }
 

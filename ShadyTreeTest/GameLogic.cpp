@@ -94,6 +94,7 @@ void GameLogic::Load()
     loseState = false;
 
     PlayerLives = 3;
+    duration = 0;
 }
 
 ////////////////////////////////
@@ -106,6 +107,8 @@ void GameLogic::Update(float deltaTime)
 {
     GameObjectCache& GOC = GameObjectCache::Instance();
     ComponentFactory& CF = ComponentFactory::Instance();
+
+    duration += deltaTime;
 
     //Check Win/Lose conditions
     if(enemies.size() == 0 && !winState && !loseState)
@@ -195,7 +198,29 @@ void GameLogic::Update(float deltaTime)
         //laser test
         if(gINPUTSTATE->keyPressed('E'))
         {
-            generateAttack(playerObj->id, AttackDir::Attack_Right, AttackType::Laser);
+            if( gINPUTSTATE->keyDown(VK_LEFT) ) //left punch
+            {
+                generateAttack(playerObj->id, AttackDir::Attack_Left, AttackType::Regular);
+                state.attackWait.Start(0.1f); 
+            }
+
+            if(gINPUTSTATE->keyDown(VK_RIGHT)) //right punch
+            {
+                generateAttack(playerObj->id, AttackDir::Attack_Right, AttackType::Regular);
+                state.attackWait.Start(0.1f);
+            }
+
+            if(gINPUTSTATE->keyDown(VK_UP)) //up punch
+            {
+                generateAttack(playerObj->id, AttackDir::Attack_Up, AttackType::Regular);
+                state.attackWait.Start(0.1f);
+            }
+
+            if(gINPUTSTATE->keyDown(VK_DOWN)) //down double-sided "kick"
+            {
+                generateAttack(playerObj->id, AttackDir::Attack_Down, AttackType::Regular);
+                state.attackWait.Start(0.1f);
+            }
         }
 
         if(state.airborne) //airborne
@@ -320,10 +345,16 @@ void GameLogic::Update(float deltaTime)
         {
             ++iter;
         }
-       
     }
 
-    
+    // Draw some debug information.
+    char buf[100];
+    sprintf_s(buf, "Duration: %8.2f", duration);
+    CORE->BroadcastMessage( &DrawTextMessage(std::string(buf) ,Vector2(1,16)) );
+    sprintf_s(buf, "Player Damage: %i%%", state.damage);
+    CORE->BroadcastMessage( &DrawTextMessage( buf ,Vector2(1,32)) );
+    sprintf_s(buf, "Player Position: %6.2f, %6.2f", pos.position.x, pos.position.y);
+    CORE->BroadcastMessage( &DrawTextMessage( buf ,Vector2(1,48)) );
 }
 
 void GameLogic::Unload()
@@ -644,7 +675,7 @@ void GameLogic::FlyAI(float deltaTime, int id)
         if(ai.stateTimer.Tick(deltaTime))
         {
             ai.stateTimer.Start(2.0f);
-            generateAttack(id, AttackDir::Attack_Left, AttackType::Airborne);
+            generateAttack(id, AttackDir::Attack_Left, AttackType::Spin);
             ai.attackTimer.Start(0.5f);
 
             phys.velocity.y = -state.jumpVelocity;
@@ -982,7 +1013,7 @@ void GameLogic::generateAttack(int ownerID, AttackDir aDir, AttackType aType)
             atkC->damage = 5;
         }
     }
-    else if (aType == AttackType::Airborne)
+    else if (aType == AttackType::Spin)
     {
         makeSpin(atkPhys, ownerDim.x/1.5f, atkG);
         atkG->color = spinColor;

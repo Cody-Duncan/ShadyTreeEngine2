@@ -13,7 +13,7 @@ enum AttackDir
 enum AttackType
 {
     Regular,
-    Airborne,
+    Spin,
     Laser,
     Explosion
 };

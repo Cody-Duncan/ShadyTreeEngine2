@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ISystem.h"
+#include "DebugDrawMessage.h"
 
 class GraphicsDevice;
 class SpriteBatch;
@@ -30,4 +31,6 @@ private:
     PrimitiveBatch* primitiveBatch;
 
     bool debugDraw;
+
+    std::vector<DrawTextMessage> textDrawQueue;
 };
