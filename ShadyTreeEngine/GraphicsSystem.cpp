@@ -74,19 +74,19 @@ void GraphicsSystem::Update(float deltaTime)
     //BEGIN DRAWING
     device->clearRenderTarget();
 
-    
-    primitiveBatch->Begin();
+    //Draw low level primitives
+    primitiveBatch->Begin(true);
     for(unsigned int i = 0; i < primitivCompLength; i++)
     {
         PrimitiveGraphicsComponent& pg= primC[i];
-        if(pg.active)
+        if(pg.active && pg.layer >=0 && pg.layer <= 4)
         {
             GameObject& go = *GOC.Get(pg.parentID);
             PositionalComponent* posC = go.getComponent<PositionalComponent>();
             DebugAssert(posC, "Positional Component not found or null.");
             DebugAssert(posC->active, "Trying to draw active graphicsComponent, with nonactive positionalComponent.");
 
-            //center the transform?
+            //translate to center before transforming
             Matrix transform = Matrix::CreateTranslation(-pg.center.x, -pg.center.y, 0) * posC->Transform();
 
             primitiveBatch->DrawTriangles(pg.layer,pg.triangleListPoints.data(), pg.triangleListPoints.size(), transform, pg.color);
@@ -148,6 +148,25 @@ void GraphicsSystem::Update(float deltaTime)
     
     //END SPRITE DRAWING
     spriteBatch->End();
+
+    primitiveBatch->Begin(true);
+    for(unsigned int i = 0; i < primitivCompLength; i++)
+    {
+        PrimitiveGraphicsComponent& pg= primC[i];
+        if(pg.active && pg.layer >=5 && pg.layer <= 9)
+        {
+            GameObject& go = *GOC.Get(pg.parentID);
+            PositionalComponent* posC = go.getComponent<PositionalComponent>();
+            DebugAssert(posC, "Positional Component not found or null.");
+            DebugAssert(posC->active, "Trying to draw active graphicsComponent, with nonactive positionalComponent.");
+
+            //translate to center before transforming
+            Matrix transform = Matrix::CreateTranslation(-pg.center.x, -pg.center.y, 0) * posC->Transform();
+
+            primitiveBatch->DrawTriangles(pg.layer,pg.triangleListPoints.data(), pg.triangleListPoints.size(), transform, pg.color);
+        }
+    }
+    primitiveBatch->End();
     
     //DEBUG DRAWING
     if(debugDraw && CF.hasComponentCache<DebugDrawComponent>())
@@ -168,11 +187,6 @@ void GraphicsSystem::Update(float deltaTime)
                 //center the transform?
                 Matrix transform = Matrix::CreateTranslation(posC->position.x + pg.offset.x, posC->position.y + pg.offset.y, 0);
                 
-                    
-                    /*posC->rotationCentered ?
-                    Matrix::CreateTranslation(-g->textureArea.dimensions.x/2, -g->textureArea.dimensions.y/2, 0) * posC->Transform() :
-                    posC->Transform();*/
-
                 primitiveBatch->DrawTriangles(10, pg.geometry.data(), pg.geometry.size(), transform, pg.color);
                 primitiveBatch->DrawLines(11, pg.lines.data(), pg.lines.size(), transform, pg.color);
             }

@@ -4,8 +4,13 @@
 
 PrimitiveGraphicsComponent::PrimitiveGraphicsComponent(void)
 {
+    InitialValues();
 }
 
+PrimitiveGraphicsComponent::PrimitiveGraphicsComponent(int _id, bool _active) : Component(_id, _active)
+{
+    InitialValues();
+}
 
 PrimitiveGraphicsComponent::~PrimitiveGraphicsComponent(void)
 {
@@ -19,4 +24,11 @@ void PrimitiveGraphicsComponent::CloneFrom(Component* _oldGC)
     color = oldGC->color;
     center = oldGC->center;
     triangleListPoints = oldGC->triangleListPoints;
+}
+
+void PrimitiveGraphicsComponent::InitialValues()
+{
+    layer = 0;
+    color = Color(1,1,1,1);
+    center = Vector2(0,0);
 }

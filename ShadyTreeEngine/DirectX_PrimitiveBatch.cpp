@@ -109,7 +109,7 @@ bool DirectX_PrimitiveBatch::hasBatchBuffer(unsigned int layer, PrimitiveType ty
 
 void DirectX_PrimitiveBatch::addBatchBuffer(unsigned int layer, PrimitiveType type)
 {
-    if(layer >= triBatchVBuffers[type].size())
+    if(!hasBatchBuffer(layer, type))
     {
         DebugAssert(device, "Spritebatch's graphicsDevice is null");
 
@@ -141,16 +141,17 @@ void DirectX_PrimitiveBatch::addBatchBuffer(unsigned int layer, PrimitiveType ty
 
 void DirectX_PrimitiveBatch::resetBatchBuffer(unsigned int layer, PrimitiveType type)
 {
-    VertexBufferHandle triVBH = triBatchVBuffers[type][layer];
-    if(triVBH.VbufferID == Invalid_Buffer_ID) //do not reset invalid buffers
-        return;
+    if(hasBatchBuffer(layer, type))
+    {
+        VertexBufferHandle triVBH = triBatchVBuffers[type][layer];
 
-    //reset startVertex on VBuffer data
-    VertexBufferData& triBufferData = BufferResourcer::Instance().getVBufferData(triVBH);
-    triBufferData.startVertex = 0;
+        //reset startVertex on VBuffer data
+        VertexBufferData& triBufferData = BufferResourcer::Instance().getVBufferData(triVBH);
+        triBufferData.startVertex = 0;
 
-    //reset batch
-    triBatch[type][layer].clear();
+        //reset batch
+        triBatch[type][layer].clear();
+    }
 }
 
 void DirectX_PrimitiveBatch::resetAllBatchBuffers()

@@ -9,6 +9,7 @@
 #include "AIComponent.h"
 #include "AttackComponent.h"
 #include "GraphicsComponent.h"
+#include "PrimitiveGraphicsComponent.h"
 
 #include "DeSerializer.h"
 #include "Messenger.h"
@@ -252,13 +253,6 @@ void GameLogic::Update(float deltaTime)
         absClamp(phys.velocity.x, state.maxVelX);
         absClamp(phys.velocity.y, state.maxVelY);
 
-        if(gINPUTSTATE->keyPressed(VK_BACK)) //insta-death button
-        {
-            state.knocked = true;
-            state.knockedTimer.Start(1.0f);
-            phys.velocity = Vector2(10000,-10000);
-            CORE->BroadcastMessage(&ChangeStateMessage(State::IntroState));
-        }
     }
     else //do nothing if knocked, player loses control momentarily
     {
@@ -266,6 +260,16 @@ void GameLogic::Update(float deltaTime)
         {
             state.knocked = false;
         }
+    }
+
+    
+    if(gINPUTSTATE->keyPressed(VK_BACK)) //back to intro screen
+    {
+        CORE->BroadcastMessage(&ChangeStateMessage(State::IntroState));
+    }
+    if(gINPUTSTATE->keyPressed(VK_RETURN)) //back to intro screen
+    {
+        CORE->BroadcastMessage(&ToggleDebugDrawMessage());
     }
 
     //update enemy AI
@@ -853,7 +857,7 @@ void GameLogic::ExplodingAI(float deltaTime, int id)
 // Attack Object Generation
 ////////////////////////////////
 
-void makePunch(PhysicsComponent* atkPhys)
+void makePunch(PhysicsComponent* atkPhys, PrimitiveGraphicsComponent* atkG)
 {
     BB_Rectangle* attackBody = new BB_Rectangle();
     attackBody->extents = Vector2(10,10);
@@ -862,9 +866,12 @@ void makePunch(PhysicsComponent* atkPhys)
     atkPhys->InvMass = 1.0f;
     atkPhys->IsStatic = true;
     atkPhys->IsGhost = true;   
+
+    atkPhys->body->generateGeometry(atkG->triangleListPoints);
+    atkG->layer = 5;
 }
 
-void makeKick(PhysicsComponent* atkPhys)
+void makeKick(PhysicsComponent* atkPhys,  PrimitiveGraphicsComponent* atkG)
 {
     BB_Rectangle* attackBody = new BB_Rectangle();
     attackBody->extents = Vector2(70,10);
@@ -873,9 +880,12 @@ void makeKick(PhysicsComponent* atkPhys)
     atkPhys->InvMass = 1.0f;
     atkPhys->IsStatic = true;
     atkPhys->IsGhost = true;   
+
+    atkPhys->body->generateGeometry(atkG->triangleListPoints);
+    atkG->layer = 5;
 }
 
-void makeSpin(PhysicsComponent* atkPhys, float radius)
+void makeSpin(PhysicsComponent* atkPhys, float radius,  PrimitiveGraphicsComponent* atkG)
 {
     BB_Circle* attackBody = new BB_Circle();
     attackBody->radius = radius;
@@ -883,10 +893,13 @@ void makeSpin(PhysicsComponent* atkPhys, float radius)
     atkPhys->Mass = 1.0f;
     atkPhys->InvMass = 1.0f;
     atkPhys->IsStatic = true;
-    atkPhys->IsGhost = true;   
+    atkPhys->IsGhost = true;  
+
+    atkPhys->body->generateGeometry(atkG->triangleListPoints);
+    atkG->layer = 5;
 }
 
-void makeLaser(PhysicsComponent* atkPhys)
+void makeLaser(PhysicsComponent* atkPhys,  PrimitiveGraphicsComponent* atkG)
 {
     BB_Circle* attackBody = new BB_Circle();
     attackBody->radius = 10.0f;
@@ -895,10 +908,17 @@ void makeLaser(PhysicsComponent* atkPhys)
     atkPhys->InvMass = 1.0f;
     atkPhys->IsStatic = false;
     atkPhys->IsGhost = true;   
+
+    atkPhys->body->generateGeometry(atkG->triangleListPoints);
+    atkG->layer = 5;
 }
 
 void GameLogic::generateAttack(int ownerID, AttackDir aDir, AttackType aType)
 {
+    static Color gloveColor(1,0.5f,0.5f,1);
+    static Color spinColor(1,1,1,0);
+    static Color laserColor(0,0,1,1);
+    static Color explosionColor(1,0,0,0.2f);
     ComponentFactory& CF = ComponentFactory::Instance();
 
     GameObject* attackObj = GameObjectCache::Instance().Create();
@@ -921,48 +941,59 @@ void GameLogic::generateAttack(int ownerID, AttackDir aDir, AttackType aType)
     }
 
     PhysicsComponent* atkPhys = CF.createComponent<PhysicsComponent>();
+    PrimitiveGraphicsComponent* atkG = CF.createComponent<PrimitiveGraphicsComponent>();
     
     if(aType == AttackType::Regular)
     {
         if(aDir == AttackDir::Attack_Left)
         {
-            makePunch(atkPhys);
+            makePunch(atkPhys, atkG);
+            atkG->color = gloveColor;
             atkPhys->offset = Vector2(-ownerDim.x/2 - 35, 0);
+            atkG->center = -atkPhys->offset;
             atkC->attackTimer.Start(0.1f);
             atkC->damage = 5;
         }
         else if(aDir == AttackDir::Attack_Right)
         {
-            makePunch(atkPhys);
+            makePunch(atkPhys,atkG);
+            atkG->color = gloveColor;
             atkPhys->offset = Vector2(ownerDim.x/2 + 35, 0);
+            atkG->center = -atkPhys->offset;
             atkC->attackTimer.Start(0.1f);
             atkC->damage = 5;
         }
         else if(aDir == AttackDir::Attack_Up)
         {
-            makePunch(atkPhys);
+            makePunch(atkPhys, atkG);
+            atkG->color = gloveColor;
             atkPhys->offset = Vector2(0, -ownerDim.y/2 - 35);
+            atkG->center = -atkPhys->offset;
             atkC->attackTimer.Start(0.1f);
             atkC->damage = 5;
         }
         else if(aDir == AttackDir::Attack_Down)
         {
-            makeKick(atkPhys);
+            makeKick(atkPhys, atkG);
+            atkG->color = gloveColor;
             atkPhys->offset = Vector2(0, ownerDim.y/2);
+            atkG->center = -atkPhys->offset;
             atkC->attackTimer.Start(0.1f);
             atkC->damage = 5;
         }
     }
     else if (aType == AttackType::Airborne)
     {
-        makeSpin(atkPhys, ownerDim.x/1.5f);
+        makeSpin(atkPhys, ownerDim.x/1.5f, atkG);
+        atkG->color = spinColor;
         atkPhys->offset = Vector2(0, 0);
         atkC->attackTimer.Start(0.5f);
         atkC->damage = 10;
     }
     else if(aType == AttackType::Laser)
     {
-        makeLaser(atkPhys);
+        makeLaser(atkPhys, atkG);
+        atkG->color = laserColor;
         
         if(aDir == AttackDir::Attack_Left)
         {
@@ -980,7 +1011,8 @@ void GameLogic::generateAttack(int ownerID, AttackDir aDir, AttackType aType)
     }
     else if(aType == AttackType::Explosion)
     {
-        makeSpin(atkPhys, 100.0f);
+        makeSpin(atkPhys, 100.0f, atkG);
+        atkG->color = explosionColor;
         atkPhys->offset = Vector2(0, 0);
         atkC->attackTimer.Start(0.5f);
         atkC->damage = 30;
@@ -997,6 +1029,7 @@ void GameLogic::generateAttack(int ownerID, AttackDir aDir, AttackType aType)
     
     attackObj->attachComponent(atkPos);
     attackObj->attachComponent(atkPhys);
+    attackObj->attachComponent(atkG);
     attackObj->attachComponent(atkC);
     CORE->BroadcastMessage(&AttachDebugDrawMessage(attackObj->id));
 
