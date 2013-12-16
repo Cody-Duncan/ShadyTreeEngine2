@@ -28,6 +28,9 @@
     <ClCompile Include="GameLogic.cpp">
       <Filter>GameLogic</Filter>
     </ClCompile>
+    <ClCompile Include="PowerUpComponent.cpp">
+      <Filter>GameLogic\Custom Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObjectFactory.h">
@@ -58,6 +61,9 @@
     </ClInclude>
     <ClInclude Include="GameLogic.h">
       <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerupComponent.h">
+      <Filter>GameLogic\Custom Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

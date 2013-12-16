@@ -56,6 +56,7 @@ void GameLogic::Load()
     //build player
     s.BuildArchetypes("Archetypes");
     s.BuildSubtypes("subtypes");
+    s.BuildPowerupTypes("powerupTypes");
 
     playerObj = GOF.cloneArchetype("Player");
     PlayerStateComponent* state = ComponentFactory::Instance().createComponent<PlayerStateComponent>();
@@ -365,7 +366,7 @@ void GameLogic::Unload()
     level.Dispose();
 
     GameObjectFactory& GOF = GameObjectFactory::Instance();
-    GOF.enemyTypes.clear();
+    GOF.clearSubtypes();
     GOF.clearArchetypes();
     
 

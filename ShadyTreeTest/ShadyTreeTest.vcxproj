@@ -130,6 +130,7 @@
     <ClCompile Include="IntroScreen.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="PlayerStateComponent.cpp" />
+    <ClCompile Include="PowerUpComponent.cpp" />
     <ClCompile Include="StdAfx2.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">StdAfx2.h</PrecompiledHeaderFile>
@@ -148,6 +149,7 @@
     <ClInclude Include="IntroScreen.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="PlayerStateComponent.h" />
+    <ClInclude Include="PowerupComponent.h" />
     <ClInclude Include="StdAfx2.h" />
   </ItemGroup>
   <ItemGroup>

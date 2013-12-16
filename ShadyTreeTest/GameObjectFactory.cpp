@@ -74,6 +74,11 @@ void GameObjectFactory::addEnemyType(std::string archetypeName)
     enemyTypes.push_back(archetypeName);
 }
 
+void GameObjectFactory::addPowerupType(std::string archetypeName)
+{
+    powerupTypes.push_back(archetypeName);
+}
+
 void GameObjectFactory::clearArchetypes()
 {
     DebugPrintf("GAMELOGIC: Destroying Archetypes\n");
@@ -82,4 +87,9 @@ void GameObjectFactory::clearArchetypes()
         GameObjectCache::Instance().DestroyNow(iter->second);
     }
     archetypes.clear();
+}
+void GameObjectFactory::clearSubtypes()
+{
+    enemyTypes.clear();
+    powerupTypes.clear();
 }

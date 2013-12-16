@@ -1,0 +1,66 @@
+{
+	"Heal Item":
+	{
+		"Base": "Powerup",
+		"Graphics":
+		{
+			"textureArea": [0,32,16,16]
+		},
+		"PowerupComponent":
+		{
+			"type": "Heal"
+		}
+	},
+	
+	"Whirl Item":
+	{
+		"Base": "Powerup",
+		"Graphics":
+		{
+			"textureArea": [16,32,16,16]
+		},
+		"PowerupComponent":
+		{
+			"type": "Whirl"
+		}
+	},
+	
+	"Jump Item":
+	{
+		"Base": "Powerup",
+		"Graphics":
+		{
+			"textureArea": [32,32,16,16]
+		},
+		"PowerupComponent":
+		{
+			"type": "Jump"
+		}
+	},
+	
+	"Speed Item":
+	{
+		"Base": "Powerup",
+		"Graphics":
+		{
+			"textureArea": [48,32,16,16]
+		},
+		"PowerupComponent":
+		{
+			"type": "Speed"
+		}
+	},
+	
+	"Boom Item":
+	{
+		"Base": "Powerup",
+		"Graphics":
+		{
+			"textureArea": [0,48,16,16]
+		},
+		"PowerupComponent":
+		{
+			"type": "Boom"
+		}
+	}
+}

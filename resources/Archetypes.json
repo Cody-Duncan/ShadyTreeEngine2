@@ -61,5 +61,39 @@
 		},
 		"PlayerStateComponent":
 		{}
-    }
+    },
+	"Powerup":
+	{
+		"Graphics": 
+        {
+          "texture": "fighters",
+          "textureArea": [0,32,16,16]
+        },
+		"Position":
+		{
+			"rotation": 0.0,
+			"scale": 3.4375,
+			"rotationCentered": true
+		},
+		"Physics":
+		{
+			"static": false,
+			"mass": 500.0,
+
+			"velocity": [0.0,0.0],
+			"acceleration":[0,0],
+
+			"body": 
+			{ 
+				"rectangle":
+				{
+					"dimension": [55,55]
+				}
+			}
+		},
+		"PowerupComponent":
+		{
+			"type": "Heal"
+		}
+	}
 }
