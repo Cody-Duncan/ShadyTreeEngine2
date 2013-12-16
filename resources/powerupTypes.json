@@ -17,7 +17,7 @@
 		"Base": "Powerup",
 		"Graphics":
 		{
-			"textureArea": [16,32,16,16]
+			"textureArea": [17,32,16,16]
 		},
 		"PowerupComponent":
 		{
