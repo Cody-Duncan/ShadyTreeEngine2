@@ -19,6 +19,7 @@ void GameObject::clearComponents()
     {
         ComponentFactory::Instance().deleteComponent(iter->second,iter->first);
     }
+    components.clear();
 }
 
 void  GameObject::CloneFrom(int ObjectID)

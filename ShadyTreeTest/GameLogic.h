@@ -25,6 +25,7 @@ private:
     GameObject* playerObj;
     std::list<GameObject*> enemies;
     std::list<GameObject*> attacks;
+    std::list<GameObject*> powerups;
     Level level;
     int PlayerLives;
     
@@ -38,11 +39,21 @@ private:
     void ExplodingAI(float deltaTime, int id);
     std::unordered_map<std::string, void (GameLogic::*)(float, int)> aiMap;
 
+    void HealUp(float deltaTime, int id);
+    void WhirlUp(float deltaTime, int id);
+    void JumpUp(float deltaTime, int id);
+    void SpeedUp(float deltaTime, int id);
+    void BoomUp(float deltaTime, int id);
+    std::unordered_map<std::string, void (GameLogic::*)(float, int)> powerMap;
+
     void CollideEvent(Message* msg);
     void PlayerAttackCollision(Message* msg);
     void EnemyAttackCollision(Message* msg);
+    void PowerupCollision(Message* msg);
 
     void generateAttack(int owner, AttackDir, AttackType);
+
+    void generatePowerUp();
 
     Timer winTimer;
     bool winState;
@@ -52,5 +63,8 @@ private:
     GameObject* loseImage;
 
     double duration;
+
+    Timer powerUpDropTimer;
+    float powerupDropPeriod;
 };
 

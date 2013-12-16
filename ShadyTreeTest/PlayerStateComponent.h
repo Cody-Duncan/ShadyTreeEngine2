@@ -21,6 +21,12 @@ public:
     float maxVelY;
     float jumpVelocity;
 
+    float jumpBonus;
+    float moveBonus;
+
+    float getMovementSpeed();
+    float getJumpVelocity();
+
     Timer knockedTimer;
     Timer jumpTimer;
     Timer attackWait;

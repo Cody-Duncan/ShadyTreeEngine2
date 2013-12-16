@@ -5,7 +5,7 @@
 int GameObjectCache::genID = 0;
 
 
-#define DEFAULT_NUM_OBJECTS 200
+#define DEFAULT_NUM_OBJECTS 512
 #define INACTIVE_GAMEOBJECT_ID -1
 
 
@@ -88,10 +88,13 @@ void GameObjectCache::DestroyLater(int id)
 
 void GameObjectCache::DestroyCleanup()
 {
+    cleanupList.sort();
+    cleanupList.unique();
     for(std::list<int>::iterator iter = cleanupList.begin(); iter != cleanupList.end(); ++iter)
-    {
+    {    
         deactivateGameObject(*iter);
     }
+    cleanupList.clear();
 }
 
 

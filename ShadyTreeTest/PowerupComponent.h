@@ -20,4 +20,6 @@ public:
     virtual void CloneFrom(Component* c);
 
     std::string powerType;
+    Timer spawntimer;
+    Timer powerTimer;
 };

@@ -6,6 +6,7 @@
 #include "Stopwatch.h"
 #include "GameObjectCache.h"
 #include "Resources.h"
+#include "GameObjectCache.h"
 
 ShadyTreeEngine* CORE;
 
@@ -52,6 +53,9 @@ void ShadyTreeEngine::Run()
             deltaTime = 1.0f/60.0f;
 
         Update(deltaTime);
+
+        GameObjectCache::Instance().DestroyCleanup();
+
         gINPUTSTATE->shift();
         //Sleep(1);
     }

@@ -3,7 +3,7 @@
 #include "Resources.h"
 #include "DirectX_GraphicsDevice.h"
 
-#define BatchSize 2000
+#define BatchSize 4096
 #define Invalid_Buffer_ID -1
 
 DirectX_PrimitiveBatch::DirectX_PrimitiveBatch(GraphicsDevice* deviceIn) : 

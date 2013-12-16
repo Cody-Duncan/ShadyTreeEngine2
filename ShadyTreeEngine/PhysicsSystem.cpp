@@ -275,6 +275,12 @@ void attachDebugDraw(GameObject& go)
         return;
 
     DebugDrawComponent* newDDC = CF.createComponent<DebugDrawComponent>();
+    if(newDDC->geometry.size() > 0 || newDDC->lines.size() > 0)
+    {
+        newDDC->geometry.clear();
+        newDDC->lines.clear();
+    }
+        
     PhysicsComponent* phys = go.getComponent<PhysicsComponent>();
 
     newDDC->lines.push_back(Vector2(0,0));

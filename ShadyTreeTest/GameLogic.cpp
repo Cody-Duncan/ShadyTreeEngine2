@@ -10,6 +10,7 @@
 #include "AttackComponent.h"
 #include "GraphicsComponent.h"
 #include "PrimitiveGraphicsComponent.h"
+#include "PowerupComponent.h"
 
 #include "DeSerializer.h"
 #include "Messenger.h"
@@ -20,6 +21,16 @@
 #include "ChangeGravityMessage.h"
 #include "ChangeStateMessage.h"
 
+#include <time.h>
+#include <random>
+
+
+#define PLAYER_LIVES_NUM 3
+#define POWERUP_DROP_PERIOD 7.0f
+#define WIN_TIMER_DURATION 3.0f
+
+#define HIT_DIRECTION_ANGLE 0.7f
+#define HIT_VELOCITY_MULTIPLIER 1500
 
 GameLogic::GameLogic(void)
 {
@@ -40,13 +51,18 @@ void GameLogic::Init()
     aiMap["FlyAI"] = &GameLogic::FlyAI;
     aiMap["LaserAI"] = &GameLogic::LaserAI;
     aiMap["ExplodingAI"] = &GameLogic::ExplodingAI;
+
+    powerMap["Heal"] = &GameLogic::HealUp;
+    powerMap["Whirl"] = &GameLogic::WhirlUp;
+    powerMap["Jump"] = &GameLogic::JumpUp;
+    powerMap["Speed"] = &GameLogic::SpeedUp;
+    powerMap["Boom"] = &GameLogic::BoomUp;
 }
 
 void GameLogic::Load()
 {
     DebugPrintf("GAME: Loading Game Logic\n");
 
-    GameObjectCache::Instance().Reserve(400);
     GameObjectFactory& GOF = GameObjectFactory::Instance();
     
     //Build Level
@@ -94,9 +110,18 @@ void GameLogic::Load()
     winState = false;
     loseState = false;
 
-    PlayerLives = 3;
+    PlayerLives = PLAYER_LIVES_NUM;
+    powerupDropPeriod = POWERUP_DROP_PERIOD;
+    powerUpDropTimer.Start(powerupDropPeriod);
     duration = 0;
+    srand ((unsigned int)time(NULL));
 }
+
+
+
+
+
+
 
 ////////////////////////////////
 //UPDATE METHOD
@@ -115,20 +140,20 @@ void GameLogic::Update(float deltaTime)
     if(enemies.size() == 0 && !winState && !loseState)
     {
         winState = true;
-        winTimer.Start(3.0f);
+        winTimer.Start(WIN_TIMER_DURATION);
         winImage->getComponent<GraphicsComponent>()->active = true;
     }
     if(PlayerLives <= 0 && !winState && !loseState)
     {
         loseState = true;
-        winTimer.Start(3.0f);
+        winTimer.Start(WIN_TIMER_DURATION);
         loseImage->getComponent<GraphicsComponent>()->active = true;
 
         //delete the enemies
         auto enemyI = enemies.begin();
         while( enemyI != enemies.end() )
         {
-            GOC.DestroyNow((*enemyI)->id);
+            GOC.DestroyLater((*enemyI)->id);
             enemies.erase(enemyI++);
         }
     }
@@ -156,7 +181,6 @@ void GameLogic::Update(float deltaTime)
         state.damage= 0;
         --PlayerLives;
     }
-
    
     state.attackWait.Tick(deltaTime);
     state.knockedTimer.Tick(deltaTime);
@@ -167,7 +191,6 @@ void GameLogic::Update(float deltaTime)
         //check for attack input
         if(gINPUTSTATE->keyPressed('Q'))
         {
-            DebugPrintf("Hit Q:%f/%f\n", state.attackWait.passed, state.attackWait.wait);
             if(state.attackWait.IsDone()) //don't spam attacks
             {
                 if( gINPUTSTATE->keyDown(VK_LEFT) ) //left punch
@@ -196,34 +219,6 @@ void GameLogic::Update(float deltaTime)
             }
         }
 
-        //laser test
-        if(gINPUTSTATE->keyPressed('E'))
-        {
-            if( gINPUTSTATE->keyDown(VK_LEFT) ) //left punch
-            {
-                generateAttack(playerObj->id, AttackDir::Attack_Left, AttackType::Regular);
-                state.attackWait.Start(0.1f); 
-            }
-
-            if(gINPUTSTATE->keyDown(VK_RIGHT)) //right punch
-            {
-                generateAttack(playerObj->id, AttackDir::Attack_Right, AttackType::Regular);
-                state.attackWait.Start(0.1f);
-            }
-
-            if(gINPUTSTATE->keyDown(VK_UP)) //up punch
-            {
-                generateAttack(playerObj->id, AttackDir::Attack_Up, AttackType::Regular);
-                state.attackWait.Start(0.1f);
-            }
-
-            if(gINPUTSTATE->keyDown(VK_DOWN)) //down double-sided "kick"
-            {
-                generateAttack(playerObj->id, AttackDir::Attack_Down, AttackType::Regular);
-                state.attackWait.Start(0.1f);
-            }
-        }
-
         if(state.airborne) //airborne
         {
             //input causes velocity change, not absolute.
@@ -237,7 +232,7 @@ void GameLogic::Update(float deltaTime)
             }
             if(gINPUTSTATE->keyPressed(VK_SPACE) && state.jumpCount < 2 && state.jumpTimer.IsDone()) //jump
             {
-                phys.velocity.y = -state.jumpVelocity;
+                phys.velocity.y = -state.getJumpVelocity();
                 ++state.jumpCount;
             }
 
@@ -247,15 +242,15 @@ void GameLogic::Update(float deltaTime)
             phys.velocity.x = 0;
             float lastXPos = pos.position.x;
 
-            if(state.attackWait.IsDone())
+            if(state.attackWait.IsDone()) //pause movement when attacking.
             {
                 if(gINPUTSTATE->keyDown(VK_LEFT))
                 {
-                    pos.position.x -= state.movementSpeed;
+                    pos.position.x -= state.getMovementSpeed();
                 }
                 if(gINPUTSTATE->keyDown(VK_RIGHT))
                 {
-                    pos.position.x += state.movementSpeed;
+                    pos.position.x += state.getMovementSpeed();
                 }
                 if(!level.IsOnPlatform(pos.position, phys.body)) //switch to airborne if off platform
                 {
@@ -266,7 +261,7 @@ void GameLogic::Update(float deltaTime)
                 }
                 if(gINPUTSTATE->keyPressed(VK_SPACE)) //jump
                 {
-                    phys.velocity.y -= state.jumpVelocity;
+                    phys.velocity.y -= state.getJumpVelocity();
                     phys.velocity.x = (pos.position.x - lastXPos)/deltaTime;
                     state.airborne = true;
                     state.jumpTimer.Start(0.1f);
@@ -312,7 +307,7 @@ void GameLogic::Update(float deltaTime)
         //if enemy falls outside, delete it.
         if(level.IsOutsideLevel((*enemyI)->getComponent<PositionalComponent>()->position))
         {
-            GOC.DestroyNow((*enemyI)->id);
+            GOC.DestroyLater((*enemyI)->id);
             enemies.erase(enemyI++);
         }
         else
@@ -322,10 +317,15 @@ void GameLogic::Update(float deltaTime)
     }
 
     //update attack objects
-    auto iter = attacks.begin();
-    while( iter != attacks.end() )
+    auto attackI = attacks.begin();
+    while( attackI != attacks.end() )
     {
-        GameObject* go = *iter;
+        GameObject* go = *attackI;
+        if(go->id == INACTIVE_ID)
+        {
+            attacks.erase(attackI++);
+            continue;
+        }
 
         AttackComponent* atk = go->getComponent<AttackComponent>();
         GameObject* attackOwner = GOC.Get(atk->ownerID);
@@ -339,13 +339,44 @@ void GameLogic::Update(float deltaTime)
         //destroy attacks after a time to live.
         if(atk->attackTimer.Tick(deltaTime))
         {
-            GOC.DestroyNow(atk->parent()->id);
-            attacks.erase(iter++);
+            GOC.DestroyLater(atk->parent()->id);
+            attacks.erase(attackI++);
         }
         else
         {
-            ++iter;
+            ++attackI;
         }
+    }
+
+    powerUpDropTimer.Tick(deltaTime);
+    if(powerUpDropTimer.IsDone())
+    {
+        generatePowerUp();
+        powerUpDropTimer.Start(powerupDropPeriod);
+    }
+
+    auto powerI = powerups.begin();
+    while( powerI != powerups.end() )
+    {
+        GameObject* go = *powerI;
+        PowerupComponent* pwrup = go->getComponent<PowerupComponent>();
+        pwrup->spawntimer.Tick(deltaTime);
+
+        if(pwrup->spawntimer.IsDone())
+        {
+            GOC.DestroyLater(pwrup->parent()->id);
+            powerups.erase(powerI++);
+        }
+        else
+        {
+            ++powerI;
+        }
+    }
+
+    if(playerObj->hasComponent<PowerupComponent>())
+    {
+        PowerupComponent* pwrup = playerObj->getComponent<PowerupComponent>();
+        (this->*powerMap[pwrup->powerType])(deltaTime, playerObj->id);
     }
 
     // Draw some debug information.
@@ -384,6 +415,13 @@ void GameLogic::RecieveMessage(Message* msg)
 
 }
 
+
+
+
+
+
+
+
 ////////////////////////////////
 //Collision Response
 ////////////////////////////////
@@ -411,6 +449,7 @@ void GameLogic::CollideEvent(Message* msg)
     }
 }
 
+
 void hitObject(GameObject* go, GameObject* attack)
 {
     PositionalComponent& pos    = *go->getComponent<PositionalComponent>();
@@ -427,13 +466,15 @@ void hitObject(GameObject* go, GameObject* attack)
     
     //send em flyin'
     Vector2 hitDir = (pos.position - atkPos.position).Normal();
-    hitDir.y -= 0.7f;
-    phys.velocity += hitDir * (state.damage/100.0f) * 1500;
+    hitDir.y -= HIT_DIRECTION_ANGLE;
+    phys.velocity += hitDir * (state.damage/100.0f) * HIT_VELOCITY_MULTIPLIER;
     state.airborne = true;
-
-    
-    
 }
+
+
+void removePowerUp(GameObject* go);
+void givePowerUp(GameObject* go, GameObject* powerupObj);
+
 
 //handles collision with a player owned attack object.
 void GameLogic::PlayerAttackCollision(Message* msg)
@@ -447,7 +488,7 @@ void GameLogic::PlayerAttackCollision(Message* msg)
         collideThing->id != playerObj->id)                             //wasn't the player
     {
         hitObject(collideThing, attack);
-        GameObjectCache::Instance().DestroyNow(attack->id);     //get rid of the attack object
+        GameObjectCache::Instance().DestroyLater(attack->id);     //get rid of the attack object
         attacks.remove(attack);                                 //remove attack from attacks list.
     }
 }
@@ -463,8 +504,33 @@ void GameLogic::EnemyAttackCollision(Message* msg)
     if(collideThing->id == playerObj->id)      //hit the player
     {
         hitObject(collideThing, attack);
-        GameObjectCache::Instance().DestroyNow(attack->id);     //get rid of the attack object
+        GameObjectCache::Instance().DestroyLater(attack->id);     //get rid of the attack object
         attacks.remove(attack);                                 //remove attack from attacks list.
+    }
+}
+
+void GameLogic::PowerupCollision(Message* msg)
+{
+    ContactMessage cmsg = *(static_cast<ContactMessage*> (msg));
+
+    GameObject* powerup = GameObjectCache::Instance().Get(cmsg.contact.ObjIDs[cmsg.recieverIndex]);
+    GameObject* collideThing = GameObjectCache::Instance().Get(cmsg.contact.ObjIDs[(cmsg.recieverIndex + 1) % 2]);
+
+    if(collideThing->id == playerObj->id)      //hit the player
+    {
+
+        //remove old powerup
+        if(playerObj->hasComponent<PowerupComponent>())
+        {
+            removePowerUp(playerObj);
+        }
+
+        //give new one
+        givePowerUp(playerObj, powerup);
+
+        //destroy the powerup object.
+        GameObjectCache::Instance().DestroyLater(powerup->id);
+        powerups.remove(powerup);
     }
 }
 
@@ -473,6 +539,12 @@ void GameLogic::SetScreenSize(int width, int height)
     Height = height;
     Width = width;
 }
+
+
+
+
+
+
 
 
 ////////////////////////////////
@@ -490,14 +562,13 @@ void GameLogic::ChaseAI(float deltaTime, int id)
 
     if(!state.knocked)
     {
-        
-
         Vector2 playerPos = playerObj->getComponent<PositionalComponent>()->position;
         float playerDist =  playerPos.x - pos.position.x;
 
         if(state.airborne)
         {
-            if(playerDist < 0)
+            //airborne moves via acceleration
+            if(playerDist < 0) //player is left, move left
             {
                 phys.velocity.x -= state.airborneAccel;
             }
@@ -509,14 +580,15 @@ void GameLogic::ChaseAI(float deltaTime, int id)
         }
         else
         {
+            //ground movement is by static movement
             phys.velocity.x = 0;
             if(playerDist < 0)
             {
-                pos.position.x -= state.movementSpeed/2;
+                pos.position.x -= state.getMovementSpeed()/2;
             }
             else
             {
-                pos.position.x += state.movementSpeed/2;
+                pos.position.x += state.getMovementSpeed()/2;
             }
         }
     }
@@ -541,6 +613,9 @@ enum AIInnerState
     MoveRight,
 };
 
+#define PUNCH_AI_MOVE_PERIOD 2.5f
+#define PUNCH_AI_PUNCH_DISTANCE 70
+
 //runs back and forth, punches the player if they get near.
 void GameLogic::PunchAI(float deltaTime, int id)
 {
@@ -562,11 +637,16 @@ void GameLogic::PunchAI(float deltaTime, int id)
 
     ai.stateTimer.Tick(deltaTime);
 
+    //punch if close to the player
     Vector2 playerPos = playerObj->getComponent<PositionalComponent>()->position;
     float playerDist =  playerPos.x - pos.position.x;
-    if(abs(playerDist) < 70)
+    if(abs(playerDist) < PUNCH_AI_PUNCH_DISTANCE)
         ai.outerState = Punch;
 
+    //this ai is designed to move one direction, stopping at the edge of a platform.
+    //after that, wait
+    //then punch and begiin moving again.
+    //also punches wildly if player is nearby, which also changes direction
     if(!state.airborne)
     {
         phys.velocity.x = 0;
@@ -578,7 +658,7 @@ void GameLogic::PunchAI(float deltaTime, int id)
             {
             case MoveLeft:
                 newPosition = pos.position;
-                newPosition.x -= state.movementSpeed/2;
+                newPosition.x -= state.getMovementSpeed()/2;
                 if(level.IsOnPlatform(newPosition, phys.body))
                 {
                     pos.position = newPosition;
@@ -592,7 +672,7 @@ void GameLogic::PunchAI(float deltaTime, int id)
 
             case MoveRight:
                 newPosition = pos.position;
-                newPosition.x += state.movementSpeed/2;
+                newPosition.x += state.getMovementSpeed()/2;
                 if(level.IsOnPlatform(newPosition, phys.body))
                 {
                     pos.position = newPosition;
@@ -622,7 +702,7 @@ void GameLogic::PunchAI(float deltaTime, int id)
             
             ai.innerState = ai.innerState == MoveLeft ? MoveRight : MoveLeft;
             ai.outerState = Move;
-            ai.stateTimer.Start(4.0f);
+            ai.stateTimer.Start(PUNCH_AI_MOVE_PERIOD);
             
             break;
         
@@ -642,7 +722,10 @@ void GameLogic::PunchAI(float deltaTime, int id)
     }
 }
 
-//jumops at the player and does a spin attack!
+#define FLY_AI_JUMP_PERIOD 2.0f
+#define FLY_AI_MOVE_RANGE 100
+
+//jumps at the player and does a spin attack!
 void GameLogic::FlyAI(float deltaTime, int id)
 {
     GameObjectCache& GOC = GameObjectCache::Instance();
@@ -662,11 +745,12 @@ void GameLogic::FlyAI(float deltaTime, int id)
             phys.velocity.x = 0;
         else
         {
-            if(playerDist < -100)
+            //if airborne, move toward player
+            if(playerDist < -FLY_AI_MOVE_RANGE)
             {
                 phys.velocity.x -= state.airborneAccel;
             }
-            else if (playerDist > 100)
+            else if (playerDist > FLY_AI_MOVE_RANGE)
             {
                 phys.velocity.x += state.airborneAccel;
             }
@@ -675,23 +759,25 @@ void GameLogic::FlyAI(float deltaTime, int id)
 
         if(ai.stateTimer.Tick(deltaTime))
         {
-            ai.stateTimer.Start(2.0f);
+            //jump at and attack the player
+            ai.stateTimer.Start(FLY_AI_JUMP_PERIOD);
             generateAttack(id, AttackDir::Attack_Left, AttackType::Spin);
             ai.attackTimer.Start(0.5f);
 
-            phys.velocity.y = -state.jumpVelocity;
+            phys.velocity.y = -state.getJumpVelocity();
             state.airborne = true;
 
             if(playerDist < 0)
             {
-                phys.velocity.x -= state.jumpVelocity/2;
+                phys.velocity.x -= state.getJumpVelocity()/2;
             }
             else
             {
-                phys.velocity.x += state.jumpVelocity/2;
+                phys.velocity.x += state.getJumpVelocity()/2;
             }
         }
-
+        
+        //spin while attacking
         if(!ai.attackTimer.Tick(deltaTime))
         {
             pos.rotation += 0.3f;
@@ -700,8 +786,6 @@ void GameLogic::FlyAI(float deltaTime, int id)
         {
             pos.rotation = 0;
         }
-
-        
     }
     else
     {
@@ -711,6 +795,9 @@ void GameLogic::FlyAI(float deltaTime, int id)
         }
     }
 }
+
+#define LASER_AI_MOVE_RANGE 350
+#define LASER_AI_FIRE_PERIOD 5.0f
 
 //shoots at the player
 //tries to jump up to get a good shot.
@@ -728,32 +815,34 @@ void GameLogic::LaserAI(float deltaTime, int id)
 
     if(ai.attackTimer.Tick(deltaTime))
     {
-        
+        //I'M A' FIRING MA LASA' , BWAAAAAH! (I am firing my laser *fires laser*)
         if(playerDist < 0)
             generateAttack(enemy->id, AttackDir::Attack_Left, AttackType::Laser);
         else
             generateAttack(enemy->id, AttackDir::Attack_Right, AttackType::Laser);
 
-        ai.attackTimer.Start(4.0f);
+        ai.attackTimer.Start(LASER_AI_FIRE_PERIOD);
 
     }
 
+    //jump if player is higher
     if(!state.airborne && playerPos.y < pos.position.y)
     {
-        phys.velocity.y = -state.jumpVelocity;
+        phys.velocity.y = -state.getJumpVelocity();
         state.airborne = true;
     }
 
     if(!state.knocked)
     {
+        //move back to the center if knocked too far away
         if(!state.airborne)
             phys.velocity.x = 0;
         float distCenter = pos.position.x - level.LevelPos.x;
-        if( distCenter > 350)
+        if( distCenter > LASER_AI_MOVE_RANGE)
         {
             phys.velocity.x -= state.airborneAccel;
         }
-        else if(distCenter < -350)
+        else if(distCenter < -LASER_AI_MOVE_RANGE)
         {
             phys.velocity.x += state.airborneAccel;
         }
@@ -768,10 +857,15 @@ void GameLogic::LaserAI(float deltaTime, int id)
 
 }
 
+#define EXPLODE_AI_MOVE_PERIOD 5.0f
+#define EXPLODE_AI_WAIT_PERIOD 3.0f
+#define EXPLODE_AI_PUNCH_PERIOD 2.0f
+#define EXPLODE_AI_JUMP_PERIOD 0.5f
+
 //runs back and forth.
 //When it stops, it spins for a bit, then explodes
 //will not explode unless on the ground.
-//has a tendency to fly around wildly when knocked
+//has a tendency to fly around wildly when knocked because it has a quintuple jump
 void GameLogic::ExplodingAI(float deltaTime, int id)
 {
     GameObjectCache& GOC = GameObjectCache::Instance();
@@ -781,11 +875,16 @@ void GameLogic::ExplodingAI(float deltaTime, int id)
     PlayerStateComponent& state = *enemy->getComponent<PlayerStateComponent>();
     AIComponent& ai = *enemy->getComponent<AIComponent>();
 
+    //in this context, Punch == Getting ready to explode
+
+    //spin while readying
+    //spin faster as it gets closer
     if(ai.outerState == AIOuterState::Punch)
     {
         pos.rotation += ai.stateTimer.passed/10;
     }
 
+    //do nothing if knocked
     if(state.knocked)
     {
         if(state.knockedTimer.Tick(deltaTime))
@@ -802,6 +901,8 @@ void GameLogic::ExplodingAI(float deltaTime, int id)
 
     if(!state.airborne)
     {
+        //when on ground, move a direction, stop, spin, explode
+        //then go  the other way and repeat
         phys.velocity.x = 0;
         Vector2 newPosition;
         switch(ai.outerState)
@@ -811,7 +912,7 @@ void GameLogic::ExplodingAI(float deltaTime, int id)
             {
             case MoveLeft:
                 newPosition = pos.position;
-                newPosition.x -= state.movementSpeed/2;
+                newPosition.x -= state.getMovementSpeed()/2;
                 if(level.IsOnPlatform(newPosition, phys.body))
                 {
                     pos.position = newPosition;
@@ -820,13 +921,13 @@ void GameLogic::ExplodingAI(float deltaTime, int id)
                 if(ai.stateTimer.IsDone())
                 {
                     ai.outerState = Punch;
-                    ai.stateTimer.Start(5.0f);
+                    ai.stateTimer.Start(EXPLODE_AI_MOVE_PERIOD);
                 }
                 break;
 
             case MoveRight:
                 newPosition = pos.position;
-                newPosition.x += state.movementSpeed/2;
+                newPosition.x += state.getMovementSpeed()/2;
                 if(level.IsOnPlatform(newPosition, phys.body))
                 {
                     pos.position = newPosition;
@@ -835,17 +936,17 @@ void GameLogic::ExplodingAI(float deltaTime, int id)
                 if(ai.stateTimer.IsDone())
                 {
                     ai.outerState = Punch;
-                    ai.stateTimer.Start(5.0f);
+                    ai.stateTimer.Start(EXPLODE_AI_MOVE_PERIOD);
                 }
                 break;
             }
             break;
         case Punch:
-            if(ai.stateTimer.IsDone())
+            if(ai.stateTimer.IsDone()) //Wait for it
             {
-                generateAttack(enemy->id,AttackDir::Attack_Left, AttackType::Explosion);
+                generateAttack(enemy->id,AttackDir::Attack_Left, AttackType::Explosion); //BOOM
                 ai.outerState = Wait;
-                ai.stateTimer.Start(2.0f);
+                ai.stateTimer.Start(EXPLODE_AI_PUNCH_PERIOD);
                 pos.rotation = 0;
             }
             break;
@@ -855,7 +956,7 @@ void GameLogic::ExplodingAI(float deltaTime, int id)
             {
                 ai.outerState = Move;
                 ai.innerState = ai.innerState == MoveLeft ? MoveRight : MoveLeft;
-                ai.stateTimer.Start(3.0f);
+                ai.stateTimer.Start(EXPLODE_AI_WAIT_PERIOD);
             }
             
             break;
@@ -865,29 +966,40 @@ void GameLogic::ExplodingAI(float deltaTime, int id)
     {
         if(state.jumpCount < 5 && state.jumpTimer.Tick(deltaTime))
         {
-            phys.velocity.y = -state.jumpVelocity/1.5f;
+            phys.velocity.y = -state.getJumpVelocity()/1.5f;
             ++state.jumpCount;
-            state.jumpTimer.Start(0.5f);
+            state.jumpTimer.Start(EXPLODE_AI_JUMP_PERIOD);
         }
         float centerDir = level.LevelPos.x - pos.position.x;
         if(centerDir < 0)
         {
             phys.velocity.x -= state.airborneAccel;
-            pos.position.x -= state.movementSpeed/10;
+            pos.position.x -= state.getMovementSpeed()/10;
         }
         else
         {
             phys.velocity.x += state.airborneAccel;
-            pos.position.x += state.movementSpeed/10;
+            pos.position.x += state.getMovementSpeed()/10;
         }
     }
 
     
 }
 
+
+
+
+
+
 ////////////////////////////////
 // Attack Object Generation
 ////////////////////////////////
+
+#define PUNCH_DAMAGE 5
+#define EXPLOSION_DAMAGE 30
+#define LASER_DAMAGE 10
+#define SPIN_DAMAGE 10
+#define LASER_ATTACK_DURATION 1.0f
 
 void makePunch(PhysicsComponent* atkPhys, PrimitiveGraphicsComponent* atkG)
 {
@@ -945,6 +1057,7 @@ void makeLaser(PhysicsComponent* atkPhys,  PrimitiveGraphicsComponent* atkG)
     atkG->layer = 5;
 }
 
+
 void GameLogic::generateAttack(int ownerID, AttackDir aDir, AttackType aType)
 {
     static Color gloveColor(1,0.5f,0.5f,1);
@@ -984,7 +1097,7 @@ void GameLogic::generateAttack(int ownerID, AttackDir aDir, AttackType aType)
             atkPhys->offset = Vector2(-ownerDim.x/2 - 35, 0);
             atkG->center = -atkPhys->offset;
             atkC->attackTimer.Start(0.1f);
-            atkC->damage = 5;
+            atkC->damage = PUNCH_DAMAGE;
         }
         else if(aDir == AttackDir::Attack_Right)
         {
@@ -993,7 +1106,7 @@ void GameLogic::generateAttack(int ownerID, AttackDir aDir, AttackType aType)
             atkPhys->offset = Vector2(ownerDim.x/2 + 35, 0);
             atkG->center = -atkPhys->offset;
             atkC->attackTimer.Start(0.1f);
-            atkC->damage = 5;
+            atkC->damage = PUNCH_DAMAGE;
         }
         else if(aDir == AttackDir::Attack_Up)
         {
@@ -1002,7 +1115,7 @@ void GameLogic::generateAttack(int ownerID, AttackDir aDir, AttackType aType)
             atkPhys->offset = Vector2(0, -ownerDim.y/2 - 35);
             atkG->center = -atkPhys->offset;
             atkC->attackTimer.Start(0.1f);
-            atkC->damage = 5;
+            atkC->damage = PUNCH_DAMAGE;
         }
         else if(aDir == AttackDir::Attack_Down)
         {
@@ -1011,7 +1124,7 @@ void GameLogic::generateAttack(int ownerID, AttackDir aDir, AttackType aType)
             atkPhys->offset = Vector2(0, ownerDim.y/2);
             atkG->center = -atkPhys->offset;
             atkC->attackTimer.Start(0.1f);
-            atkC->damage = 5;
+            atkC->damage = PUNCH_DAMAGE;
         }
     }
     else if (aType == AttackType::Spin)
@@ -1020,7 +1133,7 @@ void GameLogic::generateAttack(int ownerID, AttackDir aDir, AttackType aType)
         atkG->color = spinColor;
         atkPhys->offset = Vector2(0, 0);
         atkC->attackTimer.Start(0.5f);
-        atkC->damage = 10;
+        atkC->damage = SPIN_DAMAGE;
     }
     else if(aType == AttackType::Laser)
     {
@@ -1038,8 +1151,8 @@ void GameLogic::generateAttack(int ownerID, AttackDir aDir, AttackType aType)
             atkPhys->velocity = Vector2(500, 0);
         }
 
-        atkC->attackTimer.Start(3.0f);
-        atkC->damage = 10;
+        atkC->attackTimer.Start(LASER_ATTACK_DURATION);
+        atkC->damage = LASER_DAMAGE;
     }
     else if(aType == AttackType::Explosion)
     {
@@ -1047,7 +1160,7 @@ void GameLogic::generateAttack(int ownerID, AttackDir aDir, AttackType aType)
         atkG->color = explosionColor;
         atkPhys->offset = Vector2(0, 0);
         atkC->attackTimer.Start(0.5f);
-        atkC->damage = 30;
+        atkC->damage = EXPLOSION_DAMAGE;
     }
 
     if(ownerID == playerObj->id)
@@ -1066,4 +1179,149 @@ void GameLogic::generateAttack(int ownerID, AttackDir aDir, AttackType aType)
     CORE->BroadcastMessage(&AttachDebugDrawMessage(attackObj->id));
 
     attacks.push_back(attackObj);
+}
+
+
+
+
+
+
+
+////////////////////////////////
+// Powerup Generation
+////////////////////////////////
+
+#define SPIN_POWERUP_ATTACK_INTERVAL 0.25f
+#define POWER_UP_DURATION 4.0f
+
+
+void GameLogic::generatePowerUp()
+{
+    GameObjectFactory& GOF = GameObjectFactory::Instance();
+
+    int randIndex = rand() % GOF.powerupTypes.size();
+    std::string powerUpArchetype = GOF.powerupTypes[randIndex];
+    GameObject* newPowerup = GameObjectFactory::Instance().cloneArchetype(powerUpArchetype);
+
+    randIndex = rand() % level.enemyStartPositions.size();
+    Vector2 dropSpot = level.enemyStartPositions[randIndex];
+    dropSpot.y -= 10;
+
+    PositionalComponent* pwrPos = newPowerup->getComponent<PositionalComponent>();
+    pwrPos->position = dropSpot;
+
+    PhysicsComponent* pwrPhys = newPowerup->getComponent<PhysicsComponent>();
+    pwrPhys->registerCollideHandler<GameLogic, &GameLogic::PowerupCollision>(this);
+}
+
+void GameLogic::HealUp(float deltaTime, int id)
+{
+    GameObjectCache& GOC = GameObjectCache::Instance();
+    GameObject* powerOwner = GOC.Get(id);
+    PlayerStateComponent& state = *powerOwner->getComponent<PlayerStateComponent>();
+    PowerupComponent& pwrup     = *powerOwner->getComponent<PowerupComponent>();
+
+    state.damage = 0;           //restore health
+    removePowerUp(powerOwner);
+}
+
+void GameLogic::WhirlUp(float deltaTime, int id)
+{
+    GameObjectCache& GOC = GameObjectCache::Instance();
+    GameObject* powerOwner = GOC.Get(id);
+    PositionalComponent& pos    = *powerOwner->getComponent<PositionalComponent>();
+    PowerupComponent& pwrup     = *powerOwner->getComponent<PowerupComponent>();
+
+    pos.rotation += 0.2f;   //spin
+
+    pwrup.spawntimer.Tick(deltaTime);
+    if(pwrup.spawntimer.IsDone())
+    {
+        //and attack
+        generateAttack(powerOwner->id, AttackDir::Attack_Left, AttackType::Spin); 
+        pwrup.spawntimer.Start(SPIN_POWERUP_ATTACK_INTERVAL);
+    }
+    
+    pwrup.powerTimer.Tick(deltaTime);
+    if(pwrup.powerTimer.IsDone())
+    {
+        removePowerUp(powerOwner);
+    }
+}
+
+//just removes bonus after a time.
+void GameLogic::JumpUp(float deltaTime, int id)
+{
+    GameObjectCache& GOC = GameObjectCache::Instance();
+    GameObject* powerOwner = GOC.Get(id);
+    PlayerStateComponent& state = *powerOwner->getComponent<PlayerStateComponent>();
+    PowerupComponent& pwrup     = *powerOwner->getComponent<PowerupComponent>();
+
+    pwrup.powerTimer.Tick(deltaTime);
+    if(pwrup.powerTimer.IsDone())
+    {
+        removePowerUp(powerOwner);
+    }
+}
+
+//just removes bonus after a time.
+void GameLogic::SpeedUp(float deltaTime, int id)
+{
+    GameObjectCache& GOC = GameObjectCache::Instance();
+    GameObject* powerOwner = GOC.Get(id);
+    PlayerStateComponent& state = *powerOwner->getComponent<PlayerStateComponent>();
+    PowerupComponent& pwrup     = *powerOwner->getComponent<PowerupComponent>();
+
+    pwrup.powerTimer.Tick(deltaTime);
+    if(pwrup.powerTimer.IsDone())
+    {
+        removePowerUp(powerOwner);
+    }
+}
+
+void GameLogic::BoomUp(float deltaTime, int id)
+{
+    GameObjectCache& GOC = GameObjectCache::Instance();
+    GameObject* powerOwner = GOC.Get(id);
+
+    //FWADOOM(explode)
+    generateAttack(powerOwner->id, AttackDir::Attack_Left, AttackType::Explosion);
+    
+    removePowerUp(powerOwner);
+}
+
+void removePowerUp(GameObject* go)
+{
+    //remove all possible bonuses or effects of a powerup
+    PlayerStateComponent* state = go->getComponent<PlayerStateComponent>();
+    state->moveBonus = 0;
+    state->jumpBonus = 0;
+
+    PositionalComponent* pos = go->getComponent<PositionalComponent>();
+    pos->rotation = 0;
+
+    //remove the powerup
+    go->removeComponent<PowerupComponent>();
+}
+
+void givePowerUp(GameObject* go, GameObject* powerupObj)
+{
+    //copy the powerup component to the player
+    PowerupComponent* pwrC = powerupObj->getComponent<PowerupComponent>();
+    PowerupComponent* player_pwrC = ComponentFactory::Instance().createComponent<PowerupComponent>();
+    player_pwrC->powerType = pwrC->powerType;
+    player_pwrC->powerTimer.Start(POWER_UP_DURATION);
+
+    go->attachComponent(player_pwrC);
+
+    if(player_pwrC->powerType.compare("Speed") == 0)
+    {
+        PlayerStateComponent* state = go->getComponent<PlayerStateComponent>();
+        state->moveBonus = state->movementSpeed;
+    }
+    else if(player_pwrC->powerType.compare("Jump") == 0)
+    {
+        PlayerStateComponent* state = go->getComponent<PlayerStateComponent>();
+        state->jumpBonus = state->jumpVelocity/3;
+    }
 }

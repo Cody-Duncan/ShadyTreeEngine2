@@ -23,6 +23,9 @@ void PlayerStateComponent::Initialize()
     maxVelX = 500.0f;
     maxVelY = 1000.0f;
     jumpVelocity = 600.0f;
+
+    jumpBonus = 0;
+    moveBonus = 0;
 }
 
 void PlayerStateComponent::CloneFrom(Component* _c)
@@ -39,4 +42,13 @@ void PlayerStateComponent::CloneFrom(Component* _c)
     maxVelX = c->maxVelX;
     maxVelY = c->maxVelY;
     jumpVelocity = c->jumpVelocity;
+}
+
+float PlayerStateComponent::getMovementSpeed()
+{
+    return movementSpeed + moveBonus;
+}
+float PlayerStateComponent::getJumpVelocity()
+{
+    return jumpVelocity + jumpBonus;
 }

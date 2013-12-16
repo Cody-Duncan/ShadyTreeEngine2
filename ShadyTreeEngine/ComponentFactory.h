@@ -23,7 +23,7 @@
 #include "ComponentCache.h"
 #include "ComponentTypeID.h"
 
-#define DEFAULT_CACHE_LENGTH 256
+#define DEFAULT_CACHE_LENGTH 1024
 
 class ComponentFactory
 {

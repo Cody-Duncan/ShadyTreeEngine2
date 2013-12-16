@@ -6,6 +6,7 @@
 
 #include "DelegateFunc.h"
 #include "ContactMessage.h"
+#include "DebugOutput.h"
 
 class GameObject
 {
@@ -45,8 +46,17 @@ template<class T>
 void GameObject::attachComponent(T* comp)
 {
     int id = (int)comp->id;
-    components.insert( std::make_pair(getID<T>(), id ) );
-    comp->parentID = this->id;
+    int typeID = getID<T>();
+    if(components.size() == 0 || components.find(typeID) == components.end())
+    {
+        components[typeID] = id;
+        comp->parentID = this->id;
+    }
+    else
+    {
+        DebugAssert(false, "Tried to overwrite component");
+        return;
+    }
 }
 
 
