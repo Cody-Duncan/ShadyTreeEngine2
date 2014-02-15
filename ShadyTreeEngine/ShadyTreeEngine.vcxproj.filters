@@ -1,322 +1,316 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="DirectX_GraphicsDevice.cpp">
-      <Filter>Graphics</Filter>
+    <ClCompile Include="Components\DebugDrawComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="BufferResourcer.cpp">
-      <Filter>Resources\Resourcers</Filter>
+    <ClCompile Include="Components\GraphicsComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderResourcer.cpp">
-      <Filter>Resources\Resourcers</Filter>
+    <ClCompile Include="Components\PhysicsComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="TextureResourcer.cpp">
-      <Filter>Resources\Resourcers</Filter>
+    <ClCompile Include="Components\PositionalComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="DDSTextureLoader.cpp">
-      <Filter>Resources\Loaders</Filter>
+    <ClCompile Include="Components\PrimitiveGraphicsComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="WICTextureLoader.cpp">
-      <Filter>Resources\Loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsDevice.cpp">
-      <Filter>Graphics\API</Filter>
-    </ClCompile>
-    <ClCompile Include="StdAfx.cpp" />
-    <ClCompile Include="DebugOutput.cpp">
-      <Filter>Diagnostic</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshResourcer.cpp">
-      <Filter>Resources\Resourcers</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteBatch.cpp">
-      <Filter>Graphics\API</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsFactory.cpp">
-      <Filter>Graphics\API</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectX_SpriteBatch.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Geometry.inl">
-      <Filter>Math</Filter>
-    </ClCompile>
-    <ClCompile Include="OSHighResTimer.cpp">
-      <Filter>Diagnostic</Filter>
-    </ClCompile>
-    <ClCompile Include="Stopwatch.cpp">
-      <Filter>Diagnostic</Filter>
-    </ClCompile>
-    <ClCompile Include="Resources.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Resources\ResourceClasses</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="ComponentFactory.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="ComponentCache.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjectCache.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="ShadyTreeEngine.cpp">
+    <ClCompile Include="Core\GameTimer.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="GraphicsSystem.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowSystem.cpp">
-      <Filter>Window</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowGlobals.cpp">
-      <Filter>Window</Filter>
-    </ClCompile>
-    <ClCompile Include="GameTimer.cpp">
+    <ClCompile Include="Core\ShadyTreeEngine.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Message.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="InputState.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
-    <ClCompile Include="FileResourcer.cpp">
-      <Filter>Resources\Resourcers</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseDeserializer.cpp">
+    <ClCompile Include="DeSerializer\BaseDeserializer.cpp">
       <Filter>DeSerializer</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentTypeID.cpp">
+    <ClCompile Include="Diagnostic\DebugOutput.cpp">
+      <Filter>Diagnostic</Filter>
+    </ClCompile>
+    <ClCompile Include="Diagnostic\OSHighResTimer.cpp">
+      <Filter>Diagnostic</Filter>
+    </ClCompile>
+    <ClCompile Include="Diagnostic\Stopwatch.cpp">
+      <Filter>Diagnostic</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Component.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="DirectX_PrimitiveBatch.cpp">
+    <ClCompile Include="GameObject\ComponentCache.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\ComponentFactory.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\ComponentTypeID.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\GameObjectCache.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\GraphicsSystem.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="PositionalComponent.cpp">
-      <Filter>Components</Filter>
+    <ClCompile Include="Graphics\API\GraphicsDevice.cpp">
+      <Filter>Graphics\API</Filter>
     </ClCompile>
-    <ClCompile Include="GraphicsComponent.cpp">
-      <Filter>Components</Filter>
+    <ClCompile Include="Graphics\API\GraphicsFactory.cpp">
+      <Filter>Graphics\API</Filter>
     </ClCompile>
-    <ClCompile Include="PrimitiveGraphicsComponent.cpp">
-      <Filter>Components</Filter>
+    <ClCompile Include="Graphics\API\SpriteBatch.cpp">
+      <Filter>Graphics\API</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsSystem.cpp">
-      <Filter>Physics</Filter>
+    <ClCompile Include="Graphics\DirectX\DirectX_GraphicsDevice.cpp">
+      <Filter>Graphics\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="BB.cpp">
-      <Filter>Physics</Filter>
+    <ClCompile Include="Graphics\DirectX\DirectX_PrimitiveBatch.cpp">
+      <Filter>Graphics\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsComponent.cpp">
-      <Filter>Components</Filter>
+    <ClCompile Include="Graphics\DirectX\DirectX_SpriteBatch.cpp">
+      <Filter>Graphics\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="DebugDrawComponent.cpp">
-      <Filter>Components</Filter>
+    <ClCompile Include="Input\InputState.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="Messenger.cpp">
+    <ClCompile Include="Messaging\Message.cpp">
       <Filter>Message</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
+    <ClCompile Include="Messaging\Messenger.cpp">
+      <Filter>Message</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\BB.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PhysicsSystem.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\Mesh.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\Resources.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\BufferResourcer.cpp">
+      <Filter>Resources\Resourcers</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\FileResourcer.cpp">
+      <Filter>Resources\Resourcers</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\MeshResourcer.cpp">
+      <Filter>Resources\Resourcers</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\ShaderResourcer.cpp">
+      <Filter>Resources\Resourcers</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\TextureResourcer.cpp">
+      <Filter>Resources\Resourcers</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\DDSTextureLoader.cpp">
+      <Filter>Resources\Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\WICTextureLoader.cpp">
+      <Filter>Resources\Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Timer.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
+    <ClCompile Include="Window\WindowGlobals.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Window\WindowSystem.cpp">
+      <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirectX_GraphicsDevice.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="BufferResourcer.h">
-      <Filter>Resources\Resourcers</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstantBuffer.h">
-      <Filter>Resources\Resourcers</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderResourcer.h">
-      <Filter>Resources\Resourcers</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureResourcer.h">
-      <Filter>Resources\Resourcers</Filter>
-    </ClInclude>
-    <ClInclude Include="DDSTextureLoader.h">
-      <Filter>Resources\Loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="WICTextureLoader.h">
-      <Filter>Resources\Loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsDevice.h">
-      <Filter>Graphics\API</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsResourceHandles.h">
-      <Filter>Graphics\API</Filter>
-    </ClInclude>
-    <ClInclude Include="MathLib.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="StringUtility.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleMath.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="StdAfx.h" />
-    <ClInclude Include="DebugOutput.h">
-      <Filter>Diagnostic</Filter>
-    </ClInclude>
-    <ClInclude Include="Debug_Graphics.h">
-      <Filter>Diagnostic</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshResourcer.h">
-      <Filter>Resources\Resourcers</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteBatch.h">
-      <Filter>Graphics\API</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsFactory.h">
-      <Filter>Graphics\API</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectX_SpriteBatch.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="DeviceAPI.h">
-      <Filter>Graphics\API</Filter>
-    </ClInclude>
-    <ClInclude Include="Geometry.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="OSHighResTimer.h">
-      <Filter>Diagnostic</Filter>
-    </ClInclude>
-    <ClInclude Include="Stopwatch.h">
-      <Filter>Diagnostic</Filter>
-    </ClInclude>
-    <ClInclude Include="Resources.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="IResources.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Resources\ResourceClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentFactory.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentCache.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjectCache.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="ShadyTreeEngine.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="ISystem.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsSystem.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="ST_API_Def.h">
       <Filter>Graphics\API</Filter>
     </ClInclude>
-    <ClInclude Include="WindowSystem.h">
-      <Filter>Window</Filter>
+    <ClInclude Include="Components\DebugDrawComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="WindowGlobals.h">
-      <Filter>Window</Filter>
+    <ClInclude Include="Components\GraphicsComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="GameTimer.h">
+    <ClInclude Include="Components\PhysicsComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\PositionalComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\PrimitiveGraphicsComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\GameTimer.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Message.h">
-      <Filter>Message</Filter>
+    <ClInclude Include="Core\ISystem.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="InputState.h">
-      <Filter>Input</Filter>
+    <ClInclude Include="Core\ShadyTreeEngine.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="FileResourcer.h">
-      <Filter>Resources\Resourcers</Filter>
-    </ClInclude>
-    <ClInclude Include="TinyDir.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseDeserializer.h">
+    <ClInclude Include="DeSerializer\BaseDeserializer.h">
       <Filter>DeSerializer</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentTypeID.h">
+    <ClInclude Include="Diagnostic\Debug_Graphics.h">
+      <Filter>Diagnostic</Filter>
+    </ClInclude>
+    <ClInclude Include="Diagnostic\DebugOutput.h">
+      <Filter>Diagnostic</Filter>
+    </ClInclude>
+    <ClInclude Include="Diagnostic\OSHighResTimer.h">
+      <Filter>Diagnostic</Filter>
+    </ClInclude>
+    <ClInclude Include="Diagnostic\Stopwatch.h">
+      <Filter>Diagnostic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Component.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="DirectX_PrimitiveBatch.h">
+    <ClInclude Include="GameObject\ComponentCache.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\ComponentFactory.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\ComponentTypeID.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\GameObjectCache.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GraphicsSystem.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="PrimitiveBatch.h">
+    <ClInclude Include="Graphics\API\DeviceAPI.h">
       <Filter>Graphics\API</Filter>
     </ClInclude>
-    <ClInclude Include="PositionalComponent.h">
-      <Filter>Components</Filter>
+    <ClInclude Include="Graphics\API\GraphicsDevice.h">
+      <Filter>Graphics\API</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicsComponent.h">
-      <Filter>Components</Filter>
+    <ClInclude Include="Graphics\API\GraphicsFactory.h">
+      <Filter>Graphics\API</Filter>
     </ClInclude>
-    <ClInclude Include="PrimitiveGraphicsComponent.h">
-      <Filter>Components</Filter>
+    <ClInclude Include="Graphics\API\PrimitiveBatch.h">
+      <Filter>Graphics\API</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsSystem.h">
-      <Filter>Physics</Filter>
+    <ClInclude Include="Graphics\API\SpriteBatch.h">
+      <Filter>Graphics\API</Filter>
     </ClInclude>
-    <ClInclude Include="BB.h">
-      <Filter>Physics</Filter>
+    <ClInclude Include="Graphics\DirectX\DirectX_GraphicsDevice.h">
+      <Filter>Graphics\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="BB_Math.h">
-      <Filter>Physics</Filter>
+    <ClInclude Include="Graphics\DirectX\DirectX_PrimitiveBatch.h">
+      <Filter>Graphics\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsComponent.h">
-      <Filter>Components</Filter>
+    <ClInclude Include="Graphics\DirectX\DirectX_SpriteBatch.h">
+      <Filter>Graphics\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="Contact.h">
-      <Filter>Physics</Filter>
+    <ClInclude Include="Input\InputState.h">
+      <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="DebugDrawComponent.h">
-      <Filter>Components</Filter>
+    <ClInclude Include="Math\Geometry.h">
+      <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="DelegateFunc.h">
+    <ClInclude Include="Math\MathLib.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\SimpleMath.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vertex.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Messaging\ChangeGravityMessage.h">
       <Filter>Message</Filter>
     </ClInclude>
-    <ClInclude Include="Messenger.h">
+    <ClInclude Include="Messaging\ChangeStateMessage.h">
       <Filter>Message</Filter>
     </ClInclude>
-    <ClInclude Include="ContactMessage.h">
+    <ClInclude Include="Messaging\ContactMessage.h">
       <Filter>Message</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
+    <ClInclude Include="Messaging\DebugDrawMessage.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="Messaging\Message.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="Messaging\Messenger.h">
+      <Filter>Message</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\BB.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\BB_Math.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\Contact.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PhysicsSystem.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\ConstantBuffer.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\GraphicsResourceHandles.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\IResources.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\Mesh.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\Resources.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\TinyDir.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\BufferResourcer.h">
+      <Filter>Resources\Resourcers</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\FileResourcer.h">
+      <Filter>Resources\Resourcers</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\MeshResourcer.h">
+      <Filter>Resources\Resourcers</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\ShaderResourcer.h">
+      <Filter>Resources\Resourcers</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\TextureResourcer.h">
+      <Filter>Resources\Resourcers</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\DDSTextureLoader.h">
+      <Filter>Resources\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\WICTextureLoader.h">
+      <Filter>Resources\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\StringUtility.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\ShadyTreeTest\ChangeStateMessage.h">
-      <Filter>Message</Filter>
+    <ClInclude Include="Utility\Timer.h">
+      <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="ChangeGravityMessage.h">
-      <Filter>Message</Filter>
+    <ClInclude Include="Window\WindowGlobals.h">
+      <Filter>Window</Filter>
     </ClInclude>
-    <ClInclude Include="DebugDrawMessage.h">
-      <Filter>Message</Filter>
+    <ClInclude Include="Window\WindowSystem.h">
+      <Filter>Window</Filter>
     </ClInclude>
+    <ClInclude Include="StdAfx.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Graphics">
@@ -343,9 +337,6 @@
     <Filter Include="Resources\Resourcers">
       <UniqueIdentifier>{2c401166-7512-46c7-b6a8-98c6db5ea3c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources\ResourceClasses">
-      <UniqueIdentifier>{56227e2f-3eb8-4098-91b7-fe5ff7ab64c9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameObject">
       <UniqueIdentifier>{c643028c-b0fd-43f8-a4f3-9149e3617f00}</UniqueIdentifier>
     </Filter>
@@ -370,12 +361,18 @@
     <Filter Include="Components">
       <UniqueIdentifier>{49d9ef4f-fb34-4e46-9584-a26d0428673c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\DirectX">
+      <UniqueIdentifier>{8eaf3ea3-2f71-4fe4-824a-bcb7db264c61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SimpleMath.inl">
+    <None Include="Math\Geometry.inl">
       <Filter>Math</Filter>
     </None>
-    <None Include="BB_Math.inl">
+    <None Include="Math\SimpleMath.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="Physics\BB_Math.inl">
       <Filter>Physics</Filter>
     </None>
   </ItemGroup>

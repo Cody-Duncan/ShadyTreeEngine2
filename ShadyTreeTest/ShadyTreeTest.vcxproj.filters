@@ -2,67 +2,67 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Driver.cpp" />
-    <ClCompile Include="GameObjectFactory.cpp">
-      <Filter>GameLogic</Filter>
-    </ClCompile>
     <ClCompile Include="DeSerializer.cpp" />
     <ClCompile Include="StdAfx2.cpp" />
-    <ClCompile Include="Level.cpp">
+    <ClCompile Include="GameLogic\GameLogic.cpp">
       <Filter>GameLogic</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerStateComponent.cpp">
+    <ClCompile Include="GameLogic\GameObjectFactory.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogic\GameStateSystem.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogic\IntroScreen.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogic\Level.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogic\CustomComponents\AIComponent.cpp">
       <Filter>GameLogic\Custom Components</Filter>
     </ClCompile>
-    <ClCompile Include="AIComponent.cpp">
+    <ClCompile Include="GameLogic\CustomComponents\AttackComponent.cpp">
       <Filter>GameLogic\Custom Components</Filter>
     </ClCompile>
-    <ClCompile Include="AttackComponent.cpp">
+    <ClCompile Include="GameLogic\CustomComponents\PlayerStateComponent.cpp">
       <Filter>GameLogic\Custom Components</Filter>
     </ClCompile>
-    <ClCompile Include="GameStateSystem.cpp">
-      <Filter>GameLogic</Filter>
-    </ClCompile>
-    <ClCompile Include="IntroScreen.cpp">
-      <Filter>GameLogic</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLogic.cpp">
-      <Filter>GameLogic</Filter>
-    </ClCompile>
-    <ClCompile Include="PowerUpComponent.cpp">
+    <ClCompile Include="GameLogic\CustomComponents\PowerUpComponent.cpp">
       <Filter>GameLogic\Custom Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameObjectFactory.h">
-      <Filter>GameLogic</Filter>
-    </ClInclude>
     <ClInclude Include="DeSerializer.h" />
     <ClInclude Include="StdAfx2.h" />
-    <ClInclude Include="Level.h">
+    <ClInclude Include="GameLogic\GameLogic.h">
       <Filter>GameLogic</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerStateComponent.h">
+    <ClInclude Include="GameLogic\GameObjectFactory.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\GameStateSystem.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\IGameState.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\IntroScreen.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\Level.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\CustomComponents\AIComponent.h">
       <Filter>GameLogic\Custom Components</Filter>
     </ClInclude>
-    <ClInclude Include="AIComponent.h">
+    <ClInclude Include="GameLogic\CustomComponents\AttackComponent.h">
       <Filter>GameLogic\Custom Components</Filter>
     </ClInclude>
-    <ClInclude Include="AttackComponent.h">
+    <ClInclude Include="GameLogic\CustomComponents\PlayerStateComponent.h">
       <Filter>GameLogic\Custom Components</Filter>
     </ClInclude>
-    <ClInclude Include="IGameState.h">
-      <Filter>GameLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="IntroScreen.h">
-      <Filter>GameLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStateSystem.h">
-      <Filter>GameLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLogic.h">
-      <Filter>GameLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="PowerupComponent.h">
+    <ClInclude Include="GameLogic\CustomComponents\PowerupComponent.h">
       <Filter>GameLogic\Custom Components</Filter>
     </ClInclude>
   </ItemGroup>

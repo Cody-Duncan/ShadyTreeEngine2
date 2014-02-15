@@ -1,11 +1,11 @@
 #include "DeSerializer.h"
-#include "BaseDeserializer.h"
+#include "DeSerializer\BaseDeserializer.h"
 #include <jansson.h>
-#include "GraphicsResourceHandles.h"
-#include "PhysicsComponent.h"
-#include "PlayerStateComponent.h"
-#include "AIComponent.h"
-#include "PowerupComponent.h"
+#include "Resources\GraphicsResourceHandles.h"
+#include "Components\PhysicsComponent.h"
+#include "GameLogic\CustomComponents\PlayerStateComponent.h"
+#include "GameLogic\CustomComponents\AIComponent.h"
+#include "GameLogic\CustomComponents\PowerupComponent.h"
 
 DeSerializer::DeSerializer(void)
 {

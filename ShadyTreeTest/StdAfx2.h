@@ -9,12 +9,12 @@
 
 #include "ST_API_Def.h"
 
-#include "Resources.h"
-#include "FileResourcer.h"
+#include "Resources\Resources.h"
+#include "Resources\FileResourcer.h"
 
-#include "ComponentFactory.h"
-#include "GameObjectCache.h"
-#include "GameObjectFactory.h"
+#include "GameObject\ComponentFactory.h"
+#include "GameObject\GameObjectCache.h"
+#include "GameLogic\GameObjectFactory.h"
 
-#include "DebugOutput.h"
-#include "ComponentTypeID.h"
+#include "Diagnostic\DebugOutput.h"
+#include "GameObject\ComponentTypeID.h"

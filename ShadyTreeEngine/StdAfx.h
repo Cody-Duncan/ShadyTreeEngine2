@@ -16,10 +16,10 @@
 #include <directxmath.h>
 #include <directxcolors.h>
 
-#include "MathLib.h"
-#include "Vertex.h"
-#include "Debug_Graphics.h"
-#include "DebugOutput.h"
+#include "Math\MathLib.h"
+#include "Math\Vertex.h"
+#include "Diagnostic\Debug_Graphics.h"
+#include "Diagnostic\DebugOutput.h"
 
 #include "ST_API_Def.h"
 

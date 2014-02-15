@@ -1,11 +1,11 @@
 #include <windows.h>
 #include <crtdbg.h>
 #include "ST_API_Def.h"
-#include "ShadyTreeEngine.h"
-#include "WindowSystem.h"
-#include "GraphicsSystem.h"
-#include "GameStateSystem.h"
-#include "PhysicsSystem.h"
+#include "Core\ShadyTreeEngine.h"
+#include "Window\WindowSystem.h"
+#include "Graphics\GraphicsSystem.h"
+#include "GameLogic\GameStateSystem.h"
+#include "Physics\PhysicsSystem.h"
 
 ST_API HWND ghMainWnd;
 ST_API HINSTANCE ghInstance;

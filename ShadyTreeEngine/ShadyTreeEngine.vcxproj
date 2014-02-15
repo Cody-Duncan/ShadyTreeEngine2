@@ -11,121 +11,120 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\ShadyTreeTest\ChangeStateMessage.h" />
-    <ClInclude Include="DebugDrawMessage.h" />
-    <ClInclude Include="BaseDeserializer.h" />
-    <ClInclude Include="BB.h" />
-    <ClInclude Include="BB_Math.h" />
-    <ClInclude Include="BufferResourcer.h" />
-    <ClInclude Include="ChangeGravityMessage.h" />
-    <ClInclude Include="ContactMessage.h" />
-    <ClInclude Include="ComponentCache.h" />
-    <ClInclude Include="Component.h" />
-    <ClInclude Include="ComponentFactory.h" />
-    <ClInclude Include="ComponentTypeID.h" />
-    <ClInclude Include="ConstantBuffer.h" />
-    <ClInclude Include="Contact.h" />
-    <ClInclude Include="DDSTextureLoader.h" />
-    <ClInclude Include="DebugDrawComponent.h" />
-    <ClInclude Include="DebugOutput.h" />
-    <ClInclude Include="Debug_Graphics.h" />
-    <ClInclude Include="DelegateFunc.h" />
-    <ClInclude Include="DeviceAPI.h" />
-    <ClInclude Include="DirectX_GraphicsDevice.h" />
-    <ClInclude Include="DirectX_PrimitiveBatch.h" />
-    <ClInclude Include="DirectX_SpriteBatch.h" />
-    <ClInclude Include="FileResourcer.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GameObjectCache.h" />
-    <ClInclude Include="GameTimer.h" />
-    <ClInclude Include="Geometry.h" />
-    <ClInclude Include="GraphicsComponent.h" />
-    <ClInclude Include="GraphicsDevice.h" />
-    <ClInclude Include="GraphicsFactory.h" />
-    <ClInclude Include="GraphicsResourceHandles.h" />
-    <ClInclude Include="GraphicsSystem.h" />
-    <ClInclude Include="InputState.h" />
-    <ClInclude Include="IResources.h" />
-    <ClInclude Include="ISystem.h" />
-    <ClInclude Include="MathLib.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="MeshResourcer.h" />
-    <ClInclude Include="Message.h" />
-    <ClInclude Include="Messenger.h" />
-    <ClInclude Include="OSHighResTimer.h" />
-    <ClInclude Include="PhysicsComponent.h" />
-    <ClInclude Include="PhysicsSystem.h" />
-    <ClInclude Include="PositionalComponent.h" />
-    <ClInclude Include="PrimitiveBatch.h" />
-    <ClInclude Include="PrimitiveGraphicsComponent.h" />
-    <ClInclude Include="Resources.h" />
-    <ClInclude Include="ShaderResourcer.h" />
-    <ClInclude Include="ST_API_Def.h" />
-    <ClInclude Include="SimpleMath.h" />
-    <ClInclude Include="SpriteBatch.h" />
+    <ClInclude Include="Components\DebugDrawComponent.h" />
+    <ClInclude Include="Components\GraphicsComponent.h" />
+    <ClInclude Include="Components\PhysicsComponent.h" />
+    <ClInclude Include="Components\PositionalComponent.h" />
+    <ClInclude Include="Components\PrimitiveGraphicsComponent.h" />
+    <ClInclude Include="Core\GameTimer.h" />
+    <ClInclude Include="Core\ISystem.h" />
+    <ClInclude Include="Core\ShadyTreeEngine.h" />
+    <ClInclude Include="DeSerializer\BaseDeserializer.h" />
+    <ClInclude Include="Diagnostic\DebugOutput.h" />
+    <ClInclude Include="Diagnostic\Debug_Graphics.h" />
+    <ClInclude Include="Diagnostic\OSHighResTimer.h" />
+    <ClInclude Include="Diagnostic\Stopwatch.h" />
+    <ClInclude Include="GameObject\Component.h" />
+    <ClInclude Include="GameObject\ComponentCache.h" />
+    <ClInclude Include="GameObject\ComponentFactory.h" />
+    <ClInclude Include="GameObject\ComponentTypeID.h" />
+    <ClInclude Include="GameObject\GameObject.h" />
+    <ClInclude Include="GameObject\GameObjectCache.h" />
+    <ClInclude Include="Graphics\API\DeviceAPI.h" />
+    <ClInclude Include="Graphics\API\GraphicsDevice.h" />
+    <ClInclude Include="Graphics\API\GraphicsFactory.h" />
+    <ClInclude Include="Graphics\API\PrimitiveBatch.h" />
+    <ClInclude Include="Graphics\API\SpriteBatch.h" />
+    <ClInclude Include="Graphics\DirectX\DirectX_GraphicsDevice.h" />
+    <ClInclude Include="Graphics\DirectX\DirectX_PrimitiveBatch.h" />
+    <ClInclude Include="Graphics\DirectX\DirectX_SpriteBatch.h" />
+    <ClInclude Include="Graphics\GraphicsSystem.h" />
+    <ClInclude Include="Input\InputState.h" />
+    <ClInclude Include="Math\Geometry.h" />
+    <ClInclude Include="Math\MathLib.h" />
+    <ClInclude Include="Math\SimpleMath.h" />
+    <ClInclude Include="Math\Vertex.h" />
+    <ClInclude Include="Messaging\ChangeGravityMessage.h" />
+    <ClInclude Include="Messaging\ChangeStateMessage.h" />
+    <ClInclude Include="Messaging\ContactMessage.h" />
+    <ClInclude Include="Messaging\DebugDrawMessage.h" />
+    <ClInclude Include="Messaging\Message.h" />
+    <ClInclude Include="Messaging\Messenger.h" />
+    <ClInclude Include="Physics\BB.h" />
+    <ClInclude Include="Physics\BB_Math.h" />
+    <ClInclude Include="Physics\Contact.h" />
+    <ClInclude Include="Physics\PhysicsSystem.h" />
+    <ClInclude Include="Resources\BufferResourcer.h" />
+    <ClInclude Include="Resources\ConstantBuffer.h" />
+    <ClInclude Include="Resources\DDSTextureLoader.h" />
+    <ClInclude Include="Resources\FileResourcer.h" />
+    <ClInclude Include="Resources\GraphicsResourceHandles.h" />
+    <ClInclude Include="Resources\IResources.h" />
+    <ClInclude Include="Resources\Mesh.h" />
+    <ClInclude Include="Resources\MeshResourcer.h" />
+    <ClInclude Include="Resources\Resources.h" />
+    <ClInclude Include="Resources\ShaderResourcer.h" />
+    <ClInclude Include="Resources\TextureResourcer.h" />
+    <ClInclude Include="Resources\TinyDir.h" />
+    <ClInclude Include="Resources\WICTextureLoader.h" />
     <ClInclude Include="StdAfx.h" />
-    <ClInclude Include="Stopwatch.h" />
-    <ClInclude Include="StringUtility.h" />
-    <ClInclude Include="TextureResourcer.h" />
-    <ClInclude Include="ShadyTreeEngine.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="TinyDir.h" />
-    <ClInclude Include="Vertex.h" />
-    <ClInclude Include="WICTextureLoader.h" />
-    <ClInclude Include="WindowGlobals.h" />
-    <ClInclude Include="WindowSystem.h" />
+    <ClInclude Include="ST_API_Def.h" />
+    <ClInclude Include="Utility\StringUtility.h" />
+    <ClInclude Include="Utility\Timer.h" />
+    <ClInclude Include="Window\WindowGlobals.h" />
+    <ClInclude Include="Window\WindowSystem.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseDeserializer.cpp" />
-    <ClCompile Include="BB.cpp" />
-    <ClCompile Include="BufferResourcer.cpp" />
-    <ClCompile Include="ComponentCache.cpp" />
-    <ClCompile Include="Component.cpp" />
-    <ClCompile Include="ComponentFactory.cpp" />
-    <ClCompile Include="ComponentTypeID.cpp" />
-    <ClCompile Include="DDSTextureLoader.cpp" />
-    <ClCompile Include="DebugDrawComponent.cpp" />
-    <ClCompile Include="DebugOutput.cpp" />
-    <ClCompile Include="DirectX_GraphicsDevice.cpp" />
-    <ClCompile Include="DirectX_PrimitiveBatch.cpp" />
-    <ClCompile Include="DirectX_SpriteBatch.cpp" />
-    <ClCompile Include="FileResourcer.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GameObjectCache.cpp" />
-    <ClCompile Include="GameTimer.cpp" />
-    <ClCompile Include="Geometry.inl" />
-    <ClCompile Include="GraphicsComponent.cpp" />
-    <ClCompile Include="GraphicsDevice.cpp" />
-    <ClCompile Include="GraphicsFactory.cpp" />
-    <ClCompile Include="GraphicsSystem.cpp" />
-    <ClCompile Include="InputState.cpp" />
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="MeshResourcer.cpp" />
-    <ClCompile Include="Message.cpp" />
-    <ClCompile Include="Messenger.cpp" />
-    <ClCompile Include="OSHighResTimer.cpp" />
-    <ClCompile Include="PhysicsComponent.cpp" />
-    <ClCompile Include="PhysicsSystem.cpp" />
-    <ClCompile Include="PositionalComponent.cpp" />
-    <ClCompile Include="PrimitiveGraphicsComponent.cpp" />
-    <ClCompile Include="Resources.cpp" />
-    <ClCompile Include="ShaderResourcer.cpp" />
-    <ClCompile Include="SpriteBatch.cpp" />
+    <ClCompile Include="Components\DebugDrawComponent.cpp" />
+    <ClCompile Include="Components\GraphicsComponent.cpp" />
+    <ClCompile Include="Components\PhysicsComponent.cpp" />
+    <ClCompile Include="Components\PositionalComponent.cpp" />
+    <ClCompile Include="Components\PrimitiveGraphicsComponent.cpp" />
+    <ClCompile Include="Core\GameTimer.cpp" />
+    <ClCompile Include="Core\ShadyTreeEngine.cpp" />
+    <ClCompile Include="DeSerializer\BaseDeserializer.cpp" />
+    <ClCompile Include="Diagnostic\DebugOutput.cpp" />
+    <ClCompile Include="Diagnostic\OSHighResTimer.cpp" />
+    <ClCompile Include="Diagnostic\Stopwatch.cpp" />
+    <ClCompile Include="GameObject\Component.cpp" />
+    <ClCompile Include="GameObject\ComponentCache.cpp" />
+    <ClCompile Include="GameObject\ComponentFactory.cpp" />
+    <ClCompile Include="GameObject\ComponentTypeID.cpp" />
+    <ClCompile Include="GameObject\GameObject.cpp" />
+    <ClCompile Include="GameObject\GameObjectCache.cpp" />
+    <ClCompile Include="Graphics\API\GraphicsDevice.cpp" />
+    <ClCompile Include="Graphics\API\GraphicsFactory.cpp" />
+    <ClCompile Include="Graphics\API\SpriteBatch.cpp" />
+    <ClCompile Include="Graphics\DirectX\DirectX_GraphicsDevice.cpp" />
+    <ClCompile Include="Graphics\DirectX\DirectX_PrimitiveBatch.cpp" />
+    <ClCompile Include="Graphics\DirectX\DirectX_SpriteBatch.cpp" />
+    <ClCompile Include="Graphics\GraphicsSystem.cpp" />
+    <ClCompile Include="Input\InputState.cpp" />
+    <ClCompile Include="Messaging\Message.cpp" />
+    <ClCompile Include="Messaging\Messenger.cpp" />
+    <ClCompile Include="Physics\BB.cpp" />
+    <ClCompile Include="Physics\PhysicsSystem.cpp" />
+    <ClCompile Include="Resources\BufferResourcer.cpp" />
+    <ClCompile Include="Resources\DDSTextureLoader.cpp" />
+    <ClCompile Include="Resources\FileResourcer.cpp" />
+    <ClCompile Include="Resources\Mesh.cpp" />
+    <ClCompile Include="Resources\MeshResourcer.cpp" />
+    <ClCompile Include="Resources\Resources.cpp" />
+    <ClCompile Include="Resources\ShaderResourcer.cpp" />
+    <ClCompile Include="Resources\TextureResourcer.cpp" />
+    <ClCompile Include="Resources\WICTextureLoader.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Stopwatch.cpp" />
-    <ClCompile Include="TextureResourcer.cpp" />
-    <ClCompile Include="ShadyTreeEngine.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="WICTextureLoader.cpp" />
-    <ClCompile Include="WindowGlobals.cpp" />
-    <ClCompile Include="WindowSystem.cpp" />
+    <ClCompile Include="Utility\Timer.cpp" />
+    <ClCompile Include="Window\WindowGlobals.cpp" />
+    <ClCompile Include="Window\WindowSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BB_Math.inl" />
-    <None Include="SimpleMath.inl" />
+    <None Include="Math\Geometry.inl" />
+    <None Include="Math\SimpleMath.inl" />
+    <None Include="Physics\BB_Math.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D040C4F1-07F7-4450-ACAC-26787DB53554}</ProjectGuid>
@@ -162,6 +161,7 @@
     <OutDir>$(SolutionDir)lib\$(ProjectName)D\</OutDir>
     <IntDir>$(SolutionDir)build\obj\$(Configuration)\$(ProjectName)\</IntDir>
     <TargetName>$(ProjectName)D</TargetName>
+    <IncludePath>$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -175,7 +175,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_WIN32_WINNT=0x0600;_DEBUG;_USRDLL;SHADYTREE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>StdAfx.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
     </ClCompile>
@@ -201,7 +201,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_WIN32_WINNT=0x0600;NDEBUG;_WINDOWS;_USRDLL;SHADYTREE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>StdAfx.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

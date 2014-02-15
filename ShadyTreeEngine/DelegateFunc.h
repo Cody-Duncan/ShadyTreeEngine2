@@ -1,5 +1,5 @@
 #pragma once
-#include "Message.h"
+#include "Messaging\Message.h"
 
 //borrowed from The Impossibly Fast C++ Delegates
 //author: Sergey Ryazanov
