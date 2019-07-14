@@ -31,7 +31,7 @@ Move with arrow keys.
 Attack by pressing Q and a direction.  
 
 ######Objective:  
-Pickup powerups for special abilties or effects.  
+Pickup powerups for special abilities or effects.  
 Knock the other boxes off to win.  
 Get knocked off 3 times to lose.  
 
